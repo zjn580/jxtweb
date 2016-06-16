@@ -53,9 +53,9 @@ class SchoolController extends Controller
         $industry = new Industry;
         $ids = $industry->showIndustry();
         //规模
-        $customer = Scale::find()->asArray()->all();
-//        print_r($customer);die;
-        return $this->render('index01',['ids'=>$ids,'scale']);
+        $scale = Scale::find()->asArray()->all();
+
+        return $this->render('index01',['ids'=>$ids,'scales'=>$scale]);
     }
 
     //机构信息标签  2

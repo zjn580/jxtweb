@@ -62,13 +62,15 @@
                         <input type="hidden" value="" name="select_scale_hidden" id="select_scale_hidden">
                         <input type="button" value="请选择机构规模" id="select_scale" class="select">
                         <div class="dn" id="box_scale" style="display: none;">
-                            <ul class="reset">
-                                <li>少于15人</li>
-                                <li>15-50人</li>
-                                <li>50-150人</li>
-                                <li>150-500人</li>
-                                <li>500-2000人</li>
-                                <li>2000人以上</li>
+                            <ul class="reset"><?php
+
+                                foreach($scales as $scale){ ?>
+
+                                    <li id="<?= $scale['scale_id']?>"><?= $scale['scale_size']?></li>
+
+                                <?php
+                                }
+                                ?>
                             </ul>
                         </div>
                     </div>
