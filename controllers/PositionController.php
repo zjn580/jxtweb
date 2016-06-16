@@ -8,20 +8,32 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-
+use app\models\Industry;
+use app\models\Working;
+use app\models\Edu;
 class PositionController extends Controller
 {
 	public $layout = 'common';
+    public $enableCsrfValidation=false;
 	//发布职位首页
     public function actionPosition()
     {	
-    	// echo 111;die;
-    	return $this->render('index');
+
+        $industry = new Industry;
+        $ids = $industry->showIndustry();
+        $working = new Working;
+        $year = $working->showWorking();
+        $edu = new Edu;
+        $edus = $edu->showEdu();
+        return $this->render('index',['ids'=>$ids,'year'=>$year,'edus'=>$edus]);
+    }
+
+    public function actionAbc(){
+        echo 111;
     }
     //我收藏的职位
      public function actionCollect()
     {	
-    	// echo 111;die;
     	return $this->render('collections');
     }
     //我的订阅
