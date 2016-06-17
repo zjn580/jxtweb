@@ -5,19 +5,19 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "jx_working".
+ * This is the model class for table "jx_salary".
  *
- * @property integer $y_id
- * @property string $y_year
+ * @property integer $sa_id
+ * @property string $sa_salary
  */
-class Working extends \yii\db\ActiveRecord
+class Salary extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'jx_working';
+        return 'jx_salary';
     }
 
     /**
@@ -26,7 +26,7 @@ class Working extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['y_year'], 'string', 'max' => 30]
+            [['sa_salary'], 'string', 'max' => 30]
         ];
     }
 
@@ -36,15 +36,11 @@ class Working extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'y_id' => 'Y ID',
-            'y_year' => 'Y Year',
+            'sa_id' => 'Sa ID',
+            'sa_salary' => 'Sa Salary',
         ];
     }
-    /**
-     * 获取工作年限
-     * @return [type] [description]
-     */
-    public function showWorking(){
+     public function showSalary(){
         return $this->find()->asarray()->all();
     }
 }
