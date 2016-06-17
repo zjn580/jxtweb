@@ -17,25 +17,7 @@
                     	<div id="productDiv">
 		                    <div class="formWrapper">
 		                    	<input type="hidden" value="25927" name="productInfos[0].companyId">
-		                        <h3>专业海报</h3>
-		                        <div class="new_product mt20">
-		                            <div id="productNo0" class="product_upload">
-		                                <div style="background-color: rgb(147, 183, 187);">
-		                                	<span>上传专业图片</span> 
-		                                    <br>	
-		                                   		 尺寸：380*220px  	大小：小于5M
-		                                </div>
-		                            </div>
-		                            <div id="productShow0" class="product_upload dn productShow">
-			                        	<img width="380" height="220" src="">
-			                        	<span>更换专业图片<br>380*220px 小于5M</span>
-			                        </div>
-			                        <input type="file" title="支持jpg、jpeg、gif、png格式，文件小于5M" onchange="img_check(this,'http://www.lagou.com/c/upload.json',380,220,5,'myfiles0','myfiles0_error','productNo0','productShow0','type0','productInfos0');" name="myfiles" id="myfiles0">
-			                    	<input type="hidden" value="3" name="productInfos[0].type" id="type0"> 
-			                    	<input type="hidden" name="productInfos[0].productPicUrl" id="productInfos0">   
-			                    </div>
-			                   	<span style="display:none;" id="myfiles0_error" class="error"></span>
-			                    
+
 		                        <h3>专业名称</h3>
 		                        <input type="text" placeholder="请输入专业名称" name="productInfos[0].product" id="name0">	
 		                        
