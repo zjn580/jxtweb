@@ -1282,7 +1282,7 @@ ul.my_delivery{margin:20px 48px;}
 #profileForm input[name="tel"],#profileForm input[name="email"]{width:386px}
 .profile_radio{margin-bottom:-5px !important;}
 .profile_radio li{width:42px;height:42px;color:#777;font-size:16px;text-align:center;line-height:42px;cursor:pointer;border:2px solid #f1f1f1;background:#fff;float:left;margin-right:20px;position:relative}
-.profile_radio li input{width:46px;height:46px;position:absolute;left:-2px;top:-2px;filter:alpha(Opacity=0);-moz-opacity:0;opacity:0;margin:0;}
+.profile_radio li input{width:80px;height:46px;position:absolute;left:-2px;top:-2px;filter:alpha(Opacity=0);-moz-opacity:0;opacity:0;margin:0;}
 .profile_radio li:hover{border:2px solid #c8e6de}
 .profile_radio li.current{border:2px solid #91cebe}
 .profile_radio li.current em{width:18px;height:18px;background:url('img/radio_checked.png') no-repeat;position:absolute;right:-1px;top:-1px}

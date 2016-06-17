@@ -1,45 +1,4 @@
-﻿    <div id="container">
-        
-        	<div class="sidebar">
-            	<a class="btn_create" href="?r=position/position">发布新职位</a>
-                <dl class="company_center_aside">
-		<dt>我收到的简历</dt>
-		<dd>
-		<a href="?r=position/position">待处理简历</a> 
-			</dd>
-	<dd>
-		<a href="?r=resume/undeter">待定简历</a>
-	</dd>
-	<dd>
-		<a href="#">已通知面试简历</a>
-	</dd>
-	<dd>
-		<a href="?r=resume/inapp">不合适简历</a>
-	</dd>
-	<dd class="btm">
-		<a href="?r=resume/auto">自动过滤简历</a> 
-			</dd>
-</dl>
-<dl class="company_center_aside">
-		<dt>我发布的职位</dt>
-			<dd>
-		<a href="?r=position/posit">有效职位</a>
-	</dd>
-	<dd>
-		<a href="?r=position/posit">已下线职位</a>
-	</dd>
-	</dl>
-                <div class="subscribe_side mt20">
-   <div class="f14">想收到更多更好的简历？</div>
-   <div class="f18 mb10">就用拉勾招聘加速助手 </div>
-   <div>咨询：<a class="f16" href="mailto:jessica@lagou.com">jessica@lagou.com</a></div>
-   <div class="f18 ti2em">010-57286512</div>
-</div>
-<div class="subscribe_side mt20">
-   <div class="f14">加入互联网HR交流群</div>
-   <div class="f18 mb10">跟同行聊聊</div>
-   <div class="f24">338167634</div>
-</div>            </div><!-- end .sidebar -->
+﻿<?= $this->render('left') ?>
             <div class="content">
             	<dl class="company_center_content">
                     <dt>
@@ -49,7 +8,7 @@
                         </h1>
                     </dt>
                     <dd>
-                    	<div class="ccc_tr">今日已发布 <span>0</span> 个职位   还可发布 <span>5</span> 个职位</div>
+                    	<div class="ccc_tr"></div>
                     	<form action="http://www.lagou.com/corpPosition/preview.html" method="post" id="jobForm">
                             <input type="hidden" value="" name="id">
                             <input type="hidden" value="create" name="preview">
@@ -60,7 +19,7 @@
                                 	<td width="25"><span class="redstar">*</span></td>
                                 	<td width="85">职位类别</td>
                                 	<td>
-                                    	<input type="hidden" id="positionType" value="" name="positionType">
+                                    	<input type="hidden" id="positionType" value="" name="i_id">
                                         <input type="button" value="请选择职位类别" id="select_category" class="selectr selectr_380">                                      
                                         <div class="dn" id="box_job" style="display: none;">
                                         <?php foreach ($ids as $key => $value) { ?>
@@ -90,62 +49,71 @@
                                 	<td><span class="redstar">*</span></td>
                                 	<td>职位名称</td>
                                 	<td>
-                                    	<input type="text" placeholder="请输入职位名称，如：产品经理" value="" name="positionName" id="positionName">
-                                    </td>
-                                </tr>
-                            	<tr>
-                                	<td></td>
-                                	<td>所属部门</td>
-                                	<td>
-                                    	<input type="text" placeholder="请输入所属部门" value="" name="department" id="department">	
+                                    	<input type="text" placeholder="请输入职位名称，如：产品经理" value="" name="p_name" id="positionName">
                                     </td>
                                 </tr>
                             </tbody></table>
                             
                             <table class="btm">
-                            	<tbody><tr>
+                            	<tbody>
+                                 <tr>
+                                    <td width="25"><span class="redstar">*</span></td>
+                                    <td width="85">性别要求</td>
+                                    <td>
+                                        <ul class="profile_radio clearfix reset">
+                                                                                                                                                      <li>
+                                                       不限<em></em>
+                                                       <input type="radio" name="p_sex" value="1"> 
+                                                       </li>
+                                                                                                                                                                                                         <li>
+                                                       男<em></em>
+                                                       <input type="radio" name="p_sex" value="2"> 
+                                                       </li>
+                                                                                                                                                                                                         <li>
+                                                       女<em></em>
+                                                       <input type="radio" name="p_sex" value="3"> 
+                                                       </li>
+                                                                                                                                       </ul>
+                                    </td>
+                                </tr>
+                                <tr>
                                 	<td width="25"><span class="redstar">*</span></td>
                                 	<td width="85">工作性质</td>
                                 	<td>
                                     	<ul class="profile_radio clearfix reset">
                                     		                                                                                                          <li>
                                                        全职<em></em>
-                                                       <input type="radio" name="jobNature" value="1"> 
+                                                       <input type="radio" name="p_type" value="1"> 
                                                        </li>
                                                                                                                                                                                                          <li>
                                                        兼职<em></em>
-                                                       <input type="radio" name="jobNature" value="2"> 
+                                                       <input type="radio" name="p_type" value="2"> 
                                                        </li>
                                                                                                                                                                                                          <li>
                                                        实习<em></em>
-                                                       <input type="radio" name="jobNature" value="3"> 
+                                                       <input type="radio" name="p_type" value="3"> 
                                                        </li>
                                                                                                                                        </ul>
                                     </td>
                                 </tr>
-                            	<tr>
-                                	<td><span class="redstar">*</span></td>
-                                	<td>月薪范围</td>
-                                    <!--<h3><span>(最高月薪不能大于最低月薪的2倍)</span></h3> -->
-                                	<td>
-                                    	<div class="salary_range">
-                                            <div>
-                                                <input type="text" placeholder="最低月薪" value="" id="salaryMin" name="salaryMin"> 
-                                                <span>k</span>
-                                            </div>
-                                            <div>
-                                                <input type="text" placeholder="最高月薪" value="" id="salaryMax" name="salaryMax"> 
-                                                <span>k</span>
-                                            </div>
-                                            <span>只能输入整数，如：9</span>
-                                        </div>
+                                <tr>
+                                    <td width="25"><span class="redstar">*</span></td>
+                                    <td width="85">月薪范围</td>
+                                    <td>
+                                        <ul class="profile_radio clearfix reset">
+                                        <?php foreach ($sly as $k => $v) { ?>
+                                           <li style="width:80px;">
+                                           <?=$v['sa_salary']?><em></em>
+                                           <input type="radio" name="salary_id" value="<?=$v['sa_id']?>"> 
+                                           </li>
+                                        <?php }?>                                                                                             </ul>
                                     </td>
                                 </tr>
                             	<tr>
                                 	<td><span class="redstar">*</span></td>
                                 	<td>工作城市</td>
                                 	<td>
-                                    	<input type="text" placeholder="请输入工作城市，如：北京" value="上海" name="workAddress" id="workAddress">
+                                    	<input type="text" placeholder="请输入工作城市，如：北京"  name="workAddress" id="workAddress">
                                     </td>
                                 </tr>
                             </tbody></table>
@@ -161,7 +129,7 @@
                                             <ul>
                                                     <li>不限</li>
                                                     <?php foreach ($year as $key => $value) { ?>
-                                                       <li><?=$value['y_year']?></li>
+                                                       <li><?=$value['ex_experience']?></li>
                                                     <?php }?>
                                             </ul>
                                     	</div>
@@ -187,19 +155,13 @@
                             </tbody></table>
                            
                             <table class="btm">
-                            	<tbody><tr>
-                                	<td width="25"><span class="redstar">*</span></td>
-                                	<td width="85">职位诱惑</td>
-                                	<td>
-                                    	<input type="text" placeholder="20字描述该职位的吸引力，如：福利待遇、发展前景等" value="" name="positionAdvantage" class="input_520" id="positionAdvantage">
-                                    </td>
-                                </tr>
+                            	<tbody>
                             	<tr>
                                 	<td><span class="redstar">*</span></td>
-                                	<td>职位描述</td>
+                                	<td style="width: 200px">职位描述</td>
                                 	<td>
                                     	<span class="c9 f14">(建议分条描述工作职责等。请勿输入公司邮箱、联系电话及其他外链，否则将自动删除)</span>
-                                    	<textarea name="p_content"></textarea>
+                                    	<textarea name="p_content" id="p_content"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -215,7 +177,35 @@
                             </tbody></table>
                             
                             <table>
-                            	<tbody><tr>
+                            	<tbody>
+                                <tr>
+                                    <td><span class="redstar">*</span></td>
+                                    <td style="width:80px;">招聘人数</td>
+                                    <td>
+                                        <input type="text" placeholder="请输入招聘人数" value="" name="p_nums" id="p_nums">人
+                                        <br/>
+                                        <span class="c9 f14"> &nbsp; &nbsp;必须填写数字,例:5</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="redstar">*</span></td>
+                                    <td style="width:80px;">联系人</td>
+                                    <td>
+                                        <input type="text" placeholder="请输入联系人信息" value="" name="p_names" id="p_names">
+                                        <br/>
+                                        <input type="checkbox" name="is_name" value='1'>是否公开
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="redstar">*</span></td>
+                                    <td style="width:80px;">联系电话</td>
+                                    <td>
+                                        <input type="text" placeholder="请输入联系电话" value="" name="p_phone" id="p_phone">
+                                        <br/>
+                                        <input type="checkbox" name="is_phone" value='1'>是否公开
+                                    </td>
+                                </tr>
+                                <tr>
                                 	<td width="25"><span class="redstar">*</span></td>
                                 	<td colspan="2">
                                     	接收简历邮箱： <span id="receiveEmailVal">admin@admin.com</span>
@@ -564,9 +554,6 @@ $(function(){
 			<div class="clear"></div>
 			<input type="hidden" value="c29d4a7c35314180bf3be5eb3f00048f" id="resubmitToken">
 	    	<a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>
-	    </div><!-- end #container -->
-	</div><!-- end #body -->
-	
 
 <script src="style/js/core.min.js" type="text/javascript"></script>
 <script src="style/js/popup.min.js" type="text/javascript"></script>
