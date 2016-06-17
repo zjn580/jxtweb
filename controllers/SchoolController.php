@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -10,6 +11,9 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Industry;
 use app\models\Scale;
+use app\models\Nature;
+use app\models\School;
+
 
 
 header('content-type:text/html;charset=utf8');
@@ -52,10 +56,40 @@ class SchoolController extends Controller
         //行业
         $industry = new Industry;
         $ids = $industry->showIndustry();
+
         //规模
         $scale = Scale::find()->asArray()->all();
 
-        return $this->render('index01',['ids'=>$ids,'scales'=>$scale]);
+        //企业
+        $nature = Nature::find()->asArray()->all();
+
+        return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature]);
+    }
+    //信息添加
+    public function actionDo_basic_insert(){
+
+        $model = new School();
+
+        $model->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
+        $model->n_id = !empty($_POST['s_radio_hidden'])?$_POST['s_radio_hidden']:'';;
+        $model->scale_id = !empty($_POST['select_scale_hidden'])?$_POST['select_scale_hidden']:'';
+        $model->city_id = !empty($_POST['city'])?$_POST['city']:'北京';
+        //$model->s_intro = !empty($_POST['temptation'])?$_POST['temptation']:'';
+        $model->s_website = !empty($_POST['website'])?$_POST['website']:'';
+        $schooladd = $model->save();
+
+        $user = new User();
+        $user->u_name = !empty($_POST['name'])?$_POST['name']:'';
+        $user->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
+        $useradd = $user->save();
+
+        if($schooladd&&$useradd){
+            $this->redirect('?r=school/info02');
+        }else{
+            echo 'fail';
+        }
+
+
     }
 
     //机构信息标签  2
