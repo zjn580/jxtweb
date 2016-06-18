@@ -25,6 +25,7 @@ use Yii;
  * @property string $s_y
  * @property string $s_x
  * @property string $s_website
+ * @property string $s_tags
  */
 class School extends \yii\db\ActiveRecord
 {
@@ -46,7 +47,8 @@ class School extends \yii\db\ActiveRecord
             [['s_intro'], 'string'],
             [['s_license', 's_rca', 'city_id', 's_address', 's_logo'], 'string', 'max' => 50],
             [['s_linkman', 's_tel'], 'string', 'max' => 20],
-            [['s_y', 's_x', 's_website'], 'string', 'max' => 15]
+            [['s_y', 's_x', 's_website'], 'string', 'max' => 15],
+            [['s_tags'], 'string', 'max' => 200]
         ];
     }
 
@@ -74,6 +76,7 @@ class School extends \yii\db\ActiveRecord
             's_y' => 'S Y',
             's_x' => 'S X',
             's_website' => 'S Website',
+            's_tags' => 'S Tags',
         ];
     }
 }
