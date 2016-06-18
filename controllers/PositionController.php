@@ -52,6 +52,7 @@ class PositionController extends Controller
         $data['is_name'] = !empty($_POST['is_name'])?$_POST['is_name']:0;
         $data['is_phone'] = !empty($_POST['is_phone'])?$_POST['is_phone']:0;
         $data['p_nums'] = !empty($_POST['p_nums'])?$_POST['p_nums']:0;
+        $data['p_time'] = time();
         $position = new Position;
         foreach ($data as $key => $value) {
            $position -> $key  = $value;
@@ -68,6 +69,17 @@ class PositionController extends Controller
     {   
         $p_id  = \Yii::$app->request->get('p_id');
         return $this->render('index06');
+    }
+
+    public function actionPreview(){
+        $request = Yii::$app->request;
+        $arr['data'] = $request->post();
+        foreach ($arr['data'] as $key => $value) {
+            if($key == 'salary_id'){
+                $arr['data']['salary_id'] = Salary::find()->select('sa_salary')->where(['sa_id'=>$value])->asArray()->one()['sa_salary'];
+            }
+        }
+        return $this->render('toudi',$arr);
     }
     //我收藏的职位
      public function actionCollect()
