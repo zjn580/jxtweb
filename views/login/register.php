@@ -43,15 +43,19 @@ var youdao_conv_id = 271546;
         
     	<input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27" />		
 		<div class="login_box">
-        	<form id="loginForm">
+        	<form id="loginForm" method="post" action="?r=register/register">
         		<ul class="register_radio clearfix">
 		            <li>
-		            	找工作
-		              	<input type="radio" value="0" name="type" /> 
+		            	公司
+		              	<input type="radio" value="0" name="type" id="c" />
 		            </li>
+                    <li>
+                        学校
+                        <input type="radio" value="1" name="type" id="s" />
+                    </li>
 		            <li>
-		           	           招人
-		              	<input type="radio" value="1" name="type" /> 
+                        个人
+		              	<input type="radio" value="2" name="type" id="p"/>
 		            </li>
 		        </ul> 
             	<input type="text" id="email" name="email" tabindex="1" placeholder="请输入常用邮箱地址" />
@@ -71,14 +75,17 @@ var youdao_conv_id = 271546;
             	<a  href="?r=login/login"  class="registor_now">直接登录</a>
                 <div class="login_others">使用以下帐号直接登录:</div>
                 <a  href="h/ologin/auth/sina.html"  target="_blank" class="icon_wb" title="使用新浪微博帐号登录"></a>
-               	<a  href="h/ologin/auth/qq.html"  class="icon_qq" target="_blank" title="使用腾讯QQ帐号登录" ></a>
+               	<a  href="http://openapi.qzone.qq.com/oauth/show?which=ConfirmPage&display=pc&response_type=code&client_id=101223150&redirect_uri=http://t.zy62.com/qqlogin.php "  class="icon_qq" target="_blank" title="使用腾讯QQ帐号登录" ></a>
+
             </div>
         </div>
         <div class="login_box_btm"></div>
     </div>
     
     <script type="text/javascript">
-    
+
+
+
     $(document).ready(function(e) {
     	$('.register_radio li input').click(function(e){
     		$(this).parent('li').addClass('current').append('<em></em>').siblings().removeClass('current').find('em').remove();
@@ -136,34 +143,7 @@ var youdao_conv_id = 271546;
 			    			label.insertAfter(element);
 			    		};	
 			    	},
-			    	submitHandler:function(form){
-			    		var type =$('input[type="radio"]:checked',form).val();
-			    		var email =$('#email').val();
-			    		var password =$('#password').val();
-			    		var resubmitToken = $('#resubmitToken').val();
-			    		
-			    		var callback = $('#callback').val();
-			    		var authType = $('#authType').val();
-			    		var signature = $('#signature').val();
-			    		var timestamp = $('#timestamp').val();
-			    		
-			    		$(form).find(":submit").attr("disabled", true);
 
-			            $.ajax({
-			            	type:'POST',
-			            	data: {email:email,password:password,type:type,resubmitToken:resubmitToken, callback:callback, authType:authType, signature:signature, timestamp:timestamp},
-			            	url:ctx+'/user/register.json',
-			            	dataType:'json'
-			            }).done(function(result) {
-		            		$('#resubmitToken').val(result.resubmitToken);
-			            	if(result.success){
-			            		window.location.href=result.content;			            		
-			            	}else{
-								$('#beError').text(result.msg).show();
-			            	}
-			            	$(form).find(":submit").attr("disabled", false);			           		
-			            });
-			        }  
 	    	});
     });
     </script>
