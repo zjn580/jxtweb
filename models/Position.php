@@ -31,6 +31,7 @@ use Yii;
  * @property integer $p_status
  * @property string $p_Lat
  * @property string $p_Lng
+ * @property integer $p_time
  */
 class Position extends \yii\db\ActiveRecord
 {
@@ -48,9 +49,9 @@ class Position extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['c_id', 'l_id', 'p_nums', 'city_id', 'salary_id', 'p_sex', 'e_id', 'experience_id', 'p_phone', 'is_name', 'is_phone', 'p_hits', 'p_resumes', 'p_status'], 'integer'],
+            [['c_id', 'l_id', 'p_nums', 'city_id', 'salary_id', 'p_sex', 'e_id', 'experience_id', 'p_phone', 'is_name', 'is_phone', 'p_hits', 'p_resumes', 'p_status', 'p_time'], 'integer'],
+            [['p_content'], 'string'],
             [['p_name', 'p_type', 'p_tel', 'p_Lat', 'p_Lng'], 'string', 'max' => 20],
-            [['p_content'], 'string', 'max' => 200],
             [['p_names', 'p_email', 'p_address'], 'string', 'max' => 30]
         ];
     }
@@ -85,6 +86,7 @@ class Position extends \yii\db\ActiveRecord
             'p_status' => 'P Status',
             'p_Lat' => 'P  Lat',
             'p_Lng' => 'P  Lng',
+            'p_time' => 'P Time',
         ];
     }
 }
