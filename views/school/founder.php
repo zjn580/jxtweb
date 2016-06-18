@@ -11,8 +11,8 @@
                 <div class="c_text">展示强劲的联系人，让公司跟随而来吧！</div>
                 <img width="668" height="56" class="c_steps" alt="第三步" src="../web/images/step3.png">
 
-                <form method="post" action="" id="memberForm">
-                    <input type="hidden" value="52346c62232045a8ab1d45cb3e0540b7" name="resubmitToken">
+                <form method="post" action="?r=school/insert_founder" id="memberForm">
+
                     <input type="hidden" id="companyId" name="companyId" value="25927">
                     <div id="memberDiv">
                         <div class="formWrapper">
@@ -22,12 +22,11 @@
                             <input type="text" placeholder="请输入联系人姓名" name="leaderInfos[0].name" id="name0" class="s_input1 valid">
 
                             <h3>当前职位</h3>
-                            <input type="text" placeholder="请输入当前职位，如：创始人兼CEO" name="leaderInfos[0].position" id="position0" class="s_input1 valid">
+                            <input type="text" placeholder="请输入当前职位" name="leaderInfos[1].position" id="position0" class="s_input1 valid">
 
-                            <h3>新浪微博</h3>
-                            <input type="text" placeholder="请输入联系人新浪微博地址" name="leaderInfos[0].weibo" id="weibo0">
+                            <h3>联系电话</h3>
+                            <input type="text" placeholder="请输入联系电话" name="leaderInfos[2].weibo" id="weibo0">
 
-                            <div class="word_count">你还可以输入 <span>500</span> 字</div>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -39,7 +38,7 @@
     </div>
 
 
-    <script src="style/js/step3.min.js" type="text/javascript"></script>
+    <script src="style/js/schoolstep3.min.js" type="text/javascript"></script>
     <div class="clear"></div>
     <input type="hidden" value="52346c62232045a8ab1d45cb3e0540b7" id="resubmitToken">
     <a rel="nofollow" title="回到顶部" id="backtop" style="display: inline;"></a>
