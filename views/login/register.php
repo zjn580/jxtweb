@@ -43,7 +43,7 @@ var youdao_conv_id = 271546;
         
     	<input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27" />		
 		<div class="login_box">
-        	<form id="loginForm" method="post" action="?r=register/register">
+        	<form id="loginForm" method="post" action="?r=login/zhu">
         		<ul class="register_radio clearfix">
 		            <li>
 		            	公司
