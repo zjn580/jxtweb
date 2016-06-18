@@ -65,7 +65,8 @@ class SchoolController extends Controller
 
         return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature]);
     }
-    //信息添加
+
+    //基本信息添加
     public function actionDo_basic_insert(){
 
         $model = new School();
@@ -86,7 +87,7 @@ class SchoolController extends Controller
         if($schooladd&&$useradd){
             $this->redirect('?r=school/info02');
         }else{
-            echo 'fail';
+            $this->redirect('?r=school/info01');
         }
 
 
@@ -98,10 +99,60 @@ class SchoolController extends Controller
         return $this->render('tag');
     }
 
+    //机构标签添加
+    public function actionDo_tags_insert(){
+
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = School::findOne($s_id['s_id']);
+
+        if(empty($_POST['labels'])){
+            echo '';die;
+        }
+        $model->s_tags = !empty($_POST['labels'])?$_POST['labels']:'';
+        if($model->save()){
+            echo 'success';
+        }else{
+            echo 'fail';
+        }
+    }
+
     //机构信息创始团队 3
      public function actionInfo03()
     {   
         return $this->render('founder');
+    }
+
+    //添加联系人的
+    public function actionInsert_founder(){
+
+//        print_r($_POST);die;
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = School::findOne($s_id['s_id']);
+
+        if(empty($_POST['leaderInfos'][0])){
+
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info03';</script>";
+        }
+        $model->s_linkman = !empty($_POST['leaderInfos'][0])?$_POST['leaderInfos'][0]:'';
+        $model->s_phone = !empty($_POST['leaderInfos'][2])?$_POST['leaderInfos'][2]:'';
+
+        if($model->save()){
+//            echo 'success';die;
+            $this->redirect('?r=school/info04');
+        }else{
+//            echo  'fail';die;
+            echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info03';</script>";
+//            $this->redirect('?r=school/info03');
+        }
+
     }
 
     //机构专业
