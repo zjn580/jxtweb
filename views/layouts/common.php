@@ -29,9 +29,9 @@ console.log(1);
     <script type="text/javascript" src="style/js/excanvas.js"></script>
 <![endif]-->
 <script type="text/javascript">
-var youdao_conv_id = 271546; 
+
 </script> 
-<script type="text/javascript" src="style/js/conv.js"></script>
+<!--<script type="text/javascript" src="style/js/conv.js"></script>-->
 </head>
 <body>
 <div id="body">
