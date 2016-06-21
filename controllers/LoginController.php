@@ -36,33 +36,22 @@ class LoginController extends Controller
         //print_r($pwds);die;
         $time=$_POST['autoLogin'];
         $connection= \Yii::$app->db;
-        $command =$connection->createCommand("select * from jx_user where u_account='$email'");
+        $command =$connection->createCommand("select * from jx_user where u_account='$email' and u_password='$pwds'");
         $arr=$command->queryAll();
         //print_r($arr);die;
         if($arr)
         {
-             $sql =$connection->createCommand("select * from jx_user where u_password='$pwds'");
-             $er=$sql->queryAll();
-            if($er)
+            if($arr[0]['u_status'] == 0)
             {
-                echo "<script>alert('登录成功');location.href='?r=r=company/info01'</script>";
+                echo "<script>alert('登录成功');location.href='?r=company/info01'</script>";
+            }
+            else if($arr[0]['u_status'] == 1)
+            {
+                echo "<script>alert('登录成功');location.href='?r=school/school'</script>";
             }
             else
             {
-                if($er[0]['u_lock']>=3)
-                {
-                    echo "<script>alert('登录失败,账户已被锁定，请于明日登录');location.href='?r=r=login/login'</script>";
-                }
-                else if($er[0]['u_lock']==2)
-                {
-                    $lock=$connection->createCommand("update jx_user from set 'u_lock'=>u_lock+1  ");
-                    echo "<script>alert('登录失败，请重新登录');location.href='?=login/login'</script>>";
-                }
-                else
-                {
-                    $lock=$connection->createCommand("update jx_user from set 'u_lock'=>u_lock+1  ");
-                    echo "<script>alert('登录失败，请重新登录');location.href='?=login/login'</script>>";
-                }
+                echo "<script>alert('登录成功');location.href='?r=resume/person1'</script>";
             }
 
         }
@@ -112,7 +101,6 @@ class LoginController extends Controller
                 'u_password' => $pwds,
                 'u_status' => $type,
                 'u_time' => $time,
-                'u_lock'=>$u_lock,
             ])->execute();
             if ($flag) {
                 //设置session
