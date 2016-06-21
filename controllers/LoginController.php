@@ -119,7 +119,7 @@ class LoginController extends Controller
                 if ($type == 0) {
                     echo "<script>location.href='?r=company/info01'</script>";
                 } else if ($type == 1) {
-                    echo "<script>location.href='?r=school/school'</script>";
+                    echo "<script>location.href='?r=school/info01'</script>";
                 } else if ($type == 2) {
                     echo "<script>location.href='?r=resume/person1'</script>";
                 }
