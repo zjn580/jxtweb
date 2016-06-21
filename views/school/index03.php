@@ -11,7 +11,7 @@
                 	<div class="c_text">资深大牛、实战项目、专业人才、…用优势吸引公司吧！</div>
                  	<img width="668" height="56" class="c_steps" alt="第五步" src="./images/step5.png">
                     <!-- action="http://www.lagou.com/c/saveProfile.json" -->
-                    <form method="post" action="http://www.lagou.com/c/saveProfile.json" id="infoForm">
+                    <form method="post" action="index.php?r=school/insertintro" id="infoForm">
                     	<input type="hidden" name="companyId" value="25927">
                         <h3>机构介绍</h3> 
                         <textarea placeholder="请分段详细描述机构简介、企业文化等" name="companyProfile" id="companyProfile"></textarea>	
@@ -22,7 +22,7 @@
                 </dd>
             </dl>
        	</div>
-<script src="style/js/step5.min.js" type="text/javascript"></script>
+<script src="style/js/schoolstep5.min.js" type="text/javascript"></script>
 
 			<div class="clear"></div>
 			<input type="hidden" value="" id="resubmitToken">

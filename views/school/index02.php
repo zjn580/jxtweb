@@ -11,7 +11,7 @@
                 	<div class="c_text">需求量大,技术含量高的专业是吸引公司的制胜法宝哦！</div>
                  	<img width="668" height="56" class="c_steps" alt="第四步" src="./images/step4.png">
                     
-                    <form method="post" action="http://www.lagou.com/cp/saveCompanyProducts.json" id="productForm">
+                    <form method="post" action="?r=school/insert_major" id="productForm">
                     	<input type="hidden" value="8f79f658e49846ae89d90a3f1590f12e" name="resubmitToken">
                     	<input type="hidden" id="companyId" name="companyId" value="25927">
                     	<div id="productDiv">
@@ -22,23 +22,22 @@
 		                        <input type="text" placeholder="请输入专业名称" name="productInfos[0].product" id="name0">	
 		                        
 		                        <h3>专业人员</h3>
-		                        <input type="text" placeholder="请输入专业人数" name="productInfos[0].productUrl" id="address0">	
+		                        <input type="text" placeholder="请输入专业人数" name="productInfos[1].productUrl" id="address0">
 		                        
 		                        <h3>专业简介</h3> 
-		                        <textarea placeholder="请简短描述该专业定位、专业特色、用户群体等" maxlength="1000" name="productInfos[0].productProfile" id="description0"></textarea>	
+		                        <textarea placeholder="请简短描述该专业定位、专业特色、用户群体等" maxlength="1000" name="productInfos[2].productProfile" id="description0"></textarea>
 		                        <div class="word_count">你还可以输入 <span>500</span> 字</div>
 		                    </div>
 	                    </div>
-                    	<a id="addMember" class="add_member" href="javascript:void(0)"><i></i>继续添加机构学员</a>
                    		<div class="clear"></div>
                     	<input type="submit" value="保存，下一步" id="step4Submit" class="btn_big fr">
-                    	<a class="btn_cancel fr" href="http://www.jxt.com/web/?r=school/info05">跳过</a>
+                    	<a class="btn_cancel fr" href="?r=school/info05">跳过</a>
                     </form>
                 </dd>
             </dl>
        	</div>
     
-<script src="style/js/step4.min.js" type="text/javascript"></script>        	
+<script src="style/js/schoolstep4.min.js" type="text/javascript"></script>
 			<div class="clear"></div>
 			<input type="hidden" value="8f79f658e49846ae89d90a3f1590f12e" id="resubmitToken">
 	    	<a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>

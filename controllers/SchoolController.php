@@ -13,19 +13,21 @@ use app\models\Industry;
 use app\models\Scale;
 use app\models\Nature;
 use app\models\School;
-
-
+use app\models\Major;
+use app\models\Schoolmajor;
 
 header('content-type:text/html;charset=utf8');
 class SchoolController extends Controller
 {
 	public $layout = 'common';
     public $enableCsrfValidation=false;
+
 	//培训机构
     public function actionSchool()
     {	
     	return $this->render('index');
     }
+
     //我的机构主页
     public function actionMyhome()
     {	
@@ -43,6 +45,7 @@ class SchoolController extends Controller
     {   
         return $this->render('authSuccess');
     }
+
    	//添加学员信息
     public function actionAdd_member()
     {
@@ -52,7 +55,6 @@ class SchoolController extends Controller
     //填写机构基本 1
      public function actionInfo01()
     {
-
         //行业
         $industry = new Industry;
         $ids = $industry->showIndustry();
@@ -65,7 +67,8 @@ class SchoolController extends Controller
 
         return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature]);
     }
-    //信息添加
+
+    //基本信息添加
     public function actionDo_basic_insert(){
 
         $model = new School();
@@ -86,7 +89,7 @@ class SchoolController extends Controller
         if($schooladd&&$useradd){
             $this->redirect('?r=school/info02');
         }else{
-            echo 'fail';
+            $this->redirect('?r=school/info01');
         }
 
 
@@ -98,10 +101,62 @@ class SchoolController extends Controller
         return $this->render('tag');
     }
 
-    //机构信息创始团队 3
+    //机构标签添加
+    public function actionDo_tags_insert(){
+
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = School::findOne($s_id['s_id']);
+
+        if(empty($_POST['labels'])){
+            echo '';die;
+        }
+        $model->s_tags = !empty($_POST['labels'])?$_POST['labels']:'';
+        if($model->save()){
+            echo 'success';
+        }else{
+            echo 'fail';
+        }
+    }
+
+    //机构信息联系人 3
      public function actionInfo03()
     {   
         return $this->render('founder');
+    }
+
+    //添加联系人的
+    public function actionInsert_founder(){
+
+//        print_r($_POST);die;
+        if(empty($_POST['leaderInfos'][0])){
+
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info03';</script>";die;
+        }
+//
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = School::findOne($s_id['s_id']);
+
+
+        $model->s_linkman = !empty($_POST['leaderInfos'][0])?$_POST['leaderInfos'][0]:'';
+        $model->s_phone = !empty($_POST['leaderInfos'][2])?$_POST['leaderInfos'][2]:'';
+
+        if($model->save()){
+//            echo 'success';die;
+            $this->redirect('?r=school/info04');
+        }else{
+//            echo  'fail';die;
+            echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info03';</script>";
+//            $this->redirect('?r=school/info03');
+        }
+
     }
 
     //机构专业
@@ -110,10 +165,70 @@ class SchoolController extends Controller
         return $this->render('index02');
     }
 
+    public function actionInsert_major(){
+
+//        print_r($_POST);die;
+
+        if(empty($_POST['productInfos'][0])){
+
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info04';</script>";die;
+        }
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = new  Major;
+        $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
+        $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
+        $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
+        $majors = $model->save();
+
+        $m_id = Major::findBySql("select m_id from jx_major WHERE m_name = '".$_POST['productInfos'][0]."'")->asArray()->one();
+
+        $modelm = new  Schoolmajor();
+        $modelm->m_id = $m_id['m_id'];
+        $modelm->s_id = $s_id['s_id'];
+        $school_major = $modelm->insert();
+        if($majors&&$school_major){
+//            echo 'success';die;
+            $this->redirect('?r=school/info04');
+        }else{
+//            echo  'fail';die;
+            echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info04';</script>";
+        }
+    }
+
     //公司介绍 5
      public function actionInfo05()
     {   
         return $this->render('index03');
+    }
+
+    //公司介绍添加
+    public function actionInsertintro()
+    {
+
+        if(empty($_POST['companyProfile'])){
+
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info04';</script>";die;
+        }
+//        print_r($_POST);die;
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        $model = School::findOne($s_id['s_id']);
+
+        $model->s_intro = !empty($_POST['companyProfile'])?$_POST['companyProfile']:'';
+        if($model->save()){
+//            echo 'success';die;
+            $this->redirect('?r=school/myhome');
+        }else{
+//            echo  'fail';die;
+            echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info05';</script>";
+        }
     }
 
     //填写机构信息完成

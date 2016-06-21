@@ -15,7 +15,6 @@
 <!-- <div class="web_root"  style="display:none">h</div> -->
 <script type="text/javascript">
 var ctx = "h";
-console.log(1);
 </script>
 <link rel="Shortcut Icon" href="h/images/favicon.ico">
 <link rel="stylesheet" type="text/css" href="style/css/style.css"/>
@@ -29,9 +28,9 @@ console.log(1);
     <script type="text/javascript" src="style/js/excanvas.js"></script>
 <![endif]-->
 <script type="text/javascript">
-var youdao_conv_id = 271546; 
+
 </script> 
-<script type="text/javascript" src="style/js/conv.js"></script>
+<!--<script type="text/javascript" src="style/js/conv.js"></script>-->
 </head>
 <body>
 <div id="body">
