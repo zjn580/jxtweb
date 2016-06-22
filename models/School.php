@@ -43,7 +43,7 @@ class School extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['u_id', 'n_id', 's_status', 'scale_id', 's_hits'], 'integer'],
+            [['u_id', 'n_id', 's_status', 'scale_id', 's_hits','l_id'], 'integer'],
             [['s_intro'], 'string'],
             [['s_license', 's_rca', 'city_id', 's_address', 's_logo'], 'string', 'max' => 50],
             [['s_linkman', 's_tel'], 'string', 'max' => 20],
@@ -60,6 +60,7 @@ class School extends \yii\db\ActiveRecord
     {
         return [
             's_id' => 'S ID',
+            'l_id' => 'L ID',
             'u_id' => 'U ID',
             'n_id' => 'N ID',
             's_license' => 'S License',
