@@ -50,7 +50,7 @@ class SchoolController extends Controller
     //第一个修改的form
     public function actionSavename()
     {
-    	print_r($_POST);die;
+    	// print_r($_POST);die;
     	$schoolId = $_POST['companyId'];
         $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
         $model = School::findOne($s_id['s_id']);
@@ -346,7 +346,7 @@ class SchoolController extends Controller
     }
 
     public function actionImg(){
-        ///print_r($_FILES);die;
+        //print_r($_FILES);die;
         //设置session
         $session = Yii::$app->session;
         $session->open();
@@ -371,6 +371,41 @@ class SchoolController extends Controller
         	
         	$arr['success'] = 1;
         	$arr['content'] = $name;
+        	return  json_encode($arr);
+        }else
+        {
+        	
+        	$arr['error'] = "上传文件失败,请重新上传";
+        	return  json_encode($arr);
+        }
+
+    }
+
+    public function actionImgauth(){
+        //print_r($_FILES);die;
+        //设置session
+        $session = Yii::$app->session;
+        $session->open();
+
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_license from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+
+        if (!empty($s_id['s_license'])) {
+        	unlink('./school/'.$s_id['s_license']);
+        }
+        
+        //文件上传
+        $uploads_dir = './school';
+        $tmp_name = $_FILES["businessLicenes"]["tmp_name"];
+        $name = 'auth'.rand(10000,99999).$_FILES["businessLicenes"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $model->s_license = $name;
+		$arr = array();
+        if($model->save())
+        {
+        	
+        	$arr['success'] = 1;
         	return  json_encode($arr);
         }else
         {

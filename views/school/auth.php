@@ -32,14 +32,14 @@
                                 支持jpg、png、gif、pdf格式，文件不超过10M
                             </div>
                         </div>
-                        <input type="file" name="businessLicenes" id="businessLicenes" onchange="file_check(this,'http://www.lagou.com/cd/submitApproved.json',25927,this.id);">
+                        <input type="file" name="businessLicenes" id="businessLicenes" onchange="file_check(this,'?r=school/imgauth',25927,this.id);">
                         <input type="hidden" value="0" name="type" id="type">  
                     </div>
                 </dd>
             </dl>
        	</div>
        	
-<script src="style/js/certification.min.js" type="text/javascript"></script>
+<script src="style/js/schoolcertification.min.js" type="text/javascript"></script>
 			<div class="clear"></div>
 			<input type="hidden" value="" id="resubmitToken">
 	    	<a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>
