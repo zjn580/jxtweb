@@ -1,35 +1,35 @@
-﻿<!--公司介绍-->
+﻿<!--机构介绍-->
     <div id="container">
            
         <div class="content_mid">
             <dl class="c_section c_section_mid">
                 <dt>
                     <h2><em></em>填写公司信息</h2>
-                    <a class="c_addjob" href="create.html"><i></i>发布新职位</a>
+                    <a class="c_addjob" href="?r=company/add_member"></a>
                 </dt>
                 <dd>
-                	<div class="c_text">背景深、规模大、发展快、氛围好…用优势吸引求职者吧！</div>
-                 	<img width="668" height="56" class="c_steps" alt="第五步" src="style/images/step5.png">
+                    <div class="c_text">背景深、规模大、发展快、氛围好…用优势吸引求职者吧！</div>
+                    <img width="668" height="56" class="c_steps" alt="第五步" src="./images/step5.png">
                     <!-- action="http://www.lagou.com/c/saveProfile.json" -->
-                    <form method="post" action="http://www.lagou.com/c/saveProfile.json" id="infoForm">
-                    	<input type="hidden" name="companyId" value="25927">
+                    <form method="post" action="index.php?r=company/insertintro" id="infoForm">
+                        <input type="hidden" name="companyId" value="25927">
                         <h3>公司介绍</h3> 
-                        <textarea placeholder="请分段详细描述公司简介、企业文化等" name="companyProfile" id="companyProfile"></textarea>	
+                        <textarea placeholder="请分段详细描述公司简介、企业文化等" name="companyProfile" id="companyProfile"></textarea> 
                         <div class="word_count">你还可以输入 <span>1000</span> 字</div>
-                    	<div class="clear"></div>
-                    	<input type="button" id="step5Submit" value="保存，完成" class="btn_big fr">
+                        <div class="clear"></div>
+                        <input type="button" id="step5Submit" value="保存，完成" class="btn_big fr">
                     </form>
                 </dd>
             </dl>
-       	</div>
+        </div>
 <script src="style/js/step5.min.js" type="text/javascript"></script>
 
-			<div class="clear"></div>
-			<input type="hidden" value="" id="resubmitToken">
-	    	<a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>
-	    </div><!-- end #container -->
-	</div><!-- end #body -->
-	
+            <div class="clear"></div>
+            <input type="hidden" value="" id="resubmitToken">
+            <a rel="nofollow" title="回到顶部" id="backtop" style="display: none;"></a>
+        </div><!-- end #container -->
+    </div><!-- end #body -->
+    
 
 <script src="style/js/core.min.js" type="text/javascript"></script>
 <script src="style/js/popup.min.js" type="text/javascript"></script>
