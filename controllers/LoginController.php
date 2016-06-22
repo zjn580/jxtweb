@@ -41,13 +41,14 @@ class LoginController extends Controller
         //print_r($arr);die;
         if($arr)
         {
+
             if($arr[0]['u_status'] == 0)
             {
                 echo "<script>alert('登录成功');location.href='?r=company/info01'</script>";
             }
             else if($arr[0]['u_status'] == 1)
             {
-                echo "<script>alert('登录成功');location.href='?r=school/school'</script>";
+                echo "<script>alert('登录成功');location.href='?r=school/myhome'</script>";
             }
             else
             {

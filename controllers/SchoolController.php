@@ -15,6 +15,9 @@ use app\models\Nature;
 use app\models\School;
 use app\models\Major;
 use app\models\Schoolmajor;
+use yii\web\Session;
+use yii\web\Cookie;
+
 
 header('content-type:text/html;charset=utf8');
 class SchoolController extends Controller
@@ -24,15 +27,73 @@ class SchoolController extends Controller
 
 	//培训机构
     public function actionSchool()
-    {	
-    	return $this->render('index');
+    {
+        $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
+        $natures = Nature::find()->asArray()->all();
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id  INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id');
+        $posts = $command->queryAll();
+//        print_r($posts);die;
+        return $this->render('index',['industry'=>$industry,'natures'=>$natures,'schools'=>$posts]);
     }
 
     //我的机构主页
     public function actionMyhome()
-    {	
-    	return $this->render('myhome');
+    {
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id  WHERE s_id=1');
+        $posts = $command->queryOne();
+        //print_r($posts);die;
+        return $this->render('myhome',['school'=>$posts]);
     }
+
+    //第一个修改的form
+    public function actionSavename()
+    {
+    	print_r($_POST);die;
+    	$schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_intro = $_POST['companyFeatures'];
+        $intro = $model->save();
+
+        //修改user中的u_name
+        $user = User::findOne($schoolId);
+        $user->u_name = $_POST['companyShortName'];
+        $name = $user->update();
+
+        $arr=array();
+        if ($intro&&$name) {
+        	$arr['success'] = 1;
+        	$arr['content']['companyShortName'] = $_POST['companyShortName'];
+        	$arr['content']['companyFeatures'] = $_POST['companyFeatures'];
+        	return  json_encode($arr);
+        } else {
+        	$arr['msg'] = "保存失败,请重新填写数据";
+        	return  json_encode($arr);
+        }
+    }
+
+    //修改公司标签
+    public function actionUpdatetag()
+    {
+    	//print_r($_POST);die;
+    	$schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_tags = $_POST['labels'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+        	$arr['success'] = 1;
+        	return  json_encode($arr);
+        } else {
+        	$arr['msg'] = "保存失败,请重新填写数据";
+        	return  json_encode($arr);
+        }
+    }
+
+
 
      //申请认证(上传)
     public function actionApply()
@@ -71,12 +132,14 @@ class SchoolController extends Controller
     //基本信息添加
     public function actionDo_basic_insert(){
 
+//        print_r($_POST);die;
         $model = new School();
 
         $model->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
         $model->n_id = !empty($_POST['s_radio_hidden'])?$_POST['s_radio_hidden']:'';;
         $model->scale_id = !empty($_POST['select_scale_hidden'])?$_POST['select_scale_hidden']:'';
         $model->city_id = !empty($_POST['city'])?$_POST['city']:'北京';
+        $model->l_id = !empty($_POST['select_industry_hidden'])?$_POST['select_industry_hidden']:'';
         //$model->s_intro = !empty($_POST['temptation'])?$_POST['temptation']:'';
         $model->s_website = !empty($_POST['website'])?$_POST['website']:'';
         $schooladd = $model->save();
@@ -136,7 +199,6 @@ class SchoolController extends Controller
 
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info03';</script>";die;
         }
-//
         //接值
         $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
 
@@ -160,7 +222,7 @@ class SchoolController extends Controller
     }
 
     //机构专业
-     public function actionInfo04()
+    public function actionInfo04()
     {   
         return $this->render('index02');
     }
@@ -192,7 +254,7 @@ class SchoolController extends Controller
         $school_major = $modelm->insert();
         if($majors&&$school_major){
 //            echo 'success';die;
-            $this->redirect('?r=school/info04');
+            $this->redirect('?r=school/info05');
         }else{
 //            echo  'fail';die;
             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info04';</script>";
@@ -224,7 +286,7 @@ class SchoolController extends Controller
         $model->s_intro = !empty($_POST['companyProfile'])?$_POST['companyProfile']:'';
         if($model->save()){
 //            echo 'success';die;
-            $this->redirect('?r=school/myhome');
+            $this->redirect('?r=school/success');
         }else{
 //            echo  'fail';die;
             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info05';</script>";
@@ -251,7 +313,71 @@ class SchoolController extends Controller
 
      //开通招聘服务 3
     public function actionOpen3()
-    {   
+    {
+        echo ($this->FindTags(1));die;
+
         return $this->render('bindstep3');
+    }
+
+
+    /*
+     * 查询学校专业
+     */
+    public function FindMajor($s_id){
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand('SELECT m_id FROM jx_sc_ma WHERE `s_id`='.$s_id);
+        $posts = $command->queryAll();
+        $major_id='';
+        foreach($posts as $id){
+            $major_id .= $id['m_id'].',';
+        }
+        $major_id = substr($major_id,0,-1);
+        return $major_id;
+    }
+    /*
+     * 查询学校tags
+     */
+    public function FindTags($s_id){
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand('SELECT s_tags FROM jx_school WHERE `s_id`='.$s_id);
+        $posts = $command->queryOne();
+        $tags=explode(',',$posts['s_tags']);
+        return $tags;
+    }
+
+    public function actionImg(){
+        ///print_r($_FILES);die;
+        //设置session
+        $session = Yii::$app->session;
+        $session->open();
+
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+
+        if (!empty($s_id['s_logo'])) {
+        	unlink('./school/'.$s_id['s_logo']);
+        }
+        
+        //文件上传
+        $uploads_dir = './school';
+        $tmp_name = $_FILES["logo"]["tmp_name"];
+        $name = rand(10000,99999).$_FILES["logo"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $model->s_logo = $name;
+		$arr = array();
+        if($model->save())
+        {
+        	
+        	$arr['success'] = 1;
+        	$arr['content'] = $name;
+        	return  json_encode($arr);
+        }else
+        {
+        	
+        	$arr['error'] = "上传文件失败,请重新上传";
+        	return  json_encode($arr);
+        }
+
     }
 }
