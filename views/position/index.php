@@ -155,7 +155,15 @@
                             </tbody></table>
                            
                             <table class="btm">
+
                             	<tbody>
+                                <tr>
+                                    <td><span class="redstar">*</span></td>
+                                    <td>职位诱惑</td>
+                                    <td>
+                                        <input type="text" placeholder="请输入职位诱惑" value="" name="p_temptation"  id="p_temptation"> 
+                                    </td>
+                                </tr>
                             	<tr>
                                 	<td><span class="redstar">*</span></td>
                                 	<td style="width: 200px">职位描述</td>
