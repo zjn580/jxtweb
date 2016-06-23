@@ -40,11 +40,20 @@ class SchoolController extends Controller
     //我的机构主页
     public function actionMyhome()
     {
+        $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
+        $scale = Scale::findBySql('select * from jx_scale')->asArray()->all();
+        $s_id = $_GET['id'];
         $connection = \Yii::$app->db;
-        $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id  WHERE s_id=1');
+
+        //获取sessionid 专业名称
+        //$command = $connection->createCommand('SELECT m_name FROM jx_school INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id INNER JOIN jx_major ON jx_sc_ma.m_id=jx_major.m_id WHERE u_id=25927');
+        //$majors = $command->queryOne();
+        // print_r($majors);die;
+
+        $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id inner join jx_industry on jx_industry.l_id=jx_school.l_id WHERE s_id='.$s_id);
         $posts = $command->queryOne();
-        //print_r($posts);die;
-        return $this->render('myhome',['school'=>$posts]);
+        // print_r($posts);die;
+        return $this->render('myhome',['industry'=>$industry,'scale'=>$scale,'school'=>$posts]);
     }
 
     //第一个修改的form
@@ -90,6 +99,88 @@ class SchoolController extends Controller
         } else {
         	$arr['msg'] = "保存失败,请重新填写数据";
         	return  json_encode($arr);
+        }
+    }
+
+
+    //简介
+    public function actionSaveprofile()
+    {
+        //echo json_encode($_POST);die;
+        //print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_intro = $_POST['companyProfile'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content'] = $_POST['companyProfile'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+    /**
+     * [actionSaveleader 修改联系人的方法]
+     * @return [type] [description]
+     */
+    public function actionSaveleader()
+    {
+        //echo json_encode($_POST);die;
+        //print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_linkman = $_POST['name'];
+        $model->s_phone = $_POST['position'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content']['id'] = $_POST['id'];
+            $arr['content']['weibo'] = $_POST['weibo'];
+            $arr['content']['name'] = $_POST['name'];
+            $arr['content']['position'] = $_POST['position'];
+            $arr['content']['remark'] = $_POST['remark'];
+            $arr['resubmitToken'] = $_POST['resubmitToken'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+    /**
+     * [actionSavecity 城市 规模 网址]
+     * @return [type] [description]
+     */
+    public function actionSavecity()
+    {
+        //echo json_encode($_POST);die;
+        print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_linkman = $_POST['name'];
+        $model->s_phone = $_POST['position'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content']['id'] = $_POST['id'];
+            $arr['content']['weibo'] = $_POST['weibo'];
+            $arr['content']['name'] = $_POST['name'];
+            $arr['content']['position'] = $_POST['position'];
+            $arr['content']['remark'] = $_POST['remark'];
+            $arr['resubmitToken'] = $_POST['resubmitToken'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
         }
     }
 
@@ -345,6 +436,10 @@ class SchoolController extends Controller
         return $tags;
     }
 
+    /**
+     * 公司logo上传
+     * @return [type] [description]
+     */
     public function actionImg(){
         //print_r($_FILES);die;
         //设置session
@@ -381,6 +476,10 @@ class SchoolController extends Controller
 
     }
 
+    /**
+     * 认证上传的方法
+     * @return [json] [返回值]
+     */
     public function actionImgauth(){
         //print_r($_FILES);die;
         //设置session
@@ -415,4 +514,41 @@ class SchoolController extends Controller
         }
 
     }
+
+    public function actionImgproduct(){
+        print_r($_FILES);die;
+        //设置session
+        $session = Yii::$app->session;
+        $session->open();
+
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_license from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+
+        if (!empty($s_id['s_license'])) {
+        	unlink('./school/'.$s_id['s_license']);
+        }
+        
+        //文件上传
+        $uploads_dir = './school';
+        $tmp_name = $_FILES["businessLicenes"]["tmp_name"];
+        $name = 'auth'.rand(10000,99999).$_FILES["businessLicenes"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $model->s_license = $name;
+		$arr = array();
+        if($model->save())
+        {
+        	
+        	$arr['success'] = 1;
+        	return  json_encode($arr);
+        }else
+        {
+        	
+        	$arr['error'] = "上传文件失败,请重新上传";
+        	return  json_encode($arr);
+        }
+
+    }
+
+
 }
