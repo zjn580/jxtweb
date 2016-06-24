@@ -11,14 +11,13 @@
             </dt>
             <dd>
                 <form id="stepForm" action="?r=company/do_basic_insert" method="post" enctype="multipart/form-data">
-                    <div class="c_text_1">基本信息为必填项，是公司加速了解公司的窗口，认真填写吧！</div>
+                    <div class="c_text_1">基本信息为必填项，是公司被大家了解的途径，认真填写吧！</div>
                     <img width="668" height="56" class="c_steps" alt="第一步" src="images/step1.png">
 
                     <h3>公司全称 </h3>
                     <input type="text" placeholder="请输入公司名称，如:拉勾" value="" name="name" id="name" class="valid">
-                    
-
-                    <h3>公司LOGO</h3> <!--非必填改必填-->
+                   
+                    <h3>机构LOGO</h3> <!--非必填改必填-->
 
                     <div id="logoNo">
                         <input type="file" name="file"/>
@@ -30,14 +29,22 @@
                     <input type="text" placeholder="请输入公司网址" value="" name="website" id="website">
 
                     <h3>所在城市</h3>
-                    <input type="text" placeholder="请输入工作城市，如：北京" name="city" id="city">
+					<select name="city" id="city" class="select">
+						<?php
+						foreach($citys as $city){ 
+						?>
+							<option value="<?= $city['city_id']?>"><?= $city['city_name']?></option>
+						<?php
+						}
+						?>
+					</select>
 
 
 
                     <h3>公司规模</h3>
                     <div>
                         <input type="hidden" value="" name="select_scale_hidden" id="select_scale_hidden">
-                        <input type="button" value="请选择公司规模" id="select_scale" class="select">
+                        <input type="button" value="请选择机构规模" id="select_scale" class="select">
                         <div class="dn" id="box_scale" style="display: none;">
                             <ul class="reset">
                                 <?php
@@ -99,7 +106,7 @@
 
     <!-- ----------------------------------- end --------------------------------------- -->
 
-    <script src="style/js/companystep1.min.js" type="text/javascript"></script>
+    <script src="style/js/schoolstep1.min.js" type="text/javascript"></script>
 
     <div class="clear"></div>
 

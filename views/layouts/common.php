@@ -1,5 +1,7 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
 ?>
 <!DOCTYPE HTML>
 <html xmlns:wb="http://open.weibo.com/wb">

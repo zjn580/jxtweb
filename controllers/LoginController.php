@@ -32,32 +32,33 @@ class LoginController extends Controller
         $email=$_POST['email'];
         $pwd=$_POST['password'];
         $pwds=md5(md5($pwd));
-        //print_r($pwds);die;
-        $time=$_POST['autoLogin'];
         $connection= \Yii::$app->db;
-        $command =$connection->createCommand("select * from jx_user where u_account='$email' and u_password='$pwds'");
-        $arr=$command->queryAll();
-        //print_r($arr);die;
+        $command =$connection->createCommand("select * from jx_user where u_account='$email' and u_password='$pwds' limit 1");
+        $arr=$command->queryOne();
         if($arr)
-        {
+        {	
+        	$session = Yii::$app->session;
+            $session->open();
+            $session['u_account'] = $arr['u_account'];
+            $session['u_id'] = $arr['u_id'];
+            $session['u_status'] = $arr['u_status'];
+            if($arr['u_status'] == '0'){
+            	$connection= \Yii::$app->db;
+            	$query =$connection->createCommand("select c_id from jx_company where u_id = ".$arr['u_id']." limit 1");
+        		$c_array=$query->queryOne();
+        		$session['company'] = $c_array['c_id'];
+            }
+        	if(!isset($_POST['autoLogin'])){
+        		setcookie('auto',$email,time()+3600*24*7);
+        	}
 
-            if($arr[0]['u_status'] == 0)
-            {
-                echo "<script>alert('登录成功');location.href='?r=company/info01'</script>";
-            }
-            else if($arr[0]['u_status'] == 1)
-            {
-                echo "<script>alert('登录成功');location.href='?r=school/myhome'</script>";
-            }
-            else
-            {
-                echo "<script>alert('登录成功');location.href='?r=resume/person1'</script>";
-            }
+
+        	$this->redirect('?r=index/index');
 
         }
         else
         {
-            echo "<script>alert('登录失败');location.href='?=login/login'</script>>";
+            $this->redirect('?r=login/login');
         }
 	}
 
@@ -123,14 +124,14 @@ class LoginController extends Controller
                 //print_r($id);die;
                 //判断身份
                 if ($type == 0) {
-                    echo "<script>location.href='?r=company/info01'</script>";
+                    $this->redirect('?r=company/info01');
                 } else if ($type == 1) {
-                    echo "<script>location.href='?r=school/info01'</script>";
+                    $this->redirect('?r=school/info01');
                 } else if ($type == 2) {
-                    echo "<script>location.href='?r=resume/person1'</script>";
+                    $this->redirect('?r=resume/person1');
                 }
             } else {
-                echo "<script>alert('注册失败，请重新注册');location.href='?r=register/register'</script>";
+                $this->redirect('?r=login/register');
             }
         }
     }
