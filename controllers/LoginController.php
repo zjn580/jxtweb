@@ -39,12 +39,20 @@ class LoginController extends Controller
         {	
         	$session = Yii::$app->session;
             $session->open();
-            $session['u_status'] = $arr['u_status'];
             $session['u_account'] = $arr['u_account'];
             $session['u_id'] = $arr['u_id'];
+            $session['u_status'] = $arr['u_status'];
+            if($arr['u_status'] == '0'){
+            	$connection= \Yii::$app->db;
+            	$query =$connection->createCommand("select c_id from jx_company where u_id = ".$arr['u_id']." limit 1");
+        		$c_array=$query->queryOne();
+        		$session['company'] = $c_array['c_id'];
+            }
         	if(!isset($_POST['autoLogin'])){
         		setcookie('auto',$email,time()+3600*24*7);
         	}
+
+
         	$this->redirect('?r=index/index');
 
         }
