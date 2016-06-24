@@ -242,7 +242,7 @@ class SchoolController extends Controller
         if($majors&&$school_major){
             //echo 'success';die;
 
-            $this->redirect('?r=school/success');
+            $this->redirect('?r=school/majorsuccess');
         }else{
 //            echo  'fail';die;
             echo "<script> alert('添加失败,请重新填写数据'),window.location.href='?r=school/info04';</script>";
@@ -251,7 +251,7 @@ class SchoolController extends Controller
 
     public function actionSavemajorsuccess()
     {
-        $this->render('')
+        $this->render('successmajor');
     }
 
     //填写机构基本 1
