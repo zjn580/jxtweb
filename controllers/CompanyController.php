@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Industry;
 use app\models\Scale;
+use app\models\City;
 use app\models\Nature;
 use app\models\Company;
 
@@ -26,7 +27,7 @@ class CompanyController extends Controller
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
         $natures = Nature::find()->asArray()->all();
         $connection = \Yii::$app->db;
-        $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id');
+        $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id');
         $posts = $command->queryAll();
 //        print_r($posts);die;
         return $this->render('index',['industry'=>$industry,'natures'=>$natures,'companys'=>$posts]);
@@ -44,7 +45,7 @@ class CompanyController extends Controller
         
         //根据id查询出公司的详细信息
         $connection = \Yii::$app->db;
-        $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id  WHERE c_id='$c_id'");
+        $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id  WHERE c_id='$c_id'");
         $posts = $command->queryOne();
         //print_r($posts);die;
         return $this->render('myhome',['company'=>$posts]);
@@ -94,7 +95,10 @@ class CompanyController extends Controller
         //企业
         $nature = Nature::find()->asArray()->all();
 
-        return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature]);
+        //城市
+        $city = City::find()->asArray()->all();
+
+        return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature,'citys'=>$city]);
     }
     
     //信息添加
