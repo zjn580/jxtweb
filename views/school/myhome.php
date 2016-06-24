@@ -41,7 +41,7 @@
                         <a id="cancelDetail" class="btn_cancel_s" >取消</a>
                     </form>
 
-                    <div class="clear oneword"><img width="17" height="15" src="./images/quote_l.png">&nbsp; <span><?php echo $school['s_intro'];?></span> &nbsp;<img width="17" height="15" src="./images/quote_r.png"></div>
+                    <div class="clear oneword"><img width="17" height="15" src="./images/quote_l.png">&nbsp; <span><?php echo substr($school['s_intro'],0,102);?>...</span> &nbsp;<img width="17" height="15" src="./images/quote_r.png"></div>
                     <h3 class="dn">已选择标签</h3>
                     <ul style="overflow:auto" id="hasLabels" class="reset clearfix">
                         <?php
@@ -126,22 +126,32 @@
                         </dd>
                     </dl>
                     <!--有产品-->
-                    <dl class="c_product">
+                    <?php foreach ($majors as $key => $value) { ?>
+                        <dl class="c_product">
                         <dt>
-                        <h2><em></em>机构产品</h2>
+                        <h2><em></em>专业:<?php echo $value['m_name']?></h2>
                         </dt>
                         <dd>
-                            <img width="380" height="220" alt="发大发" src="./images/product_default.png">
+                            <img width="380" height="220" alt="<?php echo $value['m_name']?>" src="./school/<?php echo $value['m_logo']?>">
                             <div class="cp_intro">
-                                <h3><a target="_blank" href="http://www.weimob.com">发大发 </a></h3>
+                                <h3><a target="_blank" href="#"><?php echo $value['m_name']?></a></h3>
                                 <div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 260px;">
-
-                                    <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div>发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf</div></div></div></div>
+                                    <div class="jspContainer" style="width: 260px; height: 140px;">
+                                        <div class="jspPane" style="padding: 0px; top: 0px; width: 260px;">
+                                            <div>
+                                                专业人数:<?php echo $value['m_nums']?><br>
+                                                专业简介:<?php echo $value['m_intro']?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <a title="编辑机构产品" class="c_edit product_edit" href="javascript:void(0)"></a>
-                            <a title="新增机构产品" class="c_add product_add" href="javascript:void(0)"></a>
+                            <a style="display:none" title="编辑机构专业" class="c_edit product_edit" href="javascript:void(0)"></a>
+                            <a style="display:none" title="新增机构专业" class="c_add product_add" href="javascript:void(0)"></a>
                         </dd>
                     </dl>
+                    <?php }?>
+                    
 
                 </div>
             </div>   <!-- end #Product -->
@@ -195,12 +205,12 @@
             <!--无招聘职位-->
             <dl id="noJobs" class="c_section">
                 <dt>
-                <h2><em></em>招聘职位</h2>
+                <h2><em></em>人才资源</h2>
                 </dt>
                 <dd>
                     <div class="addnew">
-                        发布需要的人才信息，让伯乐和千里马尽快相遇……<br>
-                        <a href="create.html">+添加招聘职位</a>
+                        发布人才信息，让伯乐和千里马尽快相遇……<br>
+                        <a href="?r=school/add_member">+添加人才</a>
                     </div>
                 </dd>
             </dl>
@@ -366,7 +376,12 @@
                     </dd>
                 </dl>
             </div> <!-- end #Member -->
+            
 
+            <div class="greybg qrcode mt20">
+                <img src="./images/companylist_qr.png" width="242" height="242" alt="拉勾微信公众号二维码" />
+                <span class="c7">扫描拉勾二维码，微信轻松搜工作</span>
+            </div>
 
             <!--机构深度报道-->
             <div style="display:none" id="Reported">

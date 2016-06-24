@@ -19,14 +19,6 @@
                     <h3>机构简称</h3> <!--非必填-->
                     <input type="text" placeholder="请输入机构简称，如:拉勾" value="" name="name" id="name" class="valid">
 
-                    <h3>机构LOGO</h3> <!--非必填改必填-->
-
-                    <div id="logoNo">
-                        <input type="file" name="file"/>
-                    </div>
-
-
-
                     <h3>机构网址</h3>
                     <input type="text" placeholder="请输入机构网址" value="" name="website" id="website">
 
