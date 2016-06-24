@@ -44,18 +44,18 @@ var youdao_conv_id = 271546;
     	<input type="hidden" id="resubmitToken" value="9b207beb1e014a93bc852b7ba450db27" />		
 		<div class="login_box">
         	<form id="loginForm" method="post" action="?r=login/zhu">
-        		<ul class="register_radio clearfix">
-		            <li>
-		            	公司
-		              	<input type="radio" value="0" name="type" id="c" />
+        		<ul class="register_radio clearfix" style="width:250px;">
+		            <li style="width:60px;">
+		            	个人
+		              	<input type="radio" value="2" name="type" id="p"style="width:60px;" />
 		            </li>
-                    <li>
-                        学校
-                        <input type="radio" value="1" name="type" id="s" />
+                    <li style="width:60px;">
+                         公司
+		              	<input type="radio" value="0" name="type" id="c" style="width:60px;" />
                     </li>
-		            <li>
-                        个人
-		              	<input type="radio" value="2" name="type" id="p"/>
+		            <li style="width:60px;">
+                       	学校
+                        <input type="radio" value="1" name="type" id="s" style="width:60px;" />
 		            </li>
 		        </ul> 
             	<input type="text" id="email" name="email" tabindex="1" placeholder="请输入常用邮箱地址" />

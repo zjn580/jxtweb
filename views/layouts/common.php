@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html xmlns:wb="http://open.weibo.com/wb">
 <head>
@@ -40,37 +43,88 @@ var ctx = "h";
     			<img src="images/logo.png" width="229" height="43" alt="拉勾招聘-专注互联网招聘" />
     		</a>
     		<ul class="reset" id="navheader">
-    			<li class="current"><a href="?r=index/index">首页</a></li>
+    			<li ><a href="?r=index/index">首页</a></li>
     			<li ><a href="?r=company/company" >公司</a></li>
+                <li ><a href="?r=school/school" rel="nofollow">培训机构</a></li>
+
+                 <?php
+                if(isset($_SESSION['u_status'])){
+                  if($_SESSION['u_status'] == 2){ ?>
+                }
     			<li ><a href="?r=resume/resume" >我的简历</a></li>
-    			<li ><a href="?r=school/school" rel="nofollow">培训机构</a></li>
+                <?php }?>
+    			
+                <?php if($_SESSION['u_status'] == 0){?>
 	    		<li ><a href="?r=position/position" rel="nofollow">发布职位</a></li>
+                <?php } }?>
 	    	</ul>
+
+            <?php if(!isset($_SESSION['u_id'])){?>
         	<ul class="loginTop">
             	<li><a href="?r=login/login" rel="nofollow">登录</a></li> 
             	<li>|</li>
-            	<li><a href="?r=register/register" rel="nofollow">注册</a></li>
+            	<li><a href="?r=login/register" rel="nofollow">注册</a></li>
             </ul>
+            <?php }else{?>
             <dl class="collapsible_menu">
                 <dt>
-                    <span>jason&nbsp;</span> 
+                    <span><?=$_SESSION['u_account'] ?></span> 
                     <span class="red dn" id="noticeDot-0"></span>
                     <i></i>
                 </dt>
-                                    <dd><a rel="nofollow" href="?r=resume/resume">我的简历</a></dd>
-                                        <dd><a href="?r=position/collect">我收藏的职位</a></dd>
-                                                            <dd class="btm"><a href="?r=position/subscribe">我的订阅</a></dd>
-                    <dd><a href="?r=position/position">我要招人</a></dd>
-                                                <dd><a href="?r=index/account">帐号设置</a></dd>
-                                <dd class="logout"><a rel="nofollow" href="?r=login/login">退出</a></dd>
-                                        <dd style="display: none;"><a href="?r=position/posit">我发布的职位</a></dd>
-                    <dd style="display: none;"><a href="?r=position/posit">我收到的简历</a></dd>
-                    <dd class="btm" style="display: none;"><a href="?r=company/myhome">我的公司主页</a></dd>
-                    <dd style="display: none;"><a href="?r=resume/resume">我要找工作</a></dd>
-                    <dd><a href="?r=position/delivery">我投递的职位 <span id="noticeNo" class="red">(1)</span></a></dd>
-                    
+
+                <?php     
+                if($_SESSION['u_status'] == 2){ 
+                ?>
+                <dd>
+                    <a href="?r=resume/resume">我要找工作</a>
+                </dd>
+                <dd>
+                    <a rel="nofollow" href="?r=resume/resume">我的简历</a>
+                </dd>
+                <dd>
+                    <a href="?r=position/collect">我收藏的职位</a>
+                </dd>
+                <dd class="btm">
+                    <a href="?r=position/subscribe">我的订阅</a>
+                </dd>
+                <dd class="btm">
+                    <a href="?r=position/delivery">我投递的职位 <span id="noticeNo" class="red">(1)</span></a>
+                </dd>
+                <?php }elseif($_SESSION['u_status'] == 0){ ?>
+
+                <dd>
+                    <a href="?r=position/position">我要招人</a>
+                </dd>
+                <dd>
+                    <a href="?r=company/myhome">我的公司主页</a>
+                </dd>
+                <dd>
+                    <a href="?r=position/posit">我发布的职位</a>
+                </dd>
+                <dd class="btm" >
+                    <a href="?r=position/posit">我收到的简历</a>
+                </dd>
+                <?php }elseif($_SESSION['u_status'] == 1){ ?>
+                 <dd>
+                     <a href="?r=school/myhome">我的学校主页</a>
+                </dd>
+                <dd class="btm">
+                    <a href="?r=school/add_member">增加专业</a>
+                </dd>
+                <?php }?>
+
+
+                <dd >
+                    <a href="?r=index/account">帐号设置</a>
+                </dd>
+                <dd class="logout">
+                    <a rel="nofollow" href="?r=login/quit">退出</a>
+                </dd>
+
             </dl>
-                                </div>
+        <?php }?>
+    </div>
     </div><!-- end #header -->
     <?= $content?>
     </div><!-- end #body -->

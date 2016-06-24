@@ -25,7 +25,6 @@ class LoginController extends Controller
      * 登陆判断页面
      * 记住密码
      * 七天免登陆
-     * 密码输入三次，锁定用户
      */
 
     public function actionDeng()
@@ -60,7 +59,7 @@ class LoginController extends Controller
         {
             echo "<script>alert('登录失败');location.href='?=login/login'</script>>";
         }
-}
+	}
 
         //修改密码
     public function actionUpdate()
@@ -72,7 +71,13 @@ class LoginController extends Controller
     {	
     	return $this->render('reset');
     }
-
+    //退出
+    public function actionQuit(){
+    	$session = Yii::$app->session;
+    	$session->open();
+        $session->destroy();
+       return $this->redirect('?r=login/login');
+    }
     //注册
      public function actionRegister()
     {
@@ -108,7 +113,7 @@ class LoginController extends Controller
                 $session = Yii::$app->session;
                 $session->open();
                 $session['u_status'] = "$type";
-                $status = $session['u_status'];
+                $session['u_account'] = "$email";
                 //print_r($status);die;
                 $sql=$connection->createCommand("select u_id from jx_user where u_account='$email'");
                 $er=$sql->queryAll();
