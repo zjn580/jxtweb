@@ -47,7 +47,7 @@
                                     <img src="./images/logo_default.png" width="190" height="190" alt="<?php echo $company['u_name']?>" />
                                     <ul>
                                         <li><?php echo $company['u_name']?></li>
-                                        <li><?php echo $company['city_id']?>，<?php echo $company['n_name']?></li>
+                                        <li><?php echo $company['city_name']?>，<?php echo $company['n_name']?></li>
                                     </ul>
                                 </div>
                             </a>

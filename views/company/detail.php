@@ -431,11 +431,11 @@
                                     <img width="120" height="120" alt="孙泰英" src="./images/leader_default.png">
                                 </div>
                                 <div class="m_name">
-                                    孙泰英
+                                    <?php echo $company['c_linkman'];?>
                                     <a target="_blank" class="weibo" href="http://weimob.weibo.com"></a>
                                 </div>
                                 <div class="m_position">ceo</div>
-                                <div class="m_intro">发放的发达范德萨范德萨范德萨发的复大发大水发生的</div>
+                                <div class="m_intro"></div>
                             </div>
 
                         </div><!-- end .member_wrap -->

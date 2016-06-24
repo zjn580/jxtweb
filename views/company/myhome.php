@@ -31,7 +31,7 @@
                     <a class="applyC" href="?r=company/apply">申请认证</a>
                     <div class="clear"></div>
 
-                    <h1 title="<?php echo $company['u_name'];?>" class="fullname"><?php echo $company['u_name'];?></h1>
+                    <h1 title="<?php echo $company['u_name'];?>" class="fullname"></h1>
 
                     <form class="clear editDetail dn" id="editDetailForm">
                         <input type="text" placeholder="请输入机构简称" maxlength="15" value="<?php echo $company['u_name'];?>" name="companyShortName" id="companyShortName">
@@ -225,7 +225,7 @@
                         </tr>
                         <tr>
                             <td>规模</td>
-                            <td>150-500人</td>
+                            <td><?php echo $company['scale_size'];?></td>
                         </tr>
                         <tr>
                             <td>主页</td>
@@ -433,11 +433,11 @@
                                     <img width="120" height="120" alt="孙泰英" src="./images/leader_default.png">
                                 </div>
                                 <div class="m_name">
-                                    孙泰英
+                                    <?php echo $company['c_linkman'];?>
                                     <a target="_blank" class="weibo" href="http://weimob.weibo.com"></a>
                                 </div>
                                 <div class="m_position">ceo</div>
-                                <div class="m_intro">发放的发达范德萨范德萨范德萨发的复大发大水发生的</div>
+                                <div class="m_intro"></div>
                             </div>
 
                         </div><!-- end .member_wrap -->
