@@ -107,7 +107,7 @@
                                         <span>更换产品图片<br>380*220px 小于5M</span>
                                     </div>
 
-                                    <input type="file" title="支持jpg、jpeg、gif、png格式，文件小于5M" onchange="product_check(this,'http://www.lagou.com/c/upload.json','productNo','productShow','type','productInfos');" name="myfiles" id="myfiles0">
+                                    <input type="file" title="支持jpg、jpeg、gif、png格式，文件小于5M" onchange="product_check(this,'?r=school/imgproduct','productNo','productShow','type','productInfos');" name="myfiles" id="myfiles0">
                                     <input type="hidden" value="3" name="type" class="type">
                                     <input type="hidden" value="images/product_default.png" name="productPicUrl" class="productInfos">
                                 </div>
@@ -115,7 +115,7 @@
                                 <div class="cp_intro">
                                     <input type="text" placeholder="请输入产品名称" value="发大发" name="product">
                                     <input type="text" placeholder="请输入产品网址" value="http://www.weimob.com" name="productUrl">
-                                    <textarea placeholder="请简短描述该产品定位、产品特色、用户群体等" maxlength="500" value="发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf" class="s_textarea" name="productProfile">发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf</textarea>
+                                    <textarea placeholder="请简短描述该产品定位、产品特色、用户群体等" maxlength="500" value="发达发生的fa" class="s_textarea" name="productProfile">发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf</textarea>
                                     <div class="word_count fr">你还可以输入 <span>500</span> 字</div>
                                     <div class="clear"></div>
                                     <input type="submit" value="保存" class="btn_small">
@@ -221,16 +221,16 @@
                         </tr>
                         <tr>
                             <td>领域</td><!-- 支持多选 -->
-                            <td title="移动互联网">移动互联网</td>
+                            <td title="<?php echo $school['l_name']?>"><?php echo $school['l_name']?></td>
                         </tr>
                         <tr>
                             <td>规模</td>
-                            <td>150-500人</td>
+                            <td><?php echo $school['scale_size']?></td>
                         </tr>
                         <tr>
                             <td>主页</td>
                             <td>
-                                <a rel="nofollow" title="http://www.weimob.com" target="_blank" href="http://www.weimob.com">http://www.weim...</a>
+                                <a rel="nofollow" title="<?php echo $school['s_website']?>" target="_blank" href="<?php echo $school['s_website']?>"><?php echo $school['s_website']?></a>
                             </td>
                         </tr>
                         </tbody></table>
@@ -242,34 +242,41 @@
                             <tbody><tr>
                                 <td>地点</td>
                                 <td>
-                                    <input type="text" placeholder="请输入地点" value="上海" name="city" id="city">
+                                    <input type="text" placeholder="请输入地点" value="<?php echo $school['city_id']?>" name="city" id="city">
                                 </td>
                             </tr>
                             <tr>
                                 <td>领域</td><!-- 支持多选 -->
                                 <td>
-                                    <input type="hidden" value="移动互联网" id="industryField" name="industryField">
-                                    <input type="button" style="background:none;cursor:default;border:none !important;" disable="disable" value="移动互联网" id="select_ind" class="select_tags">
-                                    <!-- <div id="box_ind" class="selectBox dn">
+                                    <input type="hidden" value="<?php echo $school['l_name']?>" id="industryField" name="industryField">
+                                    <input type="button" style="background:none;cursor:default;border:none !important;" disable="disable" value="<?php echo $school['l_name']?>" id="select_ind" class="select_tags">
+                                     <div id="box_ind"  class="selectBox dn">
                                         <ul class="reset">
-                                                                                                                                                        <li class="current">移动互联网</li>
-                                                                                                                                            </ul>
-                                    </div>	 -->
+                                            <?php foreach ($industry as $key => $value) {
+                                                echo "<li class=''>".$value['l_name']."</li>";
+                                            }?>
+                                            
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>规模</td>
                                 <td>
-                                    <input type="hidden" value="150-500人" id="companySize" name="companySize">
-                                    <input type="button" value="150-500人" id="select_sca" class="select_tags">
+                                    <input type="hidden" value="<?php echo $school['scale_size']?>" id="companySize" name="companySize">
+                                    <input type="button" value="<?php echo $school['scale_size']?>" id="select_sca" class="select_tags">
                                     <div class="selectBox dn" id="box_sca" style="display: none;">
                                         <ul class="reset">
-                                            <li>少于15人</li>
-                                            <li>15-50人</li>
-                                            <li>50-150人</li>
-                                            <li class="current">150-500人</li>
-                                            <li>500-2000人</li>
-                                            <li>2000人以上</li>
+                                            <?php foreach ($scale as $key => $value) {
+                                                if($school['scale_id']==$value['scale_id'])
+                                                {
+                                                    echo "<li class='current'>".$value['scale_size']."</li>";
+                                                }else
+                                                {
+                                                    echo "<li class=''>".$value['scale_size']."</li>";
+                                                }
+                                                
+                                            }?>
                                         </ul>
                                     </div>
                                 </td>
@@ -277,14 +284,14 @@
                             <tr>
                                 <td>主页</td>
                                 <td>
-                                    <input type="text" placeholder="请输入网址" value="http://www.weimob.com" name="companyUrl" id="companyUrl">
+                                    <input type="text" placeholder="请输入网址" value="<?php echo $school['s_website']?>" name="companyUrl" id="companyUrl">
                                 </td>
                             </tr>
                             </tbody></table>
-                        <input type="hidden" id="comCity" value="上海">
-                        <input type="hidden" id="comInd" value="移动互联网">
-                        <input type="hidden" id="comSize" value="150-500人">
-                        <input type="hidden" id="comUrl" value="http://www.zmtpost.com">
+                        <input type="hidden" id="comCity" value="<?php echo $school['city_id']?>">
+                        <input type="hidden" id="comInd" value="">
+                        <input type="hidden" id="comSize" value="<?php echo $school['scale_size']?>">
+                        <input type="hidden" id="comUrl" value="<?php echo $school['s_website'];?>">
                         <input type="submit" value="保存" id="submitFeatures" class="btn_small">
                         <a id="cancelFeatures" class="btn_cancel_s" href="javascript:void(0)">取消</a>
                         <div class="clear"></div>
@@ -292,112 +299,27 @@
                 </div>
             </div><!-- end #Tags -->
 
-            <dl class="c_section c_stages">
-                <dt>
-                <h2><em></em>融资阶段</h2>
-                <a title="编辑融资阶段" class="c_edit" href="javascript:void(0)"></a>
-                </dt>
-                <dd>
-                    <ul class="reset stageshow">
-                        <li>目前阶段：<span class="c5">天使轮</span></li>
-                    </ul>
-                    <form class="dn" id="stageform">
-                        <div class="stageSelect">
-                            <label>目前阶段</label>
-                            <input type="hidden" value="天使轮" id="financeStage" name="financeStage">
-                            <input type="button" value="天使轮" id="select_fin" class="select_tags_short fl">
-                            <div class="selectBoxShort dn" id="box_fin" style="display: none;">
-                                <ul class="reset">
-
-                                    <li>未融资</li>
-
-
-                                    <li class="current">天使轮</li>
-
-
-                                    <li>A轮</li>
-
-
-                                    <li>B轮</li>
-
-
-                                    <li>C轮</li>
-
-
-                                    <li>D轮及以上</li>
-
-
-                                    <li>上市机构</li>
-
-                                </ul>
-                            </div>
-                        </div>
-                        <ul id="stagesList" class="reset">
-                            <li>
-                                <label>融资阶段</label>
-                                <input type="hidden" class="select_invest_hidden" name="select_invest_hidden">
-                                <input type="button" value="融资阶段" class="select_tags_short select_invest">
-                                <div class="selectBoxShort dn" style="display: none;">
-                                    <ul class="reset">
-                                        <li>天使轮</li>
-                                        <li>A轮</li>
-                                        <li>B轮</li>
-                                        <li>C轮</li>
-                                        <li>D轮及以上</li>
-                                        <li>上市机构</li>
-                                    </ul>
-                                </div>
-                                <label>投资机构</label>
-                                <input type="text" placeholder="如真格基金" name="stageorg" value="">
-                            </li>
-                        </ul>
-                        <input type="submit" value="保存" class="btn_small">
-                        <a id="cancelStages" class="btn_cancel_s" href="javascript:void(0)">取消</a>
-                        <div class="clear"></div>
-
-                        <div class="dn" id="cloneInvest">
-                            <label>融资阶段</label>
-                            <input type="hidden" class="select_invest_hidden" name="select_invest_hidden">
-                            <input type="button" value="发展阶段" class="select_tags_short select_invest">
-                            <div class="selectBoxShort dn" style="display: none;">
-                                <ul class="reset">
-                                    <li>天使轮</li>
-                                    <li>A轮</li>
-                                    <li>B轮</li>
-                                    <li>C轮</li>
-                                    <li>D轮及以上</li>
-                                    <li>上市机构</li>
-                                </ul>
-                            </div>
-                            <label>投资机构</label>
-                            <input type="text" placeholder="如真格基金" name="stageorg">
-                        </div>
-                    </form>
-                </dd>
-            </dl><!-- end .c_stages -->
+            <!-- end .c_stages -->
 
 
             <div id="Member">
                 <!--有创始团队-->
                 <dl class="c_section c_member">
                     <dt>
-                    <h2><em></em>创始团队</h2>
-                    <a title="添加创始人" class="c_add" href="javascript:void(0)"></a>
+                    <h2><em></em>联系人</h2>
+                    <a style="display:none" title="添加创始人" class="c_add" href="javascript:void(0)"></a>
                     </dt>
                     <dd>
-
                         <div class="member_wrap">
-
                             <!-- 无创始人 -->
                             <div class="member_info addnew_right dn">
                                 展示机构的领导班子，<br>提升诱人指数！<br>
-                                <a class="member_edit" href="javascript:void(0)">+添加成员</a>
+                                <a  class="member_edit" href="javascript:void(0)"></a>
                             </div>
-
                             <!-- 编辑创始人 -->
                             <div class="member_info newMember dn">
                                 <form class="memberForm">
-                                    <div class="new_portrait">
+                                    <div style="display:none" class="new_portrait">
                                         <div class="portrait_upload dn portraitNo">
                                             <span>上传创始人头像</span>
                                         </div>
@@ -413,31 +335,31 @@
                                             大小：小于5M
                                         </em>
                                     </div>
-                                    <input type="text" placeholder="请输入创始人姓名" value="孙泰英" name="name">
-                                    <input type="text" placeholder="请输入创始人当前职位" value="ceo" name="position">
-                                    <input type="text" placeholder="请输入创始人新浪微博地址" value="http://weimob.weibo.com" name="weibo">
-                                    <textarea placeholder="请输入创始人个人简介" maxlength="500" class="s_textarea" name="remark">发放的发达范德萨范德萨范德萨发的复大发大水发生的</textarea>
-                                    <div class="word_count fr">你还可以输入 <span>500</span> 字</div>
+                                    <input type="text" placeholder="请输入联系人姓名" value="<?php echo $school['s_linkman'];?>" name="name">
+                                    <input type="text" placeholder="请输入联系方式" value="<?php echo $school['s_phone'];?>" name="position">
+                                    <input type="hidden" placeholder="请输入创始人新浪微博地址" value="<?php echo $school['s_phone']?>" name="weibo">
+                                    <textarea style="display:none" placeholder="请输入创始人个人简介" maxlength="500" class="s_textarea" name="remark">发放的发达范德萨范德萨范德萨发的复大发大水发生的</textarea>
+                                    <div  style="display:none" class="word_count fr">你还可以输入 <span>500</span> 字</div>
                                     <div class="clear"></div>
                                     <input type="submit" value="保存" class="btn_small">
-                                    <a class="btn_cancel_s member_delete" href="javascript:void(0)">删除</a>
+                                    <a style="display:none" class="btn_cancel_s member_delete" href="javascript:void(0)">删除</a>
                                     <input type="hidden" value="11493" class="leader_id">
                                 </form>
                             </div>
 
                             <!-- 显示创始人 -->
                             <div class="member_info">
-                                <a title="编辑创始人" class="c_edit member_edit" href="javascript:void(0)"></a>
+                                <a title="编辑联系人" class="c_edit member_edit" href="javascript:void(0)"></a>
                                 <div class="m_portrait">
                                     <div></div>
-                                    <img width="120" height="120" alt="孙泰英" src="./images/leader_default.png">
+                                    <img  width="120" height="120" alt="<?php echo $school['s_linkman']?>" src="./school/<?php echo $school['s_logo'];?>">
                                 </div>
                                 <div class="m_name">
-                                    孙泰英
-                                    <a target="_blank" class="weibo" href="http://weimob.weibo.com"></a>
+                                    <?php echo $school['s_linkman'];?>
+                                    <a style="display:none" target="_blank" class="weibo" href="http://weimob.weibo.com"></a>
                                 </div>
-                                <div class="m_position">ceo</div>
-                                <div class="m_intro">发放的发达范德萨范德萨范德萨发的复大发大水发生的</div>
+                                <div class="m_position"><?php echo $school['s_phone'];?></div>
+                                <div style="display:none" class="m_intro"></div>
                             </div>
 
                         </div><!-- end .member_wrap -->
@@ -447,7 +369,7 @@
 
 
             <!--机构深度报道-->
-            <div id="Reported">
+            <div style="display:none" id="Reported">
                 <!--无报道-->
                 <dl class="c_section c_reported">
                     <dt>

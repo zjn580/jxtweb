@@ -5,19 +5,19 @@
                 <dl class="company_center_aside">
 		<dt>我收到的简历</dt>
 		<dd>
-		<a href="?r=position/position">待处理简历</a> 
+		<a href="?r=position/wait">待处理简历</a> 
 			</dd>
 	<dd>
-		<a href="?r=resume/undeter">待定简历</a>
+		<a href="?r=position/undeter">待定简历</a>
 	</dd>
 	<dd>
-		<a href="#">已通知面试简历</a>
+		<a href="?r=position/interview">已通知面试简历</a>
 	</dd>
 	<dd>
-		<a href="?r=resume/inapp">不合适简历</a>
+		<a href="?r=position/inapp">不合适简历</a>
 	</dd>
 	<dd class="btm">
-		<a href="?r=resume/auto">自动过滤简历</a> 
+		<a href="?r=position/auto">自动过滤简历</a> 
 			</dd>
 </dl>
 <dl class="company_center_aside">

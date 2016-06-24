@@ -52,6 +52,7 @@ class PositionController extends Controller
         $data['is_name'] = !empty($_POST['is_name'])?$_POST['is_name']:0;
         $data['is_phone'] = !empty($_POST['is_phone'])?$_POST['is_phone']:0;
         $data['p_nums'] = !empty($_POST['p_nums'])?$_POST['p_nums']:0;
+        $data['p_temptation'] = !empty($_POST['p_temptation'])?$_POST['p_temptation']:'';
         $data['p_time'] = time();
         $position = new Position;
         foreach ($data as $key => $value) {
@@ -71,6 +72,8 @@ class PositionController extends Controller
         return $this->render('index06');
     }
 
+
+    //预览职位内容
     public function actionPreview(){
         $request = Yii::$app->request;
         $arr['data'] = $request->post();
@@ -79,38 +82,158 @@ class PositionController extends Controller
                 $arr['data']['salary_id'] = Salary::find()->select('sa_salary')->where(['sa_id'=>$value])->asArray()->one()['sa_salary'];
             }
         }
+        //]]print_r($arr['data']);
         return $this->render('toudi',$arr);
     }
-    //我收藏的职位
-     public function actionCollect()
-    {	
-    	return $this->render('collections');
+    //待处理简历
+    public function actionWait()
+    {   
+        $arr = $this->showResume(0);
+        //print_r($arr);
+        return $this->render('waitresume',['arr'=>$arr]);
     }
-    //我的订阅
-      public function actionSubscribe()
-    {	
-    	// echo 111;die;
-    	return $this->render('subscribe');
+     //待定简历
+    public function actionUndeter()
+    {   
+        $arr = $this->showResume(1);
+        return $this->render('canInterviewResumes',['arr'=>$arr]);
     }
+    //已通知面试
+    public function actionInterview()
+    {   
+        $arr = $this->showResume(2);
+        return $this->render('interview',['arr'=>$arr]);
+    }
+    //不合适简历
+    public function actionInapp()
+    {   
+        $arr = $this->showResume(3);
+        return $this->render('haveRefuseResumes',['arr'=>$arr]);
+    }
+    //自动过滤简历
+    public function actionAuto()
+    {   
+        $arr = $this->showResume(4);
+        return $this->render('autoFilterResumes',['arr'=>$arr]);
+    }
+
+    /**
+     * 搜索简历
+     * @return [type] [description]
+     */
+    public function actionSearch()
+    {   
+        $this->layout = false;
+        $request = Yii::$app->request;
+        $status = $request->post('status');
+        $resumeStatus = $request->post('resumeStatus');
+        $workExp = $request->post('workExp');
+        $eduExp = $request->post('eduExp');
+        $arr= $this->showResume($status,$resumeStatus,$workExp,$eduExp);
+        return $this->render('ajaxshow',['arr'=>$arr,'status'=>$status]);
+
+    }
+
+    /**
+     * ajax删除简历
+     */
+    public function actionSingle(){
+
+         $request = Yii::$app->request;
+         $po_id = $request->post('po_id');
+         $connection = \Yii::$app->db;
+         $query = $connection->createCommand()->delete('jx_po_pe', "po_id=$po_id")->execute();
+         if($query){
+            echo 1;
+         }else{
+            echo 0;
+         }
+    }
+
+    /**
+     * ajax批量删除
+     * @return [type] [description]
+     */
+    public function actionBatch(){
+         $request = Yii::$app->request;
+         $po_id = $request->post('po_id');
+         $connection = \Yii::$app->db;
+         $query = $connection->createCommand()->delete('jx_po_pe', "po_id in ($po_id)")->execute();
+         if($query){
+            echo 1;
+         }else{
+            echo 0;
+         }
+    }
+
+
+    /**
+     * 不合适简历
+     * @return [type] [description]
+     */
+    public function actionNoresumes(){
+          $request = Yii::$app->request;
+          $po_id = $request->post('po_id');
+          $content = $request->post('content');
+          //发送邮件
+          
+
+          //修改为不合适简历
+          $connection = \Yii::$app->db;
+          $query = $connection->createCommand()->update('jx_po_pe',['td_stasus'=>2],"po_id = $po_id")->execute();
+          if($query){
+            echo 1;
+          }else{
+            echo 0;
+          }
+    }
+
+
+    /**
+     * 通知面试
+     * @return [type] [description]
+     */
+    public function actionCallback(){
+        $request = Yii::$app->request;
+        $email = $request->post('email');
+        $interAdd = $request->post('interAdd');
+        $interTime = $request->post('interTime');
+        $linkMan = $request->post('linkMan');
+        $linkPhone = $request->post('linkPhone');
+        $name = $request->post('name');
+        $subject = $request->post('subject');
+        $po_id = $request->post('po_id');
+        //发送邮件
+        
+
+        //修改为通知过简历
+        $connection = \Yii::$app->db;
+        $query = $connection->createCommand()->update('jx_po_pe',['td_stasus'=>3],"po_id = $po_id")->execute();
+        if($query){
+            echo 1;
+        }else{ 
+            echo 0;
+        }
+
+    }
+
     //我发布的职位
-      public function actionPosit()
+    public function actionPosit()
     {   
         // echo 111;die;
         return $this->render('positions');
     }
-
-    //我投递的职位
-    public function actionDelivery()
-    {
-        return $this->render('delivery');
-    }
-
-    //推荐职位
+     //推荐职位
      public function actionRecommend()
     {
         return $this->render('mList');
     }
     
+
+
+
+
+
      //招聘职位的介绍
      public function actionIntroduce()
     {
@@ -128,4 +251,66 @@ class PositionController extends Controller
         return $this->render('jobdetail1');
     }
 
+    private function  showResume($status,$type="",$ex_id="",$e_id=""){
+       $c_id = 1;
+
+        $where['td_stasus'] = $status;
+        if(!empty($type)&&($type!=(-1))){
+            $where['type'] = $type;
+        }
+        $where['jx_position.c_id'] = $c_id;
+        if(!empty($ex_id)&&($ex_id!=(-1))){
+            $where['jx_experience.ex_id'] = $ex_id;
+        }
+       $query = (new \yii\db\Query())
+       ->select(['
+                   (jx_person.pe_id),
+                   (jx_position.p_id),
+                   (jx_po_pe.po_id),
+                   (jx_person.email),
+                   (jx_user.u_name),
+                   (jx_person.pe_status),
+                   (jx_edu.e_name),
+                   (jx_po_pe.td_time),
+                   (jx_position.p_name),
+                   (jx_edu.e_name),
+                   (jx_experience.ex_experience),
+                   (jx_person.pe_phone),
+                   (jx_person.pe_img),
+                   (jx_person.pe_intro),
+                   (jx_person.pe_sex),
+                   (jx_person.pe_born),
+                   (jx_person.pe_marry),
+                   (jx_status.status_name),
+                   (jx_industry.l_name),
+                   (jx_person.pe_position),
+                   (jx_person.pe_work_nature),
+                   (jx_person.pe_salary),
+                   (jx_edu_history.eh_school),
+                   (jx_work_history.w_company),
+                   (jx_work_history.w_position),
+                   (c.city_name) as pass_city,
+                   (b.city_name) as now_city,
+                   (a.city_name) as future_city
+                   '])
+        ->from('jx_po_pe')
+        ->innerJoin('jx_person', 'jx_person.pe_id = jx_po_pe.pe_id')
+        ->innerJoin('jx_position', 'jx_position.p_id = jx_po_pe.p_id')
+        ->leftJoin('jx_edu', 'jx_edu.e_id = jx_person.e_id')
+        ->leftJoin('jx_experience', 'jx_experience.ex_id = jx_person.ex_id')
+        ->leftJoin('jx_status', 'jx_status.status_id = jx_person.status_id')
+        ->leftJoin('jx_industry', 'jx_industry.l_id = jx_person.l_id')
+        ->leftJoin('jx_user', 'jx_user.u_id = jx_person.u_id')
+        ->leftJoin('jx_edu_history', 'jx_edu_history.pe_id = jx_person.pe_id')
+        ->leftJoin('jx_work_history', 'jx_work_history.pe_id = jx_person.pe_id')
+        ->leftJoin('jx_city as c', 'c.city_id = jx_person.pass_city_id')
+        ->leftJoin('jx_city as b', 'b.city_id = jx_person.now_city_id')
+        ->leftJoin('jx_city as a', 'a.city_id = jx_person.future_city_id')
+        ->where($where);
+        if(!empty($e_id&&$e_id!=(-1))){
+            $query->andWhere(['>=', 'jx_edu.e_id', $e_id]);
+        }
+        $arr = $query->all();
+        return $arr; 
+    }
 }
