@@ -33,7 +33,7 @@
                             echo '实习';
                             break;
                         }?></span><br>
-                      	  职位诱惑 : 上市公司，快速发展空间，产品的话语权
+                      	  职位诱惑 : <?=$data['p_temptation']?>
                     </dd>
                     <dd class="job_bt">
                         <h3 class="description">职位描述</h3>
@@ -85,12 +85,10 @@
 							</div>
 						</div>
                     </div>
-                                        <dd>
-                                        	                    				                   		<!-- 用户是否激活 0-否；1-是 -->
-		                				                   			
-	                   					                        									                							                   		<a title="投个简历" class="btn fr btn_apply inline cboxElement" href="#setResumeApply">投个简历</a>
-						              								                	                        				                        	
-		                        	                        	                   		                	                </dd>
+                        <dd>
+                           <!-- 用户是否激活 0-否；1-是 -->
+                           <a title="投个简历" class="btn fr btn_apply inline cboxElement" href="#setResumeApply">投个简历</a>							                	                        				                        	
+		                    </dd>
                 </dl>
                                 <div id="weibolist"></div>
             </div>	
@@ -98,7 +96,7 @@
                 <dl class="job_company">
                     <dt>
                     	<a target="_blank" href="h/c/5004.html">
-                            <img width="80" height="80" alt="广州百田信息科技有限公司" src="style/images/ff8080814356e881014357741e5910f1.jpg" class="b2">
+                            <img width="80" height="80" alt="广州百田信息科技有限公司" src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3021043112,4133220584&fm=96" class="b2">
                             <div>
                                 <h2 class="fl">
 	                                  		广州百田   	
@@ -155,7 +153,7 @@
                         </div> -->
                        	
              	          <h4>工作地址</h4>
-                       	<div>广州市天河区科韵路信息港建中路36号裕桥商务大厦</div>
+                       	<div><?=?></div>
                        	<div id="smallmap" style="overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"><div style="overflow: visible; position: absolute; z-index: 0; left: 0px; top: 0px; cursor: grab;"><div class="BMap_mask" style="position: absolute; left: 0px; top: 0px; z-index: 9; overflow: hidden; width: 280px; height: 200px;"></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 200;"><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 800;"></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 700;"><span style="position: absolute; padding: 0px; margin: 0px; border: 0px none; -moz-user-select: none; cursor: pointer; background: url(style/images/img/blank.gifquot) repeat scroll 0% 0% transparent; width: 19px; height: 25px; left: 130px; top: 75px; z-index: -4626192;" unselectable="on" class="BMap_Marker BMap_noprint" title=""></span></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 600;"></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 500;"><label class="BMapLabel" unselectable="on" style="position: absolute; -moz-user-select: none; display: none; cursor: inherit; background-color: rgb(190, 190, 190); border: 1px solid rgb(190, 190, 190); padding: 1px; white-space: nowrap; font: 12px arial,simsun,sans-serif; z-index: -20000; color: rgb(190, 190, 190);">shadow</label></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 400;"><span style="position: absolute; padding: 0px; margin: 0px; border: 0px none; width: 0px; height: 0px; -moz-user-select: none; left: 130px; top: 75px; z-index: -4626192;" unselectable="on" class="BMap_Marker"><div style="position: absolute; margin: 0px; padding: 0px; width: 19px; height: 25px; overflow: hidden;"><img style="border:none;margin-left:0px; margin-top:0px; " src="style/images/marker_red_sprite.png"></div></span></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 300;"><span style="position: absolute; padding: 0px; margin: 0px; border: 0px none; width: 20px; height: 11px; -moz-user-select: none; left: 134px; top: 89px;" unselectable="on"><div style="position: absolute; margin: 0px; padding: 0px; width: 20px; height: 11px; overflow: hidden;"><img style="border:none;margin-left:-19px; margin-top:-13px; " src="style/images/marker_red_sprite.png"></div></span></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 201;"></div><div style="position: absolute; height: 0px; width: 0px; left: 0px; top: 0px; z-index: 200;"></div></div><div style="position: absolute; overflow: visible; top: 0px; left: 0px; z-index: 1;"><div style="position: absolute; overflow: visible; z-index: -100; left: 140px; top: 100px; display: none;"></div></div><div style="position: absolute; overflow: visible; top: 0px; left: 0px; z-index: 2; display: block;"><div style="position: absolute; overflow: visible; top: 100px; left: 140px; z-index: 0; display: block;"><canvas style="position: absolute; width: 256px; height: 256px; left: -106px; top: -188px; background: none repeat scroll 0% 0% rgb(243, 241, 236);" width="256" height="256" id="_1_bg_12325_2569_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -362px; top: -188px; background: none repeat scroll 0% 0% rgb(243, 241, 236);" width="256" height="256" id="_1_bg_12324_2569_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -106px; top: 68px; background: none repeat scroll 0% 0% rgb(243, 241, 236);" width="256" height="256" id="_1_bg_12325_2568_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -362px; top: 68px; background: none repeat scroll 0% 0% rgb(243, 241, 236);" width="256" height="256" id="_1_bg_12324_2568_16"></canvas></div><div style="position: absolute; overflow: visible; top: 100px; left: 140px; z-index: 10; display: block;"><canvas style="position: absolute; width: 256px; height: 256px; left: -106px; top: -188px;" width="256" height="256" id="_1_poi_12325_2569_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -362px; top: -188px;" width="256" height="256" id="_1_poi_12324_2569_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -106px; top: 68px;" width="256" height="256" id="_1_poi_12325_2568_16"></canvas><canvas style="position: absolute; width: 256px; height: 256px; left: -362px; top: 68px;" width="256" height="256" id="_1_poi_12324_2568_16"></canvas></div></div><div style="position: absolute; overflow: visible; top: 0px; left: 0px; z-index: 3;"></div></div><div style="position: absolute; z-index: 1201; top: 10px; right: 10px; width: 17px; height: 16px; background: url(style/images/img/st-close.pngquot) no-repeat scroll 0% 0% transparent; cursor: pointer; display: none;" title="退出全景"></div><div style="position:absolute;z-index:0;top:0px;left:0px;overflow:hidden;visibility:hidden;cursor:-moz-grab" id="zoomer"><div style="top:0;left:0;" class="BMap_zoomer"></div><div style="top:0;right:0;" class="BMap_zoomer"></div><div style="bottom:0;left:0;" class="BMap_zoomer"></div><div style="bottom:0;right:0;" class="BMap_zoomer"></div></div><div style="height: 32px; position: absolute; z-index: 30; -moz-user-select: none; bottom: 0px; right: auto; top: auto; left: 1px; display: none;" class=" anchorBL"><a title="到百度地图查看此区域" target="_blank" href="http://map.baidu.com/?sr=1" style="outline: medium none;"><img src="style/images/copyright_logo.png" style="border:none;width:77px;height:32px"></a></div><div unselectable="on" class=" BMap_cpyCtrl BMap_noprint anchorBL" style="cursor: default; white-space: nowrap; -moz-user-select: none; color: black; background: none repeat scroll 0% 0% transparent; font: 11px/15px arial,simsun,sans-serif; bottom: 2px; right: auto; top: auto; left: 4px; position: absolute; z-index: 10;"><span _cid="1" style="display: inline;"><span style="font-size:11px">&copy; 2014 Baidu&nbsp;- Data &copy; <a style="display:inline;" href="http://www.navinfo.com/" target="_blank">NavInfo</a> &amp; <a style="display:inline;" href="http://www.cennavi.com.cn/" target="_blank">CenNavi</a> &amp; <a style="display:inline;" href="http://www.365ditu.com/" target="_blank">道道通</a></span></span></div></div>
                        	<a id="mapPreview" href="javascript:;">查看完整地图</a>
                   </dd>
@@ -163,13 +161,13 @@
                 				<div id="myRecommend_jd">
             		<h2>可能适合你的职位 <i>匹配度</i></h2>
             		<ul class="reset">
-            			            			<li>
-            				<a target="_blank" href="h/jobs/148004.html">
-								<span class="f14">产品经理</span>
-								<span class="c7">短讯神州</span>
-								<em>92%</em>
-							</a>
-            			</li>
+            		<li>
+              		<a target="_blank" href="h/jobs/148004.html">
+    								<span class="f14">产品经理</span>
+    								<span class="c7">短讯神州</span>
+    								<em>92%</em>
+  							  </a>
+            	  </li>
             			            			<li>
             				<a target="_blank" href="h/jobs/46793.html">
 								<span class="f14">产品经理</span>
