@@ -45,15 +45,17 @@ class SchoolController extends Controller
         $s_id = $_GET['id'];
         $connection = \Yii::$app->db;
 
+        $majors = $this->FindMajor($s_id);
+
         //获取sessionid 专业名称
-        //$command = $connection->createCommand('SELECT m_name FROM jx_school INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id INNER JOIN jx_major ON jx_sc_ma.m_id=jx_major.m_id WHERE u_id=25927');
+        //$command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id INNER JOIN jx_major ON jx_sc_ma.m_id=jx_major.m_id WHERE u_id=25927');
         //$majors = $command->queryOne();
-        // print_r($majors);die;
+        //print_r($majors);die;
 
         $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id inner join jx_industry on jx_industry.l_id=jx_school.l_id WHERE s_id='.$s_id);
         $posts = $command->queryOne();
         // print_r($posts);die;
-        return $this->render('myhome',['industry'=>$industry,'scale'=>$scale,'school'=>$posts]);
+        return $this->render('myhome',['industry'=>$industry,'majors'=>$majors,'scale'=>$scale,'school'=>$posts]);
     }
 
     //第一个修改的form
@@ -155,7 +157,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * [actionSavecity 城市 规模 网址]
+     * [actionSavecity 城市 规模 网址 未完成]
      * @return [type] [description]
      */
     public function actionSavecity()
@@ -184,8 +186,6 @@ class SchoolController extends Controller
         }
     }
 
-
-
      //申请认证(上传)
     public function actionApply()
     {   
@@ -202,6 +202,56 @@ class SchoolController extends Controller
     public function actionAdd_member()
     {
     	return $this->render('add_member');
+    }
+
+    //添加专业信息
+    public function actionSavemajor(){
+        //print_r($_FILES);die;
+        if(empty($_POST['productInfos'][0])){
+
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/add_member';</script>";die;
+        }
+        //接值
+        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+
+        //保存图片信息
+        $schoolId = $_POST['companyId'];
+        $model = School::findOne($s_id['s_id']);
+        //文件上传
+        $uploads_dir = './school';
+        $tmp_name = $_FILES["file"]["tmp_name"];
+        $name = 'majors'.rand(10000,99999).$_FILES["file"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        //echo $name ;die;
+        
+        $model = new  Major;
+        $model->m_logo = $name;
+        $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
+        $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
+        $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
+        $majors = $model->save();
+
+        $m_id = Major::findBySql("select m_id from jx_major WHERE m_name = '".$_POST['productInfos'][0]."'")->asArray()->one();
+
+        $modelm = new  Schoolmajor();
+        $modelm->m_id = $m_id['m_id'];
+        $modelm->s_id = $s_id['s_id'];
+        $school_major = $modelm->insert();
+        if($majors&&$school_major){
+            //echo 'success';die;
+
+            $this->redirect('?r=school/majorsuccess');
+        }else{
+//            echo  'fail';die;
+            echo "<script> alert('添加失败,请重新填写数据'),window.location.href='?r=school/info04';</script>";
+        }
+    }
+
+    public function actionSavemajorsuccess()
+    {
+        $this->render('successmajor');
     }
 
     //填写机构基本 1
@@ -319,9 +369,7 @@ class SchoolController extends Controller
     }
 
     public function actionInsert_major(){
-
 //        print_r($_POST);die;
-
         if(empty($_POST['productInfos'][0])){
 
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info04';</script>";die;
@@ -423,7 +471,11 @@ class SchoolController extends Controller
             $major_id .= $id['m_id'].',';
         }
         $major_id = substr($major_id,0,-1);
-        return $major_id;
+
+        $comman = $connection->createCommand("SELECT * FROM jx_major WHERE `m_id` in ($major_id)" );
+        $majors = $comman->queryAll();
+
+        return $majors;
     }
     /*
      * 查询学校tags
