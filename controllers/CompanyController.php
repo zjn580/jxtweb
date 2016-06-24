@@ -23,10 +23,14 @@ class CompanyController extends Controller
     //培训机构
     public function actionCompany()
     {   
-        $data = (new \yii\db\Query())->select('*')->from('jx_company')->where(['c_status' => '1'])->all();
-        //print_r($data);die;
-        return $this->render('index', ['message'=>$data]);
-        return $this->render('index');
+        $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
+        $natures = Nature::find()->asArray()->all();
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id');
+        $posts = $command->queryAll();
+//        print_r($posts);die;
+        return $this->render('index',['industry'=>$industry,'natures'=>$natures,'companys'=>$posts]);
+    
     }
     
     //我的机构主页
@@ -36,8 +40,27 @@ class CompanyController extends Controller
         $session = \YII::$app->session;
         $session->open();
         $c_id = $session->get('company');
-        echo $c_id;die;
-        return $this->render('myhome');
+        //echo $c_id;die;
+        
+        //根据id查询出公司的详细信息
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id  WHERE c_id='$c_id'");
+        $posts = $command->queryOne();
+        //print_r($posts);die;
+        return $this->render('myhome',['company'=>$posts]);
+    }
+
+    //公司详情页
+    public function actionDetail(){
+        //接值
+        $c_id = $_GET['id'];
+        //echo $c_id;die;
+
+        //根据id查询出公司的详细信息
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id  WHERE c_id='$c_id'");
+        $posts = $command->queryOne();
+        return $this->render('detail',['company'=>$posts]);
     }
 
      //申请认证(上传)
@@ -77,16 +100,21 @@ class CompanyController extends Controller
     //信息添加
     public function actionDo_basic_insert(){
 
-        $user = new User();
+        //$user = new User();
+        $session = \YII::$app->session;
+        $session->open();
+        $companyId = $session->get('u_id');
+        //echo $c_id['c_id'];die;
+        $user = User::findOne($companyId);
         $user->u_name = !empty($_POST['name'])?$_POST['name']:'';
-        $user->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
+        
         //print_r($user);die;
         $useradd = $user->save();
         //echo $user->u_name;die;
         
         $model = new Company();
 
-        $model->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
+        $model->u_id = $companyId;
         $model->n_id = !empty($_POST['s_radio_hidden'])?$_POST['s_radio_hidden']:'';
         $model->l_id = !empty($_POST['select_industry_hidden'])?$_POST['select_industry_hidden']:'';
         $model->scale_id = !empty($_POST['select_scale_hidden'])?$_POST['select_scale_hidden']:'';
@@ -97,8 +125,7 @@ class CompanyController extends Controller
 
 
         
-        $username = $user->u_name;
-        $u_id = $user->u_id;
+        $u_id = $companyId;
 
         //将数据存入session
         $connection = \Yii::$app->db;
@@ -133,10 +160,12 @@ class CompanyController extends Controller
         if(empty($_POST['labels'])){
             echo '';die;
         }
-        //接值
-        // print_r($_POST);die;
-        $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-        //echo $companyId;die;
+        //公司id
+        $session = \YII::$app->session;
+        $session->open();
+        $companyId = $session->get('u_id');
+
+
 
         $c_id = Company::findBySql("select c_id from jx_company WHERE u_id=".$companyId)->asArray()->one();
         //echo $c_id['c_id'];die;
@@ -168,8 +197,10 @@ class CompanyController extends Controller
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info03';</script>";die;
         }
 
-        //接值
-        $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+        //公司id
+        $session = \YII::$app->session;
+        $session->open();
+        $companyId = $session->get('u_id');
 
         $c_id = Company::findBySql("select c_id from jx_company WHERE u_id=".$companyId)->asArray()->one();
 
@@ -190,40 +221,40 @@ class CompanyController extends Controller
 
     }
 
-    //公司产品
-     public function actionInfo04()
-    {   
-        return $this->render('index02');
-    }
+//     //公司产品
+//      public function actionInfo04()
+//     {   
+//         return $this->render('index02');
+//     }
 
-    //公司产品
-    public function actionInsert_major(){
+//     //公司产品添加
+//     public function actionInsert_major(){
 
-//        print_r($_POST);die;
+// //        print_r($_POST);die;
 
-        if(empty($_POST['productInfos'][0])){
+//         if(empty($_POST['productInfos'][0])){
 
-            echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info04';</script>";die;
-        }
-        //接值
-        $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+//             echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info04';</script>";die;
+//         }
+//         //接值
+//         $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
 
-        $s_id = Company::findBySql("select c_id from jx_company WHERE c_id=".$companyId)->asArray()->one();
+//         $s_id = Company::findBySql("select c_id from jx_company WHERE c_id=".$companyId)->asArray()->one();
 
-        $model = new  Major;
-        $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
-        $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
-        $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
-        $majors = $model->save();
+//         $model = new  Major;
+//         $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
+//         $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
+//         $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
+//         $majors = $model->save();
 
-        if($majors){
-//            echo 'success';die;
-            $this->redirect('?r=company/info04');
-        }else{
-//            echo  'fail';die;
-            echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=company/info04';</script>";
-        }
-    }
+//         if($majors){
+// //            echo 'success';die;
+//             $this->redirect('?r=company/info04');
+//         }else{
+// //            echo  'fail';die;
+//             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=company/info04';</script>";
+//         }
+//     }
 
     //公司介绍 5
      public function actionInfo05()
@@ -239,9 +270,12 @@ class CompanyController extends Controller
 
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info05';</script>";die;
         }
-//        print_r($_POST);die;
-        //接值
-        $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
+
+        //公司id
+        $session = \YII::$app->session;
+        $session->open();
+        $companyId = $session->get('u_id');
+
 
         $c_id = Company::findBySql("select c_id from jx_company WHERE u_id=".$companyId)->asArray()->one();
 

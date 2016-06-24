@@ -1,4 +1,10 @@
-﻿<!--机构基本信息-->
+﻿<?php
+    $session = \YII::$app->session;
+    $session->open();
+    $u_id = $session->get('u_id');
+    //echo $u_status;die;
+?>
+<!--机构基本信息-->
 <div id="container">
 
     <div style="" id="stepTip">
@@ -86,7 +92,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" id="companyId" name="companyId" value="25927">
+                    <input type="hidden" id="companyId" name="companyId" value="<?php echo $u_id; ?>">
 
 
                     <input type="submit" value="保存，下一步" id="stepBtn" class="btn_big fr">
