@@ -40,18 +40,16 @@ class SchoolController extends Controller
     //我的机构主页
     public function actionMyhome()
     {
+        $session = \Yii::$app->session;
+        $session->open();
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
         $scale = Scale::findBySql('select * from jx_scale')->asArray()->all();
-        $s_id = $_GET['id'];
+        if (!empty($_GET['id'])) {
+            $s_id = $_GET['id'];
+        }
         $connection = \Yii::$app->db;
-
+        //获取专业
         $majors = $this->FindMajor($s_id);
-
-        //获取sessionid 专业名称
-        //$command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id INNER JOIN jx_major ON jx_sc_ma.m_id=jx_major.m_id WHERE u_id=25927');
-        //$majors = $command->queryOne();
-        //print_r($majors);die;
-
         $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id inner join jx_industry on jx_industry.l_id=jx_school.l_id WHERE s_id='.$s_id);
         $posts = $command->queryOne();
         // print_r($posts);die;
