@@ -31,7 +31,7 @@ class Major extends \yii\db\ActiveRecord
         return [
             [['m_nums', 's_id'], 'integer'],
             [['m_name'], 'string', 'max' => 30],
-            [['m_intro'], 'string', 'max' => 200]
+            [['m_intro','m_logo'], 'string', 'max' => 200]
         ];
     }
 
@@ -46,6 +46,7 @@ class Major extends \yii\db\ActiveRecord
             'm_nums' => 'M Nums',
             'm_intro' => 'M Intro',
             's_id' => 'S ID',
+            'm_logo' => 'M LOGO',
         ];
     }
 }
