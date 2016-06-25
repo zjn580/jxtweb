@@ -10,7 +10,7 @@
                 </dt>
                 <dd class="c_notice"> 
                 	<h4>恭喜你，专业信息已添加！</h4>
-                    <a class="greylink" href="?r=school/add_member">继续添加学员</a>
+                    <a class="greylink" href="?r=school/add_member">继续添加专业</a>
                     <a class="greylink" href="?r=school/myhome"> 进入我的机构主页</a>
                 </dd>
             </dl>

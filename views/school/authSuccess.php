@@ -16,7 +16,7 @@
 						</ul>
 					</div>
 					<div class="breakdotted"></div>
-                   	<a class="greenlink" href="?r=school/member">添加学员信息</a>
+                   	<a class="greenlink" href="?r=school/add_member">添加专业信息</a>
                     <a class="greenlink" href="?r=school/myhome"> 进入我的机构主页</a>
                 </dd>
             </dl>

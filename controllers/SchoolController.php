@@ -28,24 +28,27 @@ class SchoolController extends Controller
 	//培训机构
     public function actionSchool()
     {
+
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
         $natures = Nature::find()->asArray()->all();
         $connection = \Yii::$app->db;
         $command = $connection->createCommand('SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id  INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id');
         $posts = $command->queryAll();
-//        print_r($posts);die;
+        //print_r($posts);die;
         return $this->render('index',['industry'=>$industry,'natures'=>$natures,'schools'=>$posts]);
     }
 
     //我的机构主页
     public function actionMyhome()
     {
-        $session = \Yii::$app->session;
-        $session->open();
+        
+        //echo $this->getuid();die;
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
         $scale = Scale::findBySql('select * from jx_scale')->asArray()->all();
         if (!empty($_GET['id'])) {
             $s_id = $_GET['id'];
+        }else{
+            $s_id = $this->getschoolid();
         }
         $connection = \Yii::$app->db;
         //获取专业
@@ -60,17 +63,15 @@ class SchoolController extends Controller
     public function actionSavename()
     {
     	// print_r($_POST);die;
-    	$schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
+        $s_id = $this->getschoolid();
+    	$model = School::findOne($s_id);
         $model->s_intro = $_POST['companyFeatures'];
         $intro = $model->save();
-
-        //修改user中的u_name
-        $user = User::findOne($schoolId);
+        //修改user中的u_name 
+        $user = User::findOne($this->getuid());
         $user->u_name = $_POST['companyShortName'];
         $name = $user->update();
-
+        
         $arr=array();
         if ($intro&&$name) {
         	$arr['success'] = 1;
@@ -86,10 +87,8 @@ class SchoolController extends Controller
     //修改公司标签
     public function actionUpdatetag()
     {
-    	//print_r($_POST);die;
-    	$schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
+    	$s_id = $this->getschoolid();
+    	$model = School::findOne($s_id);
         $model->s_tags = $_POST['labels'];
         $tags = $model->save();
         $arr=array();
@@ -106,11 +105,8 @@ class SchoolController extends Controller
     //简介
     public function actionSaveprofile()
     {
-        //echo json_encode($_POST);die;
-        //print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
+        $s_id = $this->getschoolid();
+        $model = School::findOne($s_id);
         $model->s_intro = $_POST['companyProfile'];
         $tags = $model->save();
         $arr=array();
@@ -130,11 +126,8 @@ class SchoolController extends Controller
      */
     public function actionSaveleader()
     {
-        //echo json_encode($_POST);die;
-        //print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
+        $s_id = $this->getschoolid();
+        $model = School::findOne($s_id);
         $model->s_linkman = $_POST['name'];
         $model->s_phone = $_POST['position'];
         $tags = $model->save();
@@ -187,18 +180,34 @@ class SchoolController extends Controller
      //申请认证(上传)
     public function actionApply()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
+        
         return $this->render('auth');
     }
     
     //申请机构认证中
     public function actionAuth()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('authSuccess');
     }
 
    	//添加学员信息
     public function actionAdd_member()
     {
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
     	return $this->render('add_member');
     }
 
@@ -210,13 +219,9 @@ class SchoolController extends Controller
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/add_member';</script>";die;
         }
         //接值
-        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-
+        $s_id = $this->getschoolid();
         //保存图片信息
-        $schoolId = $_POST['companyId'];
-        $model = School::findOne($s_id['s_id']);
+        $model = School::findOne($s_id);
         //文件上传
         $uploads_dir = './school';
         $tmp_name = $_FILES["file"]["tmp_name"];
@@ -235,12 +240,12 @@ class SchoolController extends Controller
 
         $modelm = new  Schoolmajor();
         $modelm->m_id = $m_id['m_id'];
-        $modelm->s_id = $s_id['s_id'];
+        $modelm->s_id = $s_id;
         $school_major = $modelm->insert();
         if($majors&&$school_major){
             //echo 'success';die;
 
-            $this->redirect('?r=school/majorsuccess');
+            $this->redirect('?r=school/savemajorsuccess');
         }else{
 //            echo  'fail';die;
             echo "<script> alert('添加失败,请重新填写数据'),window.location.href='?r=school/info04';</script>";
@@ -249,12 +254,22 @@ class SchoolController extends Controller
 
     public function actionSavemajorsuccess()
     {
-        $this->render('successmajor');
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
+        return $this->render('successmajor');
     }
 
     //填写机构基本 1
      public function actionInfo01()
     {
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         //行业
         $industry = new Industry;
         $ids = $industry->showIndustry();
@@ -270,22 +285,20 @@ class SchoolController extends Controller
 
     //基本信息添加
     public function actionDo_basic_insert(){
-
 //        print_r($_POST);die;
         $model = new School();
-
-        $model->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
+        $u_id = $this->getuid();
+        $model->u_id = $u_id;
         $model->n_id = !empty($_POST['s_radio_hidden'])?$_POST['s_radio_hidden']:'';;
         $model->scale_id = !empty($_POST['select_scale_hidden'])?$_POST['select_scale_hidden']:'';
-        $model->city_id = !empty($_POST['city'])?$_POST['city']:'北京';
+        $model->city_id = !empty($_POST['city'])?$_POST['city']:'';
         $model->l_id = !empty($_POST['select_industry_hidden'])?$_POST['select_industry_hidden']:'';
         //$model->s_intro = !empty($_POST['temptation'])?$_POST['temptation']:'';
         $model->s_website = !empty($_POST['website'])?$_POST['website']:'';
         $schooladd = $model->save();
 
-        $user = new User();
+        $user = User::findOne($u_id);
         $user->u_name = !empty($_POST['name'])?$_POST['name']:'';
-        $user->u_id =!empty($_POST['companyId'])?$_POST['companyId']:'';
         $useradd = $user->save();
 
         if($schooladd&&$useradd){
@@ -300,19 +313,19 @@ class SchoolController extends Controller
     //机构信息标签  2
      public function actionInfo02()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('tag');
     }
 
     //机构标签添加
     public function actionDo_tags_insert(){
-
         //接值
-        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-
-        $model = School::findOne($s_id['s_id']);
-
+        $s_id = $this->getschoolid();
+        $model = School::findOne($s_id);
         if(empty($_POST['labels'])){
             echo '';die;
         }
@@ -327,6 +340,11 @@ class SchoolController extends Controller
     //机构信息联系人 3
      public function actionInfo03()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('founder');
     }
 
@@ -339,23 +357,14 @@ class SchoolController extends Controller
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info03';</script>";die;
         }
         //接值
-        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-
-        $model = School::findOne($s_id['s_id']);
-
-
+        $s_id = $this->getschoolid();
+        $model = School::findOne($s_id);
         $model->s_linkman = !empty($_POST['leaderInfos'][0])?$_POST['leaderInfos'][0]:'';
         $model->s_phone = !empty($_POST['leaderInfos'][2])?$_POST['leaderInfos'][2]:'';
-
         if($model->save()){
-//            echo 'success';die;
             $this->redirect('?r=school/info04');
         }else{
-//            echo  'fail';die;
             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info03';</script>";
-//            $this->redirect('?r=school/info03');
         }
 
     }
@@ -363,21 +372,33 @@ class SchoolController extends Controller
     //机构专业
     public function actionInfo04()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('index02');
     }
 
     public function actionInsert_major(){
-//        print_r($_POST);die;
+
         if(empty($_POST['productInfos'][0])){
 
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info04';</script>";die;
         }
         //接值
-        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-
+        $s_id = $this->getschoolid();
+        //保存图片信息
+        $model = School::findOne($s_id);
+        //文件上传
+        $uploads_dir = './school';
+        $tmp_name = $_FILES["file"]["tmp_name"];
+        $name = 'majors'.rand(10000,99999).$_FILES["file"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        //echo $name ;die;
+        
         $model = new  Major;
+        $model->m_logo = $name;
         $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
         $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
         $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
@@ -387,7 +408,7 @@ class SchoolController extends Controller
 
         $modelm = new  Schoolmajor();
         $modelm->m_id = $m_id['m_id'];
-        $modelm->s_id = $s_id['s_id'];
+        $modelm->s_id = $s_id;
         $school_major = $modelm->insert();
         if($majors&&$school_major){
 //            echo 'success';die;
@@ -401,31 +422,26 @@ class SchoolController extends Controller
     //公司介绍 5
      public function actionInfo05()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('index03');
     }
 
     //公司介绍添加
     public function actionInsertintro()
     {
-
         if(empty($_POST['companyProfile'])){
-
-            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info04';</script>";die;
+            echo "<script> alert('请正确填写数据') ,window.location.href='?r=school/info05';</script>";die;
         }
-//        print_r($_POST);die;
-        //接值
-        $schoolId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-
-        $model = School::findOne($s_id['s_id']);
-
+        $s_id = $this->getschoolid();
+        $model = School::findOne($s_id);
         $model->s_intro = !empty($_POST['companyProfile'])?$_POST['companyProfile']:'';
         if($model->save()){
-//            echo 'success';die;
             $this->redirect('?r=school/success');
         }else{
-//            echo  'fail';die;
             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=school/info05';</script>";
         }
     }
@@ -433,25 +449,45 @@ class SchoolController extends Controller
     //填写机构信息完成
      public function actionSuccess()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('success');
     }
 
     //开通招聘服务 1
     public function actionOpen()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('bindstep1');
     }
 
      //开通招聘服务 2
     public function actionOpen2()
     {   
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
         return $this->render('bindstep2');
     }
 
      //开通招聘服务 3
     public function actionOpen3()
     {
-        echo ($this->FindTags(1));die;
+        $status = $this->getstatus();
+        if ($status!=1) {
+            $url = \Yii::$app->request->getReferrer();
+            $this->redirect($url);
+        }
+        
 
         return $this->render('bindstep3');
     }
@@ -491,19 +527,13 @@ class SchoolController extends Controller
      * @return [type] [description]
      */
     public function actionImg(){
-        //print_r($_FILES);die;
-        //设置session
-        $session = Yii::$app->session;
-        $session->open();
-
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $u_id = $this->getuid();
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$u_id)->asArray()->one();
+        
         $model = School::findOne($s_id['s_id']);
-
         if (!empty($s_id['s_logo'])) {
         	unlink('./school/'.$s_id['s_logo']);
-        }
-        
+        } 
         //文件上传
         $uploads_dir = './school';
         $tmp_name = $_FILES["logo"]["tmp_name"];
@@ -531,13 +561,8 @@ class SchoolController extends Controller
      * @return [json] [返回值]
      */
     public function actionImgauth(){
-        //print_r($_FILES);die;
-        //设置session
-        $session = Yii::$app->session;
-        $session->open();
-
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_license from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $u_id = $this->getuid();
+        $s_id = School::findBySql("select s_id,s_license from jx_school WHERE u_id=".$u_id)->asArray()->one();
         $model = School::findOne($s_id['s_id']);
 
         if (!empty($s_id['s_license'])) {
@@ -598,6 +623,44 @@ class SchoolController extends Controller
         	return  json_encode($arr);
         }
 
+    }
+
+    /**
+     * [根据u_id得到学校的s_id]
+     * @param  [int] $u_id [用户表u_id;session中获取]
+     * @return [int]       [学校id]
+     */
+    public function getschoolid()
+    {
+        $session = \Yii::$app->session;
+        $session->open();
+        $u_id = $session->get('u_id');
+
+        $s_id = School::findBySql("select s_id from jx_school WHERE u_id=".$u_id)->asArray()->one();
+        return $s_id['s_id'];
+    }
+
+    /**
+     * 从session中获取session
+     * @return [type] [description]
+     */
+    public function getuid()
+    {
+        $session = \Yii::$app->session;
+        $session->open();
+        $u_id = $session->get('u_id');
+        return $u_id;
+    }
+    /**
+     * 从session中获取状态码
+     * @return [type] [description]
+     */
+    public function getstatus()
+    {
+        $session = \Yii::$app->session;
+        $session->open();
+        $status = $session->get('u_status');
+        return $status;
     }
 
 
