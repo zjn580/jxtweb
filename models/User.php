@@ -31,7 +31,8 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['u_status', 'u_time'], 'integer'],
-            [['u_account', 'u_password', 'u_name'], 'string', 'max' => 30]
+            [['u_account', 'u_name'], 'string', 'max' => 30],
+            [['u_password'], 'string', 'max' => 50]
         ];
     }
 

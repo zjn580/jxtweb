@@ -8,7 +8,7 @@
             <a class="c_addjob" href="?r=school/add_member"></a>
             </dt>
             <dd>
-                <div class="c_text">公司大佬</div>
+                <div class="c_text"></div>
                 <img width="668" height="56" class="c_steps" alt="第三步" src="../web/images/step3.png">
 
                 <form method="post" action="?r=company/insert_founder" id="memberForm">
