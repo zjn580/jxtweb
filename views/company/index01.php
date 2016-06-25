@@ -16,13 +16,6 @@
 
                     <h3>公司全称 </h3>
                     <input type="text" placeholder="请输入公司名称，如:拉勾" value="" name="name" id="name" class="valid">
-                   
-                    <h3>机构LOGO</h3> <!--非必填改必填-->
-
-                    <div id="logoNo">
-                        <input type="file" name="file"/>
-                    </div>
-
 
 
                     <h3>公司网址</h3>
