@@ -21,7 +21,8 @@ class CompanyController extends Controller
 {
     public $layout = 'common';
     public $enableCsrfValidation=false;
-    //培训机构
+    
+    //公司列表
     public function actionCompany()
     {   
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
@@ -29,27 +30,196 @@ class CompanyController extends Controller
         $connection = \Yii::$app->db;
         $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id');
         $posts = $command->queryAll();
-//        print_r($posts);die;
+        //print_r($posts);die;
         return $this->render('index',['industry'=>$industry,'natures'=>$natures,'companys'=>$posts]);
-    
     }
     
-    //我的机构主页
+    //我的公司主页
     public function actionMyhome()
     {   
         //从session中获取公司id
         $session = \YII::$app->session;
         $session->open();
         $c_id = $session->get('company');
-        //echo $c_id;die;
         
         //根据id查询出公司的详细信息
         $connection = \Yii::$app->db;
         $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id  WHERE c_id='$c_id'");
         $posts = $command->queryOne();
-        //print_r($posts);die;
+
         return $this->render('myhome',['company'=>$posts]);
     }
+
+    //第一个修改的form
+    public function actionSavename()
+    {
+        //公司id
+        $session = \YII::$app->session;
+        $session->open();
+        $companyId = $session->get('u_id');
+        $c_id = Company::findBySql("select c_id,c_logo from jx_company WHERE u_id=".$companyId)->asArray()->one();
+        $model = Company::findOne($c_id['c_id']);
+        $model->c_intro = $_POST['companyFeatures'];
+        $intro = $model->save();
+
+        //修改user中的u_name
+        $user = User::findOne($companyId);
+        $user->u_name = $_POST['companyShortName'];
+        $name = $user->update();
+
+        $arr=array();
+        if ($intro&&$name) {
+            $arr['success'] = 1;
+            $arr['content']['companyShortName'] = $_POST['companyShortName'];
+            $arr['content']['companyFeatures'] = $_POST['companyFeatures'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+     /**
+     * 公司logo上传
+     * @return [type] [description]
+     */
+    public function actionImg(){
+        //print_r($_FILES);die;
+        //设置session
+        $session = Yii::$app->session;
+        $session->open();
+
+        $companyId = $session->get('company');
+        $c_id = Company::findBySql("select c_id,c_logo from jx_company WHERE u_id=".$companyId)->asArray()->one();
+        $model = Company::findOne($c_id['c_id']);
+
+        if (!empty($c_id['c_logo'])) {
+            unlink('./company/'.$c_id['c_logo']);
+        }
+        
+        //文件上传
+        $uploads_dir = './company';
+        $tmp_name = $_FILES["logo"]["tmp_name"];
+        $name = rand(10000,99999).$_FILES["logo"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $model->c_logo = $name;
+        $arr = array();
+        if($model->save())
+        {
+            
+            $arr['success'] = 1;
+            $arr['content'] = $name;
+            return  json_encode($arr);
+        }else
+        {
+            
+            $arr['error'] = "上传文件失败,请重新上传";
+            return  json_encode($arr);
+        }
+
+    }
+
+    //修改公司标签
+    public function actionUpdatetag()
+    {
+        //print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_tags = $_POST['labels'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+
+    //简介
+    public function actionSaveprofile()
+    {
+        //echo json_encode($_POST);die;
+        //print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_intro = $_POST['companyProfile'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content'] = $_POST['companyProfile'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+    /**
+     * [actionSaveleader 修改联系人的方法]
+     * @return [type] [description]
+     */
+    public function actionSaveleader()
+    {
+        //echo json_encode($_POST);die;
+        //print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_linkman = $_POST['name'];
+        $model->s_phone = $_POST['position'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content']['id'] = $_POST['id'];
+            $arr['content']['weibo'] = $_POST['weibo'];
+            $arr['content']['name'] = $_POST['name'];
+            $arr['content']['position'] = $_POST['position'];
+            $arr['content']['remark'] = $_POST['remark'];
+            $arr['resubmitToken'] = $_POST['resubmitToken'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
+    /**
+     * [actionSavecity 城市 规模 网址 未完成]
+     * @return [type] [description]
+     */
+    public function actionSavecity()
+    {
+        //echo json_encode($_POST);die;
+        print_r($_POST);die;
+        $schoolId = $_POST['companyId'];
+        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
+        $model = School::findOne($s_id['s_id']);
+        $model->s_linkman = $_POST['name'];
+        $model->s_phone = $_POST['position'];
+        $tags = $model->save();
+        $arr=array();
+        if ($tags) {
+            $arr['success'] = 1;
+            $arr['content']['id'] = $_POST['id'];
+            $arr['content']['weibo'] = $_POST['weibo'];
+            $arr['content']['name'] = $_POST['name'];
+            $arr['content']['position'] = $_POST['position'];
+            $arr['content']['remark'] = $_POST['remark'];
+            $arr['resubmitToken'] = $_POST['resubmitToken'];
+            return  json_encode($arr);
+        } else {
+            $arr['msg'] = "保存失败,请重新填写数据";
+            return  json_encode($arr);
+        }
+    }
+
 
     //公司详情页
     public function actionDetail(){
@@ -61,28 +231,24 @@ class CompanyController extends Controller
         $connection = \Yii::$app->db;
         $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id  WHERE c_id='$c_id'");
         $posts = $command->queryOne();
+
         return $this->render('detail',['company'=>$posts]);
     }
 
-     //申请认证(上传)
+    //申请认证(上传)
     public function actionApply()
     {   
         return $this->render('auth');
     }
     
-    //申请机构认证中
+    //申请公司认证中
     public function actionAuth()
     {   
         return $this->render('authSuccess');
     }
-    //添加学员信息
-    public function actionAdd_member()
-    {
-        return $this->render('add_member');
-    }
 
-    //填写机构基本 1
-     public function actionInfo01()
+    //填写公司基本信息 1（行业、规模、性质、城市）
+    public function actionInfo01()
     {
 
         //行业
@@ -101,7 +267,7 @@ class CompanyController extends Controller
         return $this->render('index01',['ids'=>$ids,'scales'=>$scale,'natures'=>$nature,'citys'=>$city]);
     }
     
-    //信息添加
+    //信息添加（行业、规模、性质、城市）
     public function actionDo_basic_insert(){
 
         //$user = new User();
@@ -117,7 +283,6 @@ class CompanyController extends Controller
         //echo $user->u_name;die;
         
         $model = new Company();
-
         $model->u_id = $companyId;
         $model->n_id = !empty($_POST['s_radio_hidden'])?$_POST['s_radio_hidden']:'';
         $model->l_id = !empty($_POST['select_industry_hidden'])?$_POST['select_industry_hidden']:'';
@@ -127,11 +292,8 @@ class CompanyController extends Controller
         $model->c_website = !empty($_POST['website'])?$_POST['website']:'';
         $companyadd = $model->save();
 
-
-        
-        $u_id = $companyId;
-
         //将数据存入session
+        $u_id = $companyId;
         $connection = \Yii::$app->db;
         $command = $connection->createCommand('SELECT c_id FROM jx_company WHERE u_id='.$u_id);
         $post = $command->queryOne();
@@ -152,7 +314,7 @@ class CompanyController extends Controller
 
     }
 
-    //机构信息标签  2
+    //填写机构信息标签  2
      public function actionInfo02()
     {   
         return $this->render('tag');
@@ -192,7 +354,7 @@ class CompanyController extends Controller
         return $this->render('founder');
     }
 
-    //添加公司领导的
+    //添加公司创始团队信息
     public function actionInsert_founder(){
 
         //print_r($_POST);die;
@@ -225,42 +387,8 @@ class CompanyController extends Controller
 
     }
 
-//     //公司产品
-//      public function actionInfo04()
-//     {   
-//         return $this->render('index02');
-//     }
 
-//     //公司产品添加
-//     public function actionInsert_major(){
-
-// //        print_r($_POST);die;
-
-//         if(empty($_POST['productInfos'][0])){
-
-//             echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info04';</script>";die;
-//         }
-//         //接值
-//         $companyId = !empty($_POST['companyId'])?$_POST['companyId']:'';
-
-//         $s_id = Company::findBySql("select c_id from jx_company WHERE c_id=".$companyId)->asArray()->one();
-
-//         $model = new  Major;
-//         $model->m_name = !empty($_POST['productInfos'][0])?$_POST['productInfos'][0]:'';
-//         $model->m_nums = !empty($_POST['productInfos'][1])?$_POST['productInfos'][1]:'';
-//         $model->m_intro = !empty($_POST['productInfos'][2])?$_POST['productInfos'][2]:'';
-//         $majors = $model->save();
-
-//         if($majors){
-// //            echo 'success';die;
-//             $this->redirect('?r=company/info04');
-//         }else{
-// //            echo  'fail';die;
-//             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=company/info04';</script>";
-//         }
-//     }
-
-    //公司介绍 5
+    //填写公司介绍 5
      public function actionInfo05()
     {   
         return $this->render('index03');
@@ -269,9 +397,7 @@ class CompanyController extends Controller
      //公司介绍添加
     public function actionInsertintro()
     {
-
         if(empty($_POST['companyProfile'])){
-
             echo "<script> alert('请正确填写数据') ,window.location.href='?r=company/info05';</script>";die;
         }
 
@@ -282,12 +408,10 @@ class CompanyController extends Controller
 
 
         $c_id = Company::findBySql("select c_id from jx_company WHERE u_id=".$companyId)->asArray()->one();
-
         $model = Company::findOne($c_id['c_id']);
-
         $model->c_intro = !empty($_POST['companyProfile'])?$_POST['companyProfile']:'';
-        //echo $model->c_intro;die;
         $re = $model->save();
+
         if($re){
 //            echo 'success';die;
             $this->redirect('?r=company/myhome');
