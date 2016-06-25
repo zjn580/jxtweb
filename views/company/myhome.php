@@ -35,8 +35,8 @@
 
                     <form class="clear editDetail dn" id="editDetailForm">
                         <input type="text" placeholder="请输入机构简称" maxlength="15" value="<?php echo $company['u_name'];?>" name="companyShortName" id="companyShortName">
-                        <input type="text" placeholder="一句话描述机构优势，核心价值，限50字" maxlength="50" value="<?php echo $company['c_intro'];?>" name="companyFeatures" id="companyFeatures">
-                        <input type="hidden" value="25927" id="companyId" name="companyId">
+                        <input type="text" placeholder="一句话描述机构优势" maxlength="50" value="<?php echo $company['c_intro'];?>" name="companyFeatures" id="companyFeatures">
+                        <input type="hidden" value="" id="companyId" name="companyId">
                         <input type="submit" value="保存" id="saveDetail" class="btn_small">
                         <a id="cancelDetail" class="btn_cancel_s" >取消</a>
                     </form>
@@ -535,7 +535,7 @@
     </div>
     <!------------------------------------- end ----------------------------------------->
 
-    <script src="style/js/school.min.js" type="text/javascript"></script>
+    <script src="style/js/company.min.js" type="text/javascript"></script>
     <script>
         var avatar = {};
         avatar.uploadComplate = function( data ){
