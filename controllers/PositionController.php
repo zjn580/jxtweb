@@ -34,6 +34,9 @@ class PositionController extends Controller
     //添加职位
     public function actionAddpt(){
         //print_R($_POST);die;
+        $session = \YII::$app->session;
+        $session->open();
+        $data['c_id'] = $session->get('company');
         $data['l_id'] =  Industry::findBySql("select l_id from jx_industry where l_name = '$_POST[i_id]' limit 1")->asArray()->one()['l_id'];
         $data['p_name'] = !empty($_POST['p_name'])?$_POST['p_name']:"";
         $data['p_type'] = !empty($_POST['p_type'])?$_POST['p_type']:"";
@@ -220,23 +223,41 @@ class PositionController extends Controller
     //我发布的职位
     public function actionPosit()
     {   
-        // echo 111;die;
-        return $this->render('positions');
+        $session = \YII::$app->session;
+        $session->open();
+        $c_id = $session->get('company');
+        $query = (new \yii\db\Query())
+        ->select([
+                'p_id',
+                'p_name',
+                'p_type',
+                'sa_salary',
+                'ex_experience',
+                'city_name',
+                'e_name',
+                'p_time',
+                'p_resumes'
+                ])
+        ->from('jx_position')
+        ->leftJoin('jx_salary','jx_salary.sa_id = jx_position.salary_id')
+        ->leftJoin('jx_experience', 'jx_experience.ex_id = jx_position.experience_id')
+        ->leftJoin('jx_city', 'jx_city.city_id = jx_position.city_id')
+        ->leftJoin('jx_edu', 'jx_edu.e_id = jx_position.e_id')
+        ->where(['c_id'=>$c_id])
+        ->all();
+        //print_r($query);
+        return $this->render('positions',['arr'=>$query]);
     }
-     //推荐职位
-     public function actionRecommend()
+    //推荐职位
+    public function actionRecommend()
     {
         return $this->render('mList');
     }
     
-
-
-
-
-
      //招聘职位的介绍
-     public function actionIntroduce()
-    {
+    public function actionIntroduce()
+    {   
+
         return $this->render('toudi');
     }
     //招聘内容运营的介绍
@@ -252,7 +273,9 @@ class PositionController extends Controller
     }
 
     private function  showResume($status,$type="",$ex_id="",$e_id=""){
-       $c_id = 1;
+        $session = \YII::$app->session;
+        $session->open();
+        $c_id = $session->get('company');
 
         $where['td_stasus'] = $status;
         if(!empty($type)&&($type!=(-1))){
