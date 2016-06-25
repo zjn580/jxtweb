@@ -11,7 +11,7 @@
                 	<div class="c_text">需求量大,技术含量高的专业是吸引公司的制胜法宝哦！</div>
                  	<img width="668" height="56" class="c_steps" alt="第四步" src="./images/step4.png">
                     
-                    <form method="post" action="?r=school/insert_major" id="productForm">
+                    <form method="post" action="?r=school/insert_major" id="productForm" enctype="multipart/form-data">
                     	<input type="hidden" value="8f79f658e49846ae89d90a3f1590f12e" name="resubmitToken">
                     	<input type="hidden" id="companyId" name="companyId" value="25927">
                     	<div id="productDiv">
@@ -24,6 +24,9 @@
 		                        <h3>专业人员</h3>
 		                        <input type="text" placeholder="请输入专业人数" name="productInfos[1].productUrl" id="address0">
 		                        
+                                <h3>机构LOGO</h3> <!--非必填改必填-->
+                                <input type="file" name="file"/> 
+
 		                        <h3>专业简介</h3> 
 		                        <textarea placeholder="请简短描述该专业定位、专业特色、用户群体等" maxlength="1000" name="productInfos[2].productProfile" id="description0"></textarea>
 		                        <div class="word_count">你还可以输入 <span>500</span> 字</div>
