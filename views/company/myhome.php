@@ -103,7 +103,7 @@
                                         </div>
                                     </div>
                                     <div class="product_upload productShow">
-                                        <img width="380" height="220" src="./company/<?php echo $company['c_logo'];?>">
+                                        <img width="380" height="220" src="./company/<?php echo $company['c_license'];?>">
                                         <span>更换产品图片<br>380*220px 小于5M</span>
                                     </div>
 
@@ -128,10 +128,10 @@
                     <!--有产品-->
                     <dl class="c_product">
                         <dt>
-                        <h2><em></em>机构产品</h2>
+                        <h2><em></em>公司产品</h2>
                         </dt>
                         <dd>
-                            <img width="380" height="220" alt="<?php echo $company['u_name']; ?>" src="./company/<?php echo $company['c_logo'];?>">
+                            <img width="380" height="220" alt="<?php echo $company['u_name']; ?>" src="./company/<?php echo $company['c_license'];?>">
                             <div class="cp_intro">
                                 <h3><a target="_blank" href="http://www.weimob.com"><?php echo $company['u_name']; ?></a></h3>
                                 <div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 260px;">

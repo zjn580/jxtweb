@@ -28,10 +28,21 @@ class CompanyController extends Controller
         $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
         $natures = Nature::find()->asArray()->all();
         $connection = \Yii::$app->db;
-        $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id');
+        $command = $connection->createCommand('SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id limit 6');
         $posts = $command->queryAll();
         //print_r($posts);die;
         return $this->render('index',['industry'=>$industry,'natures'=>$natures,'companys'=>$posts]);
+    }
+
+    //更多公司列表
+    public function actionCompany_list()
+    {
+        $industry = Industry::findBySql('select * from jx_industry WHERE pid=0')->asArray()->all();
+        $natures = Nature::find()->asArray()->all();
+        $connection = \Yii::$app->db;
+        $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id");
+        $posts = $command->queryAll();
+        return $this->render('companylist',['industry'=>$industry,'natures'=>$natures,'companys'=>$posts]); 
     }
     
     //我的公司主页
@@ -246,7 +257,40 @@ class CompanyController extends Controller
     {   
         return $this->render('authSuccess');
     }
+    
+    //公司营业执照上传
+    public function actionUpload_auth(){
+        //id
+        $session = \YII::$app->session;
+        $session->open();
+        $u_id = $session->get('u_id');
+        $c_id = Company::findBySql("select c_id,c_license from jx_company WHERE u_id=".$u_id)->asArray()->one();
+        $model = Company::findOne($c_id['c_id']);
 
+        if (!empty($c_id['c_license'])) {
+            unlink('./company/'.$c_id['c_license']);
+        }
+        
+        //文件上传
+        $uploads_dir = './company';
+        $tmp_name = $_FILES["businessLicenes"]["tmp_name"];
+        $name = 'auth'.rand(10000,99999).$_FILES["businessLicenes"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $model->c_license = $name;
+        $arr = array();
+        if($model->save())
+        {
+            
+            $arr['success'] = 1;
+            return  json_encode($arr);
+        }else
+        {
+            
+            $arr['error'] = "上传文件失败,请重新上传";
+            return  json_encode($arr);
+        }
+    }
+    
     //填写公司基本信息 1（行业、规模、性质、城市）
     public function actionInfo01()
     {
@@ -419,6 +463,26 @@ class CompanyController extends Controller
 //            echo  'fail';die;
             echo "<script> alert('保存失败,请重新填写数据'),window.location.href='?r=company/info05';</script>";
         }
+    }
+
+
+    public function actionSearch(){
+        $this->layout=false;
+        $request = \Yii::$app->request;
+        $n_id = $request->post('n_id');
+        $l_id = $request->post('l_id');
+        $where = 1;
+        if(!empty($n_id)){
+            $where.=" and jx_company.n_id = $n_id";
+        }
+        if(!empty($l_id)){
+             $where.=" and jx_company.l_id = $l_id";
+        }
+        
+         $connection = \Yii::$app->db;
+         $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id where $where");
+         $posts = $command->queryAll();
+        return $this->render('search',['companys'=>$posts]); 
     }
 
     //填写机构信息完成

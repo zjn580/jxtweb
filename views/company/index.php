@@ -10,10 +10,10 @@
                     </dt>
                     <dd>
                         <dl>
-                            <dt>学校性质：</dt>
+                            <dt>公司性质：</dt>
                             <dd>
                                 <?php foreach($natures as $nature){?>
-                                    <a href="javascript:void(0)"><?php echo $nature['n_name']?></a>
+                                    <a href="javascript:void(0)" sid="<?php echo $nature['n_id']?>"><?php echo $nature['n_name']?></a>
                                 <?php }?>
                             </dd>
                         </dl>
@@ -21,19 +21,8 @@
                             <dt>行业领域：</dt>
                             <dd>
                                 <?php foreach($industry as $id){?>
-                                    <a href="javascript:void(0)"><?php echo $id['l_name']?></a>
+                                    <a href="javascript:void(0)" sid="<?php echo $id['l_id']?>"><?php echo $id['l_name']?></a>
                                 <?php }?>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>热门标签：</dt>
-                            <dd>
-                                <a href="javascript:void(0)">项目实战</a>
-                                <a href="javascript:void(0)">技术大牛</a>
-                                <a href="javascript:void(0)">自学成才</a>
-                                <a href="javascript:void(0)">更加努力</a>
-                                <a href="javascript:void(0)">敢干</a>
-                                <a href="javascript:void(0)">项目实战</a>
                             </dd>
                         </dl>
                     </dd>
@@ -51,7 +40,6 @@
                                     </ul>
                                 </div>
                             </a>
-                            <a href="h/jobs/148931.html" target="_blank"> 能源管理项目经理</a>
                             <ul class="reset ctags">
                                 <?php
                                 $tags = explode(',',$company['c_tags']) ;
@@ -63,7 +51,7 @@
                     <?php }?>
                 </ul>
 
-                <div class="Pagination"></div>
+                <a href="?r=company/company_list" style="color:green">更多》》</a>
             </form>
         </div>
         <div class="content_r">

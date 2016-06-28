@@ -32,7 +32,7 @@
                                 支持jpg、png、gif、pdf格式，文件不超过10M
                             </div>
                         </div>
-                        <input type="file" name="businessLicenes" id="businessLicenes" onchange="file_check(this,'http://www.lagou.com/cd/submitApproved.json',25927,this.id);">
+                        <input type="file" name="businessLicenes" id="businessLicenes" onchange="file_check(this,'?r=company/upload_auth',25927,this.id);">
                         <input type="hidden" value="0" name="type" id="type">  
                     </div>
                 </dd>
