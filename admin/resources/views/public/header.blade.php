@@ -59,6 +59,7 @@
                         <li><a href="{{URL('jurisdiction')}}"><i class="icon-font">&#xe045;</i>权限列表</a></li>
                     </ul>
                 </li>
-            </ul>        </div>
+            </ul>       
+        </div>
     </div>
     <!--/sidebar-->

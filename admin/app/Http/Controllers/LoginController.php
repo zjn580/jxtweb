@@ -43,4 +43,11 @@ class LoginController extends Controller {
         return view("login/login");
     }
 
+    /**
+     * 首页 
+     */
+
+    public function index(){
+        return view("login/index");
+    }
 }

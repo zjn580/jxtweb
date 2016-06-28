@@ -11,7 +11,7 @@
 |
 */
 
-Route::any('/', 'ShowController@index');
+Route::any('/', 'LoginController@index');
 
 
 
