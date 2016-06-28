@@ -41,7 +41,7 @@
                         <a id="cancelDetail" class="btn_cancel_s" >取消</a>
                     </form>
 
-                    <div class="clear oneword"><img width="17" height="15" src="./images/quote_l.png">&nbsp; <span><?php echo $company['c_intro'];?></span> &nbsp;<img width="17" height="15" src="./images/quote_r.png"></div>
+                    <div class="clear oneword"><img width="17" height="15" src="./company/<?php echo $company['c_logo'];?>">&nbsp; <span><?php echo $company['c_intro'];?></span> &nbsp;<img width="17" height="15" src="./company/<?php echo $company['c_logo'];?>"></div>
                     <h3 class="dn">已选择标签</h3>
                     <ul style="overflow:auto" id="hasLabels" class="reset clearfix">
                         <?php
@@ -72,7 +72,7 @@
 
                 <div class="product_wrap">
 
-                    <!--无产品 -->
+                  <!--   <!--无产品 -->
                     <dl class="c_section dn">
                         <dt>
                         <h2><em></em>机构产品</h2>
@@ -103,7 +103,7 @@
                                         </div>
                                     </div>
                                     <div class="product_upload productShow">
-                                        <img width="380" height="220" src="./images/product_default.png">
+                                        <img width="380" height="220" src="./company/<?php echo $company['c_logo'];?>">
                                         <span>更换产品图片<br>380*220px 小于5M</span>
                                     </div>
 
@@ -131,7 +131,7 @@
                         <h2><em></em>机构产品</h2>
                         </dt>
                         <dd>
-                            <img width="380" height="220" alt="发大发" src="./images/product_default.png">
+                            <img width="380" height="220" alt="发大发" src="./company/<?php echo $company['c_logo'];?>">
                             <div class="cp_intro">
                                 <h3><a target="_blank" href="http://www.weimob.com">发大发 </a></h3>
                                 <div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 260px;">
@@ -144,7 +144,7 @@
                     </dl>
 
                 </div>
-            </div>   <!-- end #Product -->
+            </div>   <!-- end #Product --> -->
 
             <div id="Profile">
                 <div class="profile_wrap">
