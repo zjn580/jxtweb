@@ -6,17 +6,17 @@
 									<div class="menu_box">
 						<div class="menu_main">
 							<h2>技术 <span></span></h2>
-											            					            		<a href="h/jobs/list_Java?labelWords=label">Java</a>
-				<a href="h/jobs/list_PHP?labelWords=label">PHP</a>
-				<a href="h/jobs/list_C?labelWords=label">C</a>
-				<a href="h/jobs/list_C++?labelWords=label">C++</a>
-				<a href="h/jobs/list_Android?labelWords=label">Android</a>
-				<a href="h/jobs/list_iOS?labelWords=label">iOS</a>
-				<a href="h/jobs/list_前端开发?labelWords=label">前端开发</a>
-				<a href="h/jobs/list_测试?labelWords=label">测试</a>
-				<a href="h/jobs/list_技术经理?labelWords=label">技术经理</a>
-				<a href="h/jobs/list_项目经理?labelWords=label">项目经理</a>
-				<a href="h/jobs/list_架构师?labelWords=label">架构师</a>
+						<a href="h/jobs/list_Java?labelWords=label">Java</a>
+                        <a href="h/jobs/list_PHP?labelWords=label">PHP</a>
+                        <a href="h/jobs/list_C?labelWords=label">C</a>
+                        <a href="h/jobs/list_C++?labelWords=label">C++</a>
+                        <a href="h/jobs/list_Android?labelWords=label">Android</a>
+                        <a href="h/jobs/list_iOS?labelWords=label">iOS</a>
+                        <a href="h/jobs/list_前端开发?labelWords=label">前端开发</a>
+                        <a href="h/jobs/list_测试?labelWords=label">测试</a>
+                        <a href="h/jobs/list_技术经理?labelWords=label">技术经理</a>
+                        <a href="h/jobs/list_项目经理?labelWords=label">项目经理</a>
+                        <a href="h/jobs/list_架构师?labelWords=label">架构师</a>
 			</div>
 					   	<div class="menu_sub dn">
 					   								    	<dl class="reset">
@@ -638,10 +638,7 @@
 										   		
 										   		 									            										            											            										            											            										            											            										            										   		
 										   	>主编</a>
-							            										   	<a href="h/jobs/list_%E8%BF%90%E8%90%A5%E6%80%BB%E7%9B%91?labelWords=label"
-										   		
-										   		 									            										            											            										            											            										            											            										            										   		
-										   	>运营总监</a>
+							            										   	<a href="h/jobs/list_%E8%BF%90%E8%90%A5%E6%80%BB%E7%9B%91?labelWords=label">运营总监</a>
 							            										   	<a href="h/jobs/list_COO?labelWords=label"
 										   		
 										   		 									            										            											            										            											            										            											            										            										   		
@@ -1084,12 +1081,12 @@
             <div id="hotList">
 	            <ul class="hot_pos reset">
 	            		            		            				            		<li class="clearfix">
-		            																		            					                	<div class="hot_pos_l">
-			                    	<div class="mb10">
+		            		<div class="hot_pos_l">
+			                    <div class="mb10">
 			                        	<a href="h/jobs/147822.html" target="_blank">运营总监</a> 
 			                            &nbsp;
 			                            <span class="c9">[北京]</span>
-			                            			                        </div>
+			                    </div>
 			                        <span><em class="c7">月薪： </em>15k-20k</span>
 			                        <span><em class="c7">经验：</em> 3-5年</span>
 			                        <span><em class="c7">最低学历： </em>本科</span>
@@ -1097,8 +1094,9 @@
 			                        <span><em class="c7">职位诱惑：</em>发展前景</span>
 			                        <br />
 				                    <span>1天前发布</span>
+                                <button id="collect">收藏</button>
 			                        <!-- <a  class="wb">分享到微博</a> -->
-			                    </div>
+                            </div>
 			                	<div class="hot_pos_r">
 			                    	<div class="mb10 recompany"><a href="h/c/399.html" target="_blank">节操精选</a></div>
 			                        <span><em class="c7">领域：</em> 移动互联网</span>
@@ -2083,3 +2081,8 @@
 			<input type="hidden" id="resubmitToken" value="" />
 	    	<a id="backtop" title="回到顶部" rel="nofollow"></a>
 	    </div><!-- end #container -->
+<script>
+    $('#collect').click(function(){
+        alert(1);
+    })
+</script>
