@@ -48,7 +48,6 @@
                             foreach($tags as $tag){?>
                                 <li><span><?php echo $tag?></span></li>
                         <?php }?>
-                        
                         <li class="link"></li>
                     </ul>
                     <div class="dn" id="addLabels">
@@ -102,7 +101,7 @@
                                         </div>
                                     </div>
                                     <div class="product_upload productShow">
-                                        <img width="380" height="220" src="./images/product_default.png">
+                                        <img width="380" height="220" src="./company/<?php echo $company['c_logo'];?>">
                                         <span>更换产品图片<br>380*220px 小于5M</span>
                                     </div>
 
@@ -127,17 +126,18 @@
                     <!--有产品-->
                     <dl class="c_product">
                         <dt>
-                        <h2><em></em>公司产品</h2>
+                        <h2><em></em>机构产品</h2>
                         </dt>
                         <dd>
-                            <img width="380" height="220" alt="发大发" src="./images/product_default.png">
+                            <img width="380" height="220" alt="<?php echo $company['u_name']; ?>" src="./company/<?php echo $company['c_logo'];?>">
                             <div class="cp_intro">
-                                <h3><a target="_blank" href="http://www.weimob.com">发大发 </a></h3>
+                                <h3><a target="_blank" href="http://www.weimob.com"><?php echo $company['u_name']; ?></a></h3>
                                 <div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 260px;">
 
-                                    <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div>发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf</div></div></div></div>
+                                    <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div><?php echo $company['c_intro']; ?></div></div></div></div>
                             </div>
-                            
+                            <a title="编辑机构产品" class="c_edit product_edit" href="javascript:void(0)"></a>
+                            <a title="新增机构产品" class="c_add product_add" href="javascript:void(0)"></a>
                         </dd>
                     </dl>
 
@@ -400,12 +400,12 @@
                                             <span>创始人头像</span>
                                         </div>
                                         <div class="portraitShow">
-                                            <img width="120" height="120" src="./images/leader_default.png">
+                                            <img width="120" height="120" src="./company/<?php echo $company['c_logo'];?>">
                                             <span>更换头像</span>
                                         </div>
                                         <input type="file" value="" title="支持jpg、jpeg、gif、png格式，文件小于5M" onchange="member_check(this,'http://www.lagou.com/c/upload.json','portraitNo','portraitShow','type','leaderInfos');" name="myfiles" id="profiles0">
                                         <input type="hidden" value="7" name="type" class="type">
-                                        <input type="hidden" value="images/leader_default.png" name="photo" class="leaderInfos">
+                                        <input type="hidden" value="./company/<?php echo $company['c_logo'];?>" name="photo" class="leaderInfos">
                                         <em>
                                             尺寸：120*120px <br>
                                             大小：小于5M
@@ -414,7 +414,7 @@
                                     <input type="text" placeholder="请输入创始人姓名" value="孙泰英" name="name">
                                     <input type="text" placeholder="请输入创始人当前职位" value="ceo" name="position">
                                     <input type="text" placeholder="请输入创始人新浪微博地址" value="http://weimob.weibo.com" name="weibo">
-                                    <textarea placeholder="请输入创始人个人简介" maxlength="500" class="c_textarea" name="remark">发放的发达范德萨范德萨范德萨发的复大发大水发生的</textarea>
+                                    <textarea placeholder="请输入创始人个人简介" maxlength="500" class="c_textarea" name="remark">他的一生就是传奇</textarea>
                                     <div class="word_count fr">你还可以输入 <span>500</span> 字</div>
                                     <div class="clear"></div>
                                     <input type="submit" value="保存" class="btn_small">
@@ -428,7 +428,7 @@
                                 
                                 <div class="m_portrait">
                                     <div></div>
-                                    <img width="120" height="120" alt="孙泰英" src="./images/leader_default.png">
+                                    <img width="120" height="120" alt="孙泰英" src="./company/<?php echo $company['c_logo'];?>">
                                 </div>
                                 <div class="m_name">
                                     <?php echo $company['c_linkman'];?>
