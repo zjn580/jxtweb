@@ -131,12 +131,12 @@
                         <h2><em></em>机构产品</h2>
                         </dt>
                         <dd>
-                            <img width="380" height="220" alt="发大发" src="./company/<?php echo $company['c_logo'];?>">
+                            <img width="380" height="220" alt="<?php echo $company['u_name']; ?>" src="./company/<?php echo $company['c_logo'];?>">
                             <div class="cp_intro">
-                                <h3><a target="_blank" href="http://www.weimob.com">发大发 </a></h3>
+                                <h3><a target="_blank" href="http://www.weimob.com"><?php echo $company['u_name']; ?></a></h3>
                                 <div class="scroll-pane" style="overflow: hidden; padding: 0px; width: 260px;">
 
-                                    <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div>发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf发达发生的faf</div></div></div></div>
+                                    <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div><?php echo $company['c_intro']; ?></div></div></div></div>
                             </div>
                             <a title="编辑机构产品" class="c_edit product_edit" href="javascript:void(0)"></a>
                             <a title="新增机构产品" class="c_add product_add" href="javascript:void(0)"></a>
@@ -200,7 +200,7 @@
                 <dd>
                     <div class="addnew">
                         发布需要的人才信息，让伯乐和千里马尽快相遇……<br>
-                        <a href="create.html">+添加招聘职位</a>
+                        <a href="?r=position/position">+添加招聘职位</a>
                     </div>
                 </dd>
             </dl>
@@ -430,7 +430,7 @@
                                 <a title="编辑创始人" class="c_edit member_edit" href="javascript:void(0)"></a>
                                 <div class="m_portrait">
                                     <div></div>
-                                    <img width="120" height="120" alt="孙泰英" src="./images/leader_default.png">
+                                    <img width="120" height="120" alt="./company/<?php echo $company['c_linkman'];?>" src="./company/<?php echo $company['c_logo'];?>">
                                 </div>
                                 <div class="m_name">
                                     <?php echo $company['c_linkman'];?>
