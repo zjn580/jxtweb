@@ -60,7 +60,7 @@
     </dl> 
    </div>
    <!-- end .content --> 
-   <!-- 弹窗lightbox -----------------------------------------> 
+   <!-- 弹窗lightbox --> 
    <div style="display:none;"> 
     <!--通知面试弹窗--> 
     <div style="overflow:auto;" class="popup" id="noticeInterview"> 

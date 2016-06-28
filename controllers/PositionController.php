@@ -78,6 +78,9 @@ class PositionController extends Controller
 
     //预览职位内容
     public function actionPreview(){
+        $session = \YII::$app->session;
+        $session->open();
+
         $request = Yii::$app->request;
         $arr['data'] = $request->post();
         foreach ($arr['data'] as $key => $value) {
@@ -85,7 +88,9 @@ class PositionController extends Controller
                 $arr['data']['salary_id'] = Salary::find()->select('sa_salary')->where(['sa_id'=>$value])->asArray()->one()['sa_salary'];
             }
         }
-        //]]print_r($arr['data']);
+        $arr['data']['c_id'] = $session->get('company');
+        $arr['data']['u_name'] = $session->get('u_name');
+        print_R($arr);
         return $this->render('toudi',$arr);
     }
     //待处理简历
@@ -236,17 +241,46 @@ class PositionController extends Controller
                 'city_name',
                 'e_name',
                 'p_time',
-                'p_resumes'
+                'p_resumes',
                 ])
         ->from('jx_position')
         ->leftJoin('jx_salary','jx_salary.sa_id = jx_position.salary_id')
         ->leftJoin('jx_experience', 'jx_experience.ex_id = jx_position.experience_id')
         ->leftJoin('jx_city', 'jx_city.city_id = jx_position.city_id')
         ->leftJoin('jx_edu', 'jx_edu.e_id = jx_position.e_id')
-        ->where(['c_id'=>$c_id])
+        ->where(['c_id'=>$c_id,'is_up'=>0])
+        ->all();
+    
+        return $this->render('positions',['arr'=>$query,'is_up'=>0]);
+    }
+
+     //下线的职位
+    public function actionDown()
+    {   
+        $session = \YII::$app->session;
+        $session->open();
+        $c_id = $session->get('company');
+        $query = (new \yii\db\Query())
+        ->select([
+                'p_id',
+                'p_name',
+                'p_type',
+                'sa_salary',
+                'ex_experience',
+                'city_name',
+                'e_name',
+                'p_time',
+                'p_resumes',
+                ])
+        ->from('jx_position')
+        ->leftJoin('jx_salary','jx_salary.sa_id = jx_position.salary_id')
+        ->leftJoin('jx_experience', 'jx_experience.ex_id = jx_position.experience_id')
+        ->leftJoin('jx_city', 'jx_city.city_id = jx_position.city_id')
+        ->leftJoin('jx_edu', 'jx_edu.e_id = jx_position.e_id')
+        ->where(['c_id'=>$c_id,'is_up'=>1])
         ->all();
         //print_r($query);
-        return $this->render('positions',['arr'=>$query]);
+        return $this->render('positions',['arr'=>$query,'is_up'=>1]);
     }
     //推荐职位
     public function actionRecommend()
@@ -261,7 +295,7 @@ class PositionController extends Controller
         return $this->render('toudi');
     }
     //招聘内容运营的介绍
-     public function actionContent()
+    public function actionContent()
     {
         return $this->render('jobdetail');
     }
@@ -272,7 +306,7 @@ class PositionController extends Controller
         return $this->render('jobdetail1');
     }
 
-    private function  showResume($status,$type="",$ex_id="",$e_id=""){
+    public function  showResume($status,$type="",$ex_id="",$e_id=""){
         $session = \YII::$app->session;
         $session->open();
         $c_id = $session->get('company');

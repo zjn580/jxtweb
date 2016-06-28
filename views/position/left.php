@@ -26,7 +26,7 @@
 		<a href="?r=position/posit">有效职位</a>
 	</dd>
 	<dd>
-		<a href="?r=position/posit">已下线职位</a>
+		<a href="?r=position/down">已下线职位</a>
 	</dd>
 	</dl>
                 <div class="subscribe_side mt20">

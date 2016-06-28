@@ -2,7 +2,7 @@
   <div class="content"> 
    <dl class="company_center_content"> 
     <dt> 
-     <h1> <em></em> 有效职位 <span>（共<i style="color:#fff;font-style:normal" id="positionNumber">1</i>个）</span> </h1> 
+     <h1> <em></em> <?= 0==$is_up?'有效职位':'已下线职位' ?><span></span> </h1> 
     </dt>
     
     <dd> 
@@ -21,7 +21,7 @@
         <div class="links"> 
          <a class="job_refresh" href="javascript:void(0)">刷新<span>每个职位7天内只能刷新一次</span></a> 
          <a target="_blank" class="job_edit" href="create.html?positionId=149594">编辑</a> 
-         <a class="job_offline" href="javascript:void(0)">下线</a> 
+         <a class="job_offline" href="javascript:void(0)"><?= 0==$is_up?'上线':'下线' ?></a> 
          <a class="job_del" href="javascript:void(0)">删除</a> 
         </div>
         </li> 
