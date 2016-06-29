@@ -1,9 +1,15 @@
+
 @include('public/header')
-
+<script type="text/javascript">
+    var delcompany = "{{url('delcompany')}}";
+    var updcompany = "{{url('updcompany')}}";
+    var auditcompany = "{{url('auditcompany')}}";
+</script> 
+<input type="hidden" id="status" value="1">
+<input type="hidden" id="audit" >
 <div class="main-wrap">
-
     <div class="crumb-wrap">
-        <div class="crumb-list"><i class="icon-font"></i><a href="">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">招聘信息</span></div>
+        <div class="crumb-list"><i class="icon-font"></i><a href="">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">企业信息</span></div>
     </div>
     <div class="search-wrap">
         <div class="search-content">
@@ -29,69 +35,74 @@
         <form name="myform" id="myform" method="post">
             <div class="result-title">
                 <div class="result-list">
-                    <a href="{{URL('add')}}"><i class="icon-font"></i>新增信息</a>
+                    <a href="{{URL('insert')}}"><i class="icon-font"></i>新增信息</a>
                     <a id="batchDel" href="javascript:void(0)"><i class="icon-font"></i>批量删除</a>
-                    <a id="updateOrd" href="javascript:void(0)"><i class="icon-font"></i>更新排序</a>
+                    <a id="updateOrd" href="javascript:void(0)"><i class="icon-font"></i>批量更新</a>
                 </div>
             </div>
             <div class="result-content">
                 <table class="result-tab" width="100%">
                     <tr>
                         <th class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
-                        <th>排序</th>
                         <th>ID</th>
-                        <th>标题</th>
+                        <th>职位名称</th>
+                        <th>所属公司</th>
                         <th>审核状态</th>
-                        <th>点击</th>
                         <th>发布人</th>
                         <th>更新时间</th>
-                        <th>评论</th>
+                        <th>发布时间</th>
                         <th>操作</th>
                     </tr>
+                    @foreach($arr as $v)
                     <tr>
-                        <td class="tc"><input name="id[]" value="59" type="checkbox"></td>
-                        <td>
-                            <input name="ids[]" value="59" type="hidden">
-                            <input class="common-input sort-input" name="ord[]" value="0" type="text">
+                        <td class="tc"><input name="id[]" value="{{$v['c_id']}}" type="checkbox"></td>
+                        <td>{{$v['c_id']}}</td>
+                        <td title="{{$v['u_name']}}">{{$v['u_name']}}
                         </td>
-                        <td>59</td>
-                        <td title="发哥经典"><a target="_blank" href="#" title="发哥经典">发哥经典</a> …
-                        </td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>2014-03-15 21:11:01</td>
-                        <td></td>
+                        <td>{{$v['n_name']}}</td>
                         <td>
-                            <a class="link-update" href="#">修改</a>
-                            <a class="link-del" href="#">删除</a>
+                            <?php 
+                                switch ($v['c_status']) {
+                                    case '0':
+                                        echo '待审核';
+                                        break;
+                                    case '1':
+                                        echo '审核通过';
+                                        break;
+                                    case '2':
+                                        echo '审核未通过';
+                                        break;
+                                }
+                            ?>
+                        </td>
+                        <td>{{$v['c_linkman']}}</td>
+                        <td><?=date('Y-m-d H:i:s',$v['c_uptime'])?></td>
+                        <td><?=date('Y-m-d H:i:s',$v['u_time'])?></td>
+                        <td>
+                            <a class="link-audit" href="javascript:void(0)" sid="<?=$v['c_id']?>">审核</a>
+                            <a class="link-update" href="javascript:void(0)" pid="<?=$v['c_id']?>" >刷新</a>
+                            <a class="link-del" href="javascript:void(0)" did="<?=$v['c_id']?>" >删除</a>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="tc"><input name="id[]" value="58" type="checkbox"></td>
-                        <td>
-                            <input name="ids[]" value="58" type="hidden">
-                            <input class="common-input sort-input" name="ord[]" value="0" type="text">
-                        </td>
-                        <td>58</td>
-                        <td title="黑色经典"><a target="_blank" href="#" title="黑色经典">黑色经典</a> …
-                        </td>
-                        <td>0</td>
-                        <td>35</td>
-                        <td>admin</td>
-                        <td>2013-12-30 22:34:00</td>
-                        <td></td>
-                        <td>
-                            <a class="link-update" href="#">修改</a>
-                            <a class="link-del" href="#">删除</a>
-                        </td>
-                    </tr>
+                    @endforeach
                 </table>
-                <div class="list-page"> 2 条 1/1 页</div>
+              <div class="paging" id="pagelist">
+                       <ul>
+                           <li><a href="{{url('corporate/1')}}">首页</a></li>
+                           <li><a href='<?=url("corporate/$up")?>'>上页</a></li>
+                           @for ($i = 1; $i <= $pages ; $i++)
+                               <li><a href='<?=url("corporate/$i")?>'>{{$i}}</a></li>
+                           @endfor
+                           <li><a href='<?=url("corporate/$next")?>'>下页</a></li>
+                           <li><a href="<?=url("corporate/$pages")?>">尾页</a></li>
+                           <li class="pageinfo">第{{$page}}页</li>
+                           <li class="pageinfo">共{{$pages}}页</li>
+                       </ul>
+               </div>
+
             </div>
         </form>
     </div>
 </div>
-
 
 @include('public/footer')

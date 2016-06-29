@@ -2,8 +2,11 @@
 @include('public/header')
 <script type="text/javascript">
     var delcompany = "{{url('delcompany')}}";
+    var updcompany = "{{url('updcompany')}}";
+    var auditcompany = "{{url('auditcompany')}}";
 </script> 
 <input type="hidden" id="status" value="1">
+<input type="hidden" id="audit" >
 <div class="main-wrap">
     <div class="crumb-wrap">
         <div class="crumb-list"><i class="icon-font"></i><a href="">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">企业信息</span></div>
@@ -54,7 +57,8 @@
                     <tr>
                         <td class="tc"><input name="id[]" value="{{$v['c_id']}}" type="checkbox"></td>
                         <td>{{$v['c_id']}}</td>
-                        <td title="{{$v['u_name']}}"><a target="_blank" href="#" title="{{$v['u_name']}}">{{$v['u_name']}}</a>
+                        <td title="{{$v['u_name']}}">
+                        {{$v['u_name']}}
                         </td>
                         <td>{{$v['n_name']}}</td>
                         <td>
@@ -76,8 +80,8 @@
                         <td><?=date('Y-m-d H:i:s',$v['c_uptime'])?></td>
                         <td><?=date('Y-m-d H:i:s',$v['u_time'])?></td>
                         <td>
-                            <a class="link-audit" href="javascript:showBg()">审核</a>
-                            <a class="link-update" href="javascript:void(0)" >刷新</a>
+                            <a class="link-audit" href="javascript:void(0)" sid="<?=$v['c_id']?>">审核</a>
+                            <a class="link-update" href="javascript:void(0)" pid="<?=$v['c_id']?>" >刷新</a>
                             <a class="link-del" href="javascript:void(0)" did="<?=$v['c_id']?>" >删除</a>
                         </td>
                     </tr>

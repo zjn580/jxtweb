@@ -49,6 +49,12 @@ Route::any('corporate','CompanyController@corporate');
 Route::any('corporate/{id}','CompanyController@corporate');
 //删除企业
 Route::any('delcompany','CompanyController@delcompany');
+//更新企业
+Route::any('updcompany','CompanyController@updcompany');
+//审核企业
+Route::any('auditcompany','CompanyController@auditcompany');
+
+
 
 /*添加企业信息*/
 Route::any('insert','CompanyController@insert');
