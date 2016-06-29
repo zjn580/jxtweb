@@ -19,8 +19,10 @@
         </div>
         <div class="top-info-wrap">
             <ul class="top-info-list clearfix">
-                <li><a href="http://www.jscss.me">管理员</a></li>
-                <li><a href="{{URL('quit')}}">退出</a></li>
+                @if(!empty(session('username')))
+                    <li><a href="javascript:;">{{session('username')}} </a></li>
+                    <li><a href="{{URL('quit')}}">退出</a></li>             
+                @endif
             </ul>
         </div>
     </div>
