@@ -2,7 +2,7 @@
 @include('public/header')
 <script type="text/javascript">
     var delcompany = "{{url('delcompany')}}";
-</script>
+</script> 
 <input type="hidden" id="status" value="1">
 <div class="main-wrap">
     <div class="crumb-wrap">

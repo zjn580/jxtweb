@@ -89,23 +89,28 @@ class CompanyController extends Controller {
     //删除企业
     public function delcompany(){
     	$c_id = Input::get('did');
+    	$ids = explode(',',$c_id);
     	$lastid = Input::get('lastid');
-    	$re = DB::table('jx_company')->where('c_id','=',$c_id)->delete();
+    	$length = Input::get('length')?Input::get('length'):1;
+    	$re = DB::table('jx_company')->whereIn('c_id',$ids)->delete();
     	if($re){
     		$arr = DB::table('jx_company')
 	    	->leftJoin('jx_user', 'jx_user.u_id', '=', 'jx_company.u_id')
 	    	->leftJoin('jx_nature','jx_nature.n_id','=','jx_company.n_id')
 			->select('jx_company.c_id','jx_company.n_id','jx_company.c_linkman','jx_company.c_license','jx_company.c_status','jx_company.c_uptime','jx_nature.n_name','jx_user.u_name','jx_user.u_time')
 			->where('jx_company.c_id','<',$lastid)
-			->skip(0)->take(1)
+			->skip(0)->take($length)
 			->orderBy('jx_company.c_id', 'desc')
-	        ->first();
-	        
+	        ->get();
+	        foreach ($arr as $key => $value) {
+	        	$arr[$key]['c_uptime'] = date('Y-m-d H:i:s',$value['c_uptime']);
+	        	$arr[$key]['u_time'] = date('Y-m-d H:i:s',$value['u_time']);
+	        }
            if(!empty($arr)){
 
            		echo json_encode(['success'=>1,'msg'=>$arr]);
            }else{
-           		echo json_encode(['success'=>2],'msg'=>'数据不足');
+           		echo json_encode(['success'=>2,'msg'=>'数据不足']);
            }
     	}else{
     		echo json_encode(['success'=>0,'error'=>'删除失败']);
