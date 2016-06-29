@@ -79,19 +79,16 @@ var ctx = "h";
                 if($_SESSION['u_status'] == 2){ 
                 ?>
                 <dd>
-                    <a href="?r=resume/resume">我要找工作</a>
+                    <a href="?r=index/index">我要找工作</a>
                 </dd>
                 <dd>
                     <a rel="nofollow" href="?r=resume/resume">我的简历</a>
                 </dd>
                 <dd>
-                    <a href="?r=position/collect">我收藏的职位</a>
+                    <a href="?r=resume/collect">我收藏的职位</a>
                 </dd>
                 <dd class="btm">
-                    <a href="?r=position/subscribe">我的订阅</a>
-                </dd>
-                <dd class="btm">
-                    <a href="?r=position/delivery">我投递的职位 <span id="noticeNo" class="red">(1)</span></a>
+                    <a href="?r=resume/delivery">我投递的职位 </a>
                 </dd>
                 <?php }elseif($_SESSION['u_status'] == 0){ ?>
 

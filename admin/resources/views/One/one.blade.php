@@ -40,12 +40,12 @@
                         <th class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
                         <th>排序</th>
                         <th>ID</th>
-                        <th>标题</th>
+                        <th>姓名</th>
                         <th>审核状态</th>
-                        <th>点击</th>
-                        <th>发布人</th>
-                        <th>更新时间</th>
-                        <th>评论</th>
+                        <th>手机</th>
+                        <th>照片</th>
+                        <th>添加时间</th>
+                        <th>邮箱</th>
                         <th>操作</th>
                     </tr>
                     <tr>

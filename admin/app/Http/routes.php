@@ -15,20 +15,23 @@ Route::any('/', 'LoginController@index');
 
 
 
-Route::any('home', 'HomeController@index');
+// Route::any('home', 'HomeController@index');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+// Route::controllers([
+// 	'auth' => 'Auth\AuthController',
+// 	'password' => 'Auth\PasswordController',
+// ]);
 
-Route::any('users', function()
-{
-    return 'Users!';
-});
+// Route::any('users', function()
+// {
+//     return 'Users!';
+// });
 
 /*登录*/
 Route::any('login','LoginController@login');
+
+/*登录操作*/
+Route::any('dologin','LoginController@dologin');
 
 /*退出登录*/
 Route::any('quit','LoginController@quit');
@@ -43,9 +46,13 @@ Route::any('add','CompanyController@add');
 
 /*企业信息*/
 Route::any('corporate','CompanyController@corporate');
+Route::any('corporate/{id}','CompanyController@corporate');
+//删除企业
+Route::any('delcompany','CompanyController@delcompany');
 
 /*添加企业信息*/
 Route::any('insert','CompanyController@insert');
+
 
 /*学校*/
 
