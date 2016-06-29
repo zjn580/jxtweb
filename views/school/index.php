@@ -25,17 +25,6 @@
                                 <?php }?>
                             </dd>
                         </dl>
-                        <dl>
-                            <dt>热门标签：</dt>
-                            <dd>
-                                <a href="javascript:void(0)">项目实战</a>
-                                <a href="javascript:void(0)">技术大牛</a>
-                                <a href="javascript:void(0)">自学成才</a>
-                                <a href="javascript:void(0)">更加努力</a>
-                                <a href="javascript:void(0)">敢干</a>
-                                <a href="javascript:void(0)">项目实战</a>
-                            </dd>
-                        </dl>
                     </dd>
                 </dl>
                 <ul class="hc_list reset">
@@ -99,7 +88,7 @@
 
     <input type="hidden" value="" name="userid" id="userid" />
 
-    <script type="text/javascript" src="style/js/company_list.min.js"></script>
+    <script type="text/javascript" src="style/js/school_list.min.js"></script>
     <script>
         $(function(){
             /*分页 */

@@ -136,8 +136,6 @@
 
                                     <div class="jspContainer" style="width: 260px; height: 140px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 260px;"><div><?php echo $company['c_intro']; ?></div></div></div></div>
                             </div>
-                            <a title="编辑机构产品" class="c_edit product_edit" href="javascript:void(0)"></a>
-                            <a title="新增机构产品" class="c_add product_add" href="javascript:void(0)"></a>
                         </dd>
                     </dl>
 
@@ -181,7 +179,6 @@
                         </dt>
                         <dd>
                             <div class="c_intro"><?php echo $company['c_intro'];?></div>
-                            
                         </dd>
                     </dl>
                 </div>
@@ -196,10 +193,26 @@
                 <h2><em></em>招聘职位</h2>
                 </dt>
                 <dd>
+                <?php foreach ($positions as $position) {?>
                     <div class="addnew">
-                        发布需要的人才信息，让伯乐和千里马尽快相遇……<br>
+                        <li class="odd clearfix">
+                            <div class="hot_pos_l">
+                                <div class="mb10">
+                                    <a href="h/jobs/147974.html" target="_blank"><?php echo $position['p_name']; ?></a>
+                                    <br /> 
+                                </div>
+                                    <span><em class="c7">月薪： </em><?php echo $position['p_name']; ?></span>
+                                    <span><em class="c7">经验：</em><?php echo $position['ex_experience']; ?></span>
+                                    <span><em class="c7">最低学历： </em><?php echo $position['e_name']; ?></span>
+                                    <span><em class="c7">职位诱惑：</em>行业高薪，福利优厚，包吃住</span>
+                                    <br />
+                                    <span><?php echo $position['p_time']; ?></span>
+                                    <!-- <a  class="wb">分享到微博</a> -->
+                            </div>
+                           </li>
                        
                     </div>
+                <?php } ?>
                 </dd>
             </dl>
 

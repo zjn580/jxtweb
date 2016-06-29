@@ -38,6 +38,26 @@ class SchoolController extends Controller
         return $this->render('index',['industry'=>$industry,'natures'=>$natures,'schools'=>$posts]);
     }
 
+    //搜索
+    public function actionSearch(){
+        $this->layout=false;
+        $request = \Yii::$app->request;
+        $n_id = $request->post('n_id');
+        $l_id = $request->post('l_id');
+        $where = 1;
+        if(!empty($n_id)){
+            $where.=" and jx_school.n_id = $n_id";
+        }
+        if(!empty($l_id)){
+             $where.=" and jx_school.l_id = $l_id";
+        }
+        
+         $connection = \Yii::$app->db;
+         $command = $connection->createCommand("SELECT * FROM jx_school INNER JOIN jx_user ON jx_school.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_school.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_school.scale_id=jx_scale.scale_id  INNER JOIN jx_sc_ma ON jx_school.s_id=jx_sc_ma.s_id where $where");
+        $posts = $command->queryAll();
+        return $this->render('search',['schools'=>$posts]); 
+    }
+
     //我的机构主页
     public function actionMyhome()
     {

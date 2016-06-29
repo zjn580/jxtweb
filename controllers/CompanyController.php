@@ -111,6 +111,7 @@ class CompanyController extends Controller
         //文件上传
         $uploads_dir = './company';
         $tmp_name = $_FILES["logo"]["tmp_name"];
+        //print_r($tmp_name);die;
         $name = rand(10000,99999).$_FILES["logo"]["name"];
         move_uploaded_file($tmp_name, "$uploads_dir/$name");
         $model->c_logo = $name;
@@ -130,107 +131,6 @@ class CompanyController extends Controller
 
     }
 
-    //修改公司标签
-    public function actionUpdatetag()
-    {
-        //print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
-        $model->s_tags = $_POST['labels'];
-        $tags = $model->save();
-        $arr=array();
-        if ($tags) {
-            $arr['success'] = 1;
-            return  json_encode($arr);
-        } else {
-            $arr['msg'] = "保存失败,请重新填写数据";
-            return  json_encode($arr);
-        }
-    }
-
-
-    //简介
-    public function actionSaveprofile()
-    {
-        //echo json_encode($_POST);die;
-        //print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
-        $model->s_intro = $_POST['companyProfile'];
-        $tags = $model->save();
-        $arr=array();
-        if ($tags) {
-            $arr['success'] = 1;
-            $arr['content'] = $_POST['companyProfile'];
-            return  json_encode($arr);
-        } else {
-            $arr['msg'] = "保存失败,请重新填写数据";
-            return  json_encode($arr);
-        }
-    }
-
-    /**
-     * [actionSaveleader 修改联系人的方法]
-     * @return [type] [description]
-     */
-    public function actionSaveleader()
-    {
-        //echo json_encode($_POST);die;
-        //print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
-        $model->s_linkman = $_POST['name'];
-        $model->s_phone = $_POST['position'];
-        $tags = $model->save();
-        $arr=array();
-        if ($tags) {
-            $arr['success'] = 1;
-            $arr['content']['id'] = $_POST['id'];
-            $arr['content']['weibo'] = $_POST['weibo'];
-            $arr['content']['name'] = $_POST['name'];
-            $arr['content']['position'] = $_POST['position'];
-            $arr['content']['remark'] = $_POST['remark'];
-            $arr['resubmitToken'] = $_POST['resubmitToken'];
-            return  json_encode($arr);
-        } else {
-            $arr['msg'] = "保存失败,请重新填写数据";
-            return  json_encode($arr);
-        }
-    }
-
-    /**
-     * [actionSavecity 城市 规模 网址 未完成]
-     * @return [type] [description]
-     */
-    public function actionSavecity()
-    {
-        //echo json_encode($_POST);die;
-        print_r($_POST);die;
-        $schoolId = $_POST['companyId'];
-        $s_id = School::findBySql("select s_id,s_logo from jx_school WHERE u_id=".$schoolId)->asArray()->one();
-        $model = School::findOne($s_id['s_id']);
-        $model->s_linkman = $_POST['name'];
-        $model->s_phone = $_POST['position'];
-        $tags = $model->save();
-        $arr=array();
-        if ($tags) {
-            $arr['success'] = 1;
-            $arr['content']['id'] = $_POST['id'];
-            $arr['content']['weibo'] = $_POST['weibo'];
-            $arr['content']['name'] = $_POST['name'];
-            $arr['content']['position'] = $_POST['position'];
-            $arr['content']['remark'] = $_POST['remark'];
-            $arr['resubmitToken'] = $_POST['resubmitToken'];
-            return  json_encode($arr);
-        } else {
-            $arr['msg'] = "保存失败,请重新填写数据";
-            return  json_encode($arr);
-        }
-    }
-
 
     //公司详情页
     public function actionDetail(){
@@ -243,7 +143,13 @@ class CompanyController extends Controller
         $command = $connection->createCommand("SELECT * FROM jx_company INNER JOIN jx_user ON jx_company.u_id=jx_user.u_id INNER JOIN jx_nature ON jx_company.n_id=jx_nature.n_id INNER JOIN jx_scale ON jx_company.scale_id=jx_scale.scale_id INNER JOIN jx_city ON jx_company.city_id=jx_city.city_id  WHERE c_id='$c_id'");
         $posts = $command->queryOne();
 
-        return $this->render('detail',['company'=>$posts]);
+        //公司职位
+        $connection = \Yii::$app->db;
+        $position = $connection->createCommand("SELECT * FROM jx_position LEFT JOIN jx_salary ON jx_position.salary_id=jx_salary.sa_id LEFT JOIN jx_experience ON jx_position.experience_id =jx_experience.ex_id LEFT JOIN jx_city ON jx_position.city_id=jx_city.city_id LEFT JOIN jx_edu ON jx_position.e_id=jx_edu.e_id  WHERE c_id='$c_id'");
+        $positions = $position->queryAll();
+        //print_r($positions);die;
+        
+        return $this->render('detail',['company'=>$posts,'positions' => $positions]);
     }
 
     //申请认证(上传)
