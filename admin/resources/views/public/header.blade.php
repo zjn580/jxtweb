@@ -106,7 +106,7 @@
                 <li>
                     <a href="#"><i class="icon-font">&#xe018;</i>系统管理</a>
                     <ul class="sub-menu">
-                        <li><a href="{{URL('Administrator')}}"><i class="icon-font">&#xe045;</i>管理员列表</a></li>
+                        <li><a href="{{URL('admin')}}"><i class="icon-font">&#xe045;</i>管理员列表</a></li>
                         <li><a href="{{URL('jurisdiction')}}"><i class="icon-font">&#xe045;</i>权限列表</a></li>
                     </ul>
                 </li>

@@ -97,7 +97,7 @@
                            <li><a href='<?=url("corporate/$next")?>'>下页</a></li>
                            <li><a href="<?=url("corporate/$pages")?>">尾页</a></li>
                            <li class="pageinfo">第{{$page}}页</li>
-                           <li class="pageinfo">共{{$pages}}页</li>
+                           <li class="pageinfo">共{{$page6}}页</li>
                        </ul>
                </div>
 
