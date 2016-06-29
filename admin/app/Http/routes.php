@@ -30,6 +30,9 @@ Route::any('/', 'LoginController@index');
 /*登录*/
 Route::any('login','LoginController@login');
 
+/*登录操作*/
+Route::any('dologin','LoginController@dologin');
+
 /*退出登录*/
 Route::any('quit','LoginController@quit');
 
