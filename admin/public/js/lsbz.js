@@ -1,0 +1,172 @@
+$(function(){
+	//全选全不选
+	$('.allChoose').click(function(){
+		
+		if($(this).attr('checked')=='checked'){
+			$('input[name="id[]"]').attr('checked',true);
+		}else{
+			$('input[name="id[]"]').attr('checked',false);
+		}
+	})
+		
+	//单删
+	$(document).on('click','.link-del',function(){
+		var ts = $(this);
+		var lastid = $('.result-tab tbody').children().last().children('td').eq(1).html();
+		var did = $(this).attr('did');
+		if(confirm('确认删除?')){
+			$.ajax({
+				type:"GET",
+				url:delcompany,
+				data:{did:did,lastid:lastid},
+				success:function(msg){
+					var data = eval("("+msg+")")
+					console.log(data);
+					if(data.success == 1){
+						ts.parents('tr').remove();
+						var str='';
+						$.each(data.msg,function(k,v){
+					        str+='<tr>';
+			                str+=    '<td class="tc"><input name="id[]" value="'+v['c_id']+'" type="checkbox"></td>'
+			                str+=    '<td>'+v['c_id']+'</td>'
+			                str+=    '<td title="'+v['u_name']+'"><a target="_blank" href="#" title="'+v['u_name']+'">'+v['u_name']+'</a>'
+			                str+=    '</td>'
+			                str+=    '<td>'+v['n_name']+'</td>'
+			                str+=    '<td>'
+			                if(v['c_status']==0){
+			                str+=    '待审核'
+			            	}else if(v['c_status']==1){
+			            	str+=    '审核通过'
+			            	}else if(v['c_status']==2){
+			            	str+=    '审核未通过'	
+			            	}
+			                str+= 	 '</td>'
+			                str+=    '<td>'+v['c_linkman']+'</td>'
+			                str+=    '<td>'+v['c_uptime']+'</td>'
+													 
+			                str+=    '<td>'+v['u_time']+'</td>'
+			                str+=    '<td>'
+			                str+=        '<a class="link-audit" href="javascript:showBg()">审核</a>&nbsp;'
+			                str+=        '<a class="link-update" href="javascript:void(0)" >刷新</a>&nbsp;'
+			                str+=        '<a class="link-del" href="javascript:void(0)" did="'+v['c_id']+'" >删除</a>'
+			                str+=    '</td>'
+			                str+= '</tr>'
+						});
+	                $('.result-tab tbody').append(str);
+					}else if(data.success == 2){
+						ts.parents('tr').remove();
+					}if(data.success == 0){
+						alert('删除错误');
+					}
+				 }
+			})
+		}
+
+	})
+
+	//批量删除
+	$(document).on('click','#batchDel',function(){
+		var ids = $('input[name="id[]"]');
+		var lastid = $('.result-tab tbody').children().last().children('td').eq(1).html();
+		var str ='';
+		var length = 0;
+		for (var i = 0;i<ids.length;i++) {
+			if(ids.eq(i).attr('checked') == 'checked'){
+				str+=','+ids.eq(i).val();
+				length ++;
+			}
+		}
+		var c_ids = str.substr(1);
+		if(confirm('确认删除?')){
+			$.ajax({
+				type:"GET",
+				url:delcompany,
+				data:{did:c_ids,lastid:lastid,length:length},
+				success:function(msg){
+					var data = eval("("+msg+")")
+					if(data.success == 1){
+						var rm = c_ids.split(",");
+						for(var i=0;i<rm.length;i++){
+							$('input[value='+rm[i]+']').parents('tr').remove()
+						}
+						
+						var str='';
+						$.each(data.msg,function(k,v){
+					        str+='<tr>';
+			                str+=    '<td class="tc"><input name="id[]" value="'+v['c_id']+'" type="checkbox"></td>'
+			                str+=    '<td>'+v['c_id']+'</td>'
+			                str+=    '<td title="'+v['u_name']+'"><a target="_blank" href="#" title="'+v['u_name']+'">'+v['u_name']+'</a>'
+			                str+=    '</td>'
+			                str+=    '<td>'+v['n_name']+'</td>'
+			                str+=    '<td>'
+			                if(v['c_status']==0){
+			                str+=    '待审核'
+			            	}else if(v['c_status']==1){
+			            	str+=    '审核通过'
+			            	}else if(v['c_status']==2){
+			            	str+=    '审核未通过'	
+			            	}
+			                str+= 	 '</td>'
+			                str+=    '<td>'+v['c_linkman']+'</td>'
+			                str+=    '<td>'+v['c_uptime']+'</td>'													 
+			                str+=    '<td>'+v['u_time']+'</td>'
+			                str+=    '<td>'
+			                str+=        '<a class="link-audit" href="javascript:showBg()">审核</a>&nbsp;'
+			                str+=        '<a class="link-update" href="javascript:void(0)" >刷新</a>&nbsp;'
+			                str+=        '<a class="link-del" href="javascript:void(0)" did="'+v['c_id']+'" >删除</a>'
+			                str+=    '</td>'
+			                str+= '</tr>'
+						});
+	                $('.result-tab tbody').append(str);
+					}else if(data.success == 2){
+						ts.parents('tr').remove();
+					}if(data.success == 0){
+						alert('删除错误');
+					}
+				}
+			})
+		}
+		
+	})
+
+	//批量更新
+	$(document).on('click','#updateOrd',function(){
+		var ids = $('input[name="id[]"]');
+		var str ='';
+		var length = 0;
+		for (var i = 0;i<ids.length;i++) {
+			if(ids.eq(i).attr('checked') == 'checked'){
+				str+=','+ids.eq(i).val();
+				length ++;
+			}
+		}
+		var u_ids = str.substr(1);
+		$.ajax({
+				type:"GET",
+				url:delcompany,
+				data:{u_ids:u_ids},
+				success:function(msg){
+
+				}
+		})
+	
+})
+
+
+
+
+////显示灰色 jQuery 遮罩
+function showBg() {
+var bh = $("body").height();
+var bw = $("body").width();
+$("#fullbg").css({
+height:bh,
+width:bw,
+display:"block"
+});
+$("#dialog").show();
+}
+//关闭灰色 jQuery 遮罩
+function closeBg() {
+$("#fullbg,#dialog").hide();
+}
