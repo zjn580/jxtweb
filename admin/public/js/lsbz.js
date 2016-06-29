@@ -133,23 +133,84 @@ $(function(){
 	$(document).on('click','#updateOrd',function(){
 		var ids = $('input[name="id[]"]');
 		var str ='';
-		var length = 0;
 		for (var i = 0;i<ids.length;i++) {
 			if(ids.eq(i).attr('checked') == 'checked'){
 				str+=','+ids.eq(i).val();
-				length ++;
 			}
 		}
 		var u_ids = str.substr(1);
+		if(confirm('确认更新?')){
 		$.ajax({
 				type:"GET",
-				url:delcompany,
+				url:updcompany,
 				data:{u_ids:u_ids},
 				success:function(msg){
-
-				}
+					var data = eval('('+msg+')');
+					if(data.success == 1){
+						var gg = u_ids.split(",");
+						for(var i=0;i<gg.length;i++){
+							$('a[did='+gg[i]+']').parents('td').prev().prev().html(data.time);
+						}
+						
+					}else if(data.success == 0){
+						alert('更新失败')
+					}
+				}	
 		})
-	
+		}
+	})
+
+	//单个更新
+	$(document).on('click','.link-update',function(){
+		var ids = $(this).attr('pid');
+		if(confirm('确认更新?')){
+		$.ajax({
+				type:"GET",
+				url:updcompany,
+				data:{u_ids:ids},
+				success:function(msg){
+					var data = eval('('+msg+')');
+					if(data.success == 1){
+							$('a[did='+ids+']').parents('td').prev().prev().html(data.time);
+					}
+				}	
+			})
+		}
+	})
+
+	//审核
+	$(document).on('click','.link-audit',function(){
+		showBg();
+		$('#audit').val($(this).attr('sid'))
+	})
+	$(document).on('click','.yes',function(){
+		var c_id = $('#audit').val();
+		var isaudit = $('input[name="audit"]');
+		for(var i = 0;i<isaudit.length;i++){
+			if(isaudit.eq(i).attr('checked') == 'checked'){
+				var isauth = isaudit.eq(i).val();
+			}
+		}
+		$.ajax({
+			type:"GET",
+			url:auditcompany,
+			data:{c_id:c_id,audit:isauth},
+			success:function(msg){
+				var data = eval('('+msg+')');
+				if(data.success==1){
+					if(isauth==1){
+						$('a[did='+c_id+']').parents('td').prev().prev().prev().prev().html('审核通过');
+						closeBg()
+					}else if(isauth==2){
+						$('a[did='+c_id+']').parents('td').prev().prev().prev().prev().html('审核未通过');
+						closeBg()
+					}
+				}else if(data.success==0){
+					closeBg();
+				}
+			}
+		})
+	})
 })
 
 
