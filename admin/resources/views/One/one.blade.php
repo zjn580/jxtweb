@@ -1,4 +1,12 @@
 @include('public/header')
+<style>
+    ul { list-style:none;}
+    #pagelist {width:600px; margin:30px auto; padding:6px 0px; height:20px;}
+    #pagelist ul li { float:left; border:1px solid #5d9cdf; height:20px; line-height:20px; margin:0px 2px;}
+    #pagelist ul li a, .pageinfo { display:block; padding:0px 6px; background:#e6f2fe;}
+    .pageinfo  { color:#555;}
+    .current { background:#a9d2ff; display:block; padding:0px 6px; font-weight:bold;}
+</style>
 
 <div class="main-wrap">
 
@@ -38,56 +46,63 @@
                 <table class="result-tab" width="100%">
                     <tr>
                         <th class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
-                        <th>排序</th>
                         <th>ID</th>
                         <th>姓名</th>
                         <th>审核状态</th>
                         <th>手机</th>
                         <th>照片</th>
-                        <th>添加时间</th>
+                        
                         <th>邮箱</th>
                         <th>操作</th>
                     </tr>
+                    @foreach($person as $k=>$v)
                     <tr>
-                        <td class="tc"><input name="id[]" value="59" type="checkbox"></td>
+                        <td class="tc"><input name="id[]" value="59" type="checkbox"></td> 
+                        <td>{{$v['pe_id']}}</td>
+                        <td title=""><a target="_blank" href="#" title="">{{$v['u_name']}}</a></td>
                         <td>
-                            <input name="ids[]" value="59" type="hidden">
-                            <input class="common-input sort-input" name="ord[]" value="0" type="text">
+                            <?php 
+                                switch ($v['pe_status']) {
+                                    case '0':
+                                        echo '待审核';
+                                        break;
+                                    case '1':
+                                        echo '审核通过';
+                                        break;
+                                    case '2':
+                                        echo '审核未通过';
+                                        break;
+                                }
+                            ?> 
                         </td>
-                        <td>59</td>
-                        <td title="发哥经典"><a target="_blank" href="#" title="发哥经典">发哥经典</a> …
-                        </td>
-                        <td>0</td>
-                        <td>2</td>
-                        <td>admin</td>
-                        <td>2014-03-15 21:11:01</td>
-                        <td></td>
+                        <td>{{$v['pe_phone']}}</td>
+                        <td><img src="{{$v['pe_img']}}" height="30" width="30" alt=""></td>
+                        <td>{{$v['email']}}</td>
+                        
                         <td>
-                            <a class="link-update" href="#">修改</a>
-                            <a class="link-del" href="#">删除</a>
+                            <a class="link-audit" href="javascript:showBg()">审核</a>
+                            <a class="link-update" href="javascript:void(0)" >刷新</a>
+                            <a class="link-del" href="javascript:void(0)" did="<?=$v['pe_id']?>" >删除</a>
+                        
                         </td>
+
                     </tr>
-                    <tr>
-                        <td class="tc"><input name="id[]" value="58" type="checkbox"></td>
-                        <td>
-                            <input name="ids[]" value="58" type="hidden">
-                            <input class="common-input sort-input" name="ord[]" value="0" type="text">
-                        </td>
-                        <td>58</td>
-                        <td title="黑色经典"><a target="_blank" href="#" title="黑色经典">黑色经典</a> …
-                        </td>
-                        <td>0</td>
-                        <td>35</td>
-                        <td>admin</td>
-                        <td>2013-12-30 22:34:00</td>
-                        <td></td>
-                        <td>
-                            <a class="link-update" href="#">修改</a>
-                            <a class="link-del" href="#">删除</a>
-                        </td>
-                    </tr>
+                    @endforeach
+                    
                 </table>
-                <div class="list-page"> 2 条 1/1 页</div>
+                <div class="paging" id="pagelist">
+                       <ul>
+                           <li><a href="{{url('one/1')}}">首页</a></li>
+                           <li><a href='<?=url("one/$up")?>'>上页</a></li>
+                           @for ($i = 1; $i <= $pages ; $i++)
+                               <li><a href='<?=url("one/$i")?>'>{{$i}}</a></li>
+                           @endfor
+                           <li><a href='<?=url("one/$next")?>'>下页</a></li>
+                           <li><a href="<?=url("one/$pages")?>">尾页</a></li>
+                           <li class="pageinfo">第{{$page}}页</li>
+                           <li class="pageinfo">共{{$pages}}页</li>
+                       </ul>
+               </div>
             </div>
         </form>
     </div>
@@ -95,3 +110,9 @@
 
 
 @include('public/footer')
+
+<script>
+    $('.link-del').click(function(){
+        alert('沃尔夫圣诞节');
+    })
+</script>
