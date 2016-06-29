@@ -46,6 +46,12 @@ Route::any('add','CompanyController@add');
 
 /*企业信息*/
 Route::any('corporate','CompanyController@corporate');
+//更新企业
+Route::any('updcompany','CompanyController@updcompany');
+//审核企业
+Route::any('auditcompany','CompanyController@auditcompany');
+
+
 
 /*添加企业信息*/
 Route::any('insert','CompanyController@insert');
