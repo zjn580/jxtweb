@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use DB;
 
 class OneController extends Controller {
 
@@ -34,7 +35,13 @@ class OneController extends Controller {
     /*个人信息*/
     public function one()
     {
-        return view('One/one');
+        $data = DB::table('jx_person')
+            ->join('jx_user', 'jx_person.u_id', '=', 'jx_user.u_id')
+            ->select('jx_person.pe_id', 'jx_person.pe_status', 'jx_user.u_name','jx_person.pe_phone','jx_person.pe_img','jx_person.email')
+            ->where('u_status','2')
+            ->get();
+            print_r($data);
+            return view('One/one');
     }
 
     /*添加个人信息*/

@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Request;
+use DB;
+use Session;
 class LoginController extends Controller {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -36,11 +39,32 @@ class LoginController extends Controller {
     {
         return view('login/login');
     }
+    public function dologin(request $request)
+    {
+        $username = request::input('username');
+        $pwd = request::input('pwd');
+        $pwds=md5(md5($pwd));
+        //echo $pwds;die;
+        $results = DB::table('jx_admin')->where('username', "'".$username."'")->orWhere('pwd', $pwds)->get();
+        if(!empty($results))
+        {   
+            session(['username' => $username]);
+            return redirect('/');
+        }
+        else
+        {
+            return redirect('login');
+        }
+    }
 
     /*退出登录*/
     public function quit()
     {
-        return view("login/login");
+        //var_dump(Session::flush());die;
+        Session::forget('username');
+        if(empty(session('username'))){
+            return view("login/login");
+        }
     }
 
     /**
