@@ -54,7 +54,7 @@
         } 
     </style>
     <script type="text/javascript" src="{{URL::asset('')}}js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="{{URL::asset('')}}js/lsbz.js"></script>
+    
 </head>
 <body>
 <div class="topbar-wrap white">
@@ -94,7 +94,7 @@
                     <a href="#"><i class="icon-font">&#xe003;</i>学校</a>
                     <ul class="sub-menu">
                         <li><a href="{{URL('school')}}"><i class="icon-font">&#xe006;</i>学校信息</a></li>
-                        <li><a href="{{URL('professionals')}}"><i class="icon-font">&#xe006;</i>专业信息</a></li>
+                        <!-- <li><a href="{{URL('professionals')}}"><i class="icon-font">&#xe006;</i>专业信息</a></li> -->
                     </ul>
                 </li>
                 <li>

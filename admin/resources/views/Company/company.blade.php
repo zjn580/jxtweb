@@ -1,9 +1,10 @@
 
 @include('public/header')
+<script type="text/javascript" src="{{URL::asset('')}}js/lsbz.js"></script>
 <script type="text/javascript">
-    var delcompany = "{{url('delcompany')}}";
-    var updcompany = "{{url('updcompany')}}";
-    var auditcompany = "{{url('auditcompany')}}";
+    var delcompany = "{{url('delads')}}";
+    var updcompany = "{{url('updads')}}";
+    var auditcompany = "{{url('auditads')}}";
 </script> 
 <input type="hidden" id="status" value="1">
 <input type="hidden" id="audit" >
@@ -35,7 +36,7 @@
         <form name="myform" id="myform" method="post">
             <div class="result-title">
                 <div class="result-list">
-                    <a href="{{URL('insert')}}"><i class="icon-font"></i>新增信息</a>
+                    <!-- <a href="{{URL('insert')}}"><i class="icon-font"></i>新增信息</a> -->
                     <a id="batchDel" href="javascript:void(0)"><i class="icon-font"></i>批量删除</a>
                     <a id="updateOrd" href="javascript:void(0)"><i class="icon-font"></i>批量更新</a>
                 </div>
@@ -55,14 +56,14 @@
                     </tr>
                     @foreach($arr as $v)
                     <tr>
-                        <td class="tc"><input name="id[]" value="{{$v['c_id']}}" type="checkbox"></td>
-                        <td>{{$v['c_id']}}</td>
-                        <td title="{{$v['u_name']}}">{{$v['u_name']}}
+                        <td class="tc"><input name="id[]" value="{{$v['p_id']}}" type="checkbox"></td>
+                        <td>{{$v['p_id']}}</td>
+                        <td title="{{$v['p_name']}}">{{$v['p_name']}}
                         </td>
-                        <td>{{$v['n_name']}}</td>
+                        <td>{{$v['u_name']}}</td>
                         <td>
                             <?php 
-                                switch ($v['c_status']) {
+                                switch ($v['p_status']) {
                                     case '0':
                                         echo '待审核';
                                         break;
@@ -75,26 +76,26 @@
                                 }
                             ?>
                         </td>
-                        <td>{{$v['c_linkman']}}</td>
-                        <td><?=date('Y-m-d H:i:s',$v['c_uptime'])?></td>
-                        <td><?=date('Y-m-d H:i:s',$v['u_time'])?></td>
+                        <td>{{$v['p_names']}}</td>
+                        <td><?=date('Y-m-d H:i:s',$v['p_uptime'])?></td>
+                        <td><?=date('Y-m-d H:i:s',$v['p_time'])?></td>
                         <td>
-                            <a class="link-audit" href="javascript:void(0)" sid="<?=$v['c_id']?>">审核</a>
-                            <a class="link-update" href="javascript:void(0)" pid="<?=$v['c_id']?>" >刷新</a>
-                            <a class="link-del" href="javascript:void(0)" did="<?=$v['c_id']?>" >删除</a>
+                            <a class="link-audit" href="javascript:void(0)" sid="<?=$v['p_id']?>">审核</a>
+                            <a class="link-update" href="javascript:void(0)" pid="<?=$v['p_id']?>" >刷新</a>
+                            <a class="link-del" href="javascript:void(0)" did="<?=$v['p_id']?>" >删除</a>
                         </td>
                     </tr>
                     @endforeach
                 </table>
               <div class="paging" id="pagelist">
                        <ul>
-                           <li><a href="{{url('corporate/1')}}">首页</a></li>
-                           <li><a href='<?=url("corporate/$up")?>'>上页</a></li>
+                           <li><a href="{{url('advertises/1')}}">首页</a></li>
+                           <li><a href='<?=url("advertises/$up")?>'>上页</a></li>
                            @for ($i = 1; $i <= $pages ; $i++)
-                               <li><a href='<?=url("corporate/$i")?>'>{{$i}}</a></li>
+                               <li><a href='<?=url("advertises/$i")?>'>{{$i}}</a></li>
                            @endfor
-                           <li><a href='<?=url("corporate/$next")?>'>下页</a></li>
-                           <li><a href="<?=url("corporate/$pages")?>">尾页</a></li>
+                           <li><a href='<?=url("advertises/$next")?>'>下页</a></li>
+                           <li><a href="<?=url("advertises/$pages")?>">尾页</a></li>
                            <li class="pageinfo">第{{$page}}页</li>
                            <li class="pageinfo">共{{$pages}}页</li>
                        </ul>

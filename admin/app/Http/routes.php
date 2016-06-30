@@ -38,28 +38,60 @@ Route::any('quit','LoginController@quit');
 
 /*企业*/
 
+
+
 /*招聘信息*/
 Route::any('advertises','CompanyController@advertises');
+Route::any('advertises/{id}','CompanyController@advertises');
 
+
+//删除职位
+Route::any('delads','CompanyController@delads');
+//更新职位
+Route::any('updads','CompanyController@updads');
+//审核企业
+Route::any('auditads','CompanyController@auditads');
 /*新增信息*/
 Route::any('add','CompanyController@add');
 
+
+
+
 /*企业信息*/
 Route::any('corporate','CompanyController@corporate');
+Route::any('corporate/{id}','CompanyController@corporate');
+
+
+
+
+//删除企业
+Route::any('delcompany','CompanyController@delcompany');
 //更新企业
 Route::any('updcompany','CompanyController@updcompany');
 //审核企业
 Route::any('auditcompany','CompanyController@auditcompany');
 
-
-
 /*添加企业信息*/
 Route::any('insert','CompanyController@insert');
+
+
+
+
+
+
 
 /*学校*/
 
 /*学校信息*/
 Route::any('school','SchoolController@school');
+
+//删除学校
+Route::any('delschool','SchoolController@delschool');
+//更新学校
+Route::any('updschool','SchoolController@updschool');
+//审核学校
+Route::any('auditschool','SchoolController@auditschool');
+
 
 /*添加学校信息*/
 Route::any('schadd','SchoolController@tian');

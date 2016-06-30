@@ -1,5 +1,6 @@
 
 @include('public/header')
+<script type="text/javascript" src="{{URL::asset('')}}js/lsbz.js"></script>
 <script type="text/javascript">
     var delcompany = "{{url('delcompany')}}";
     var updcompany = "{{url('updcompany')}}";
@@ -35,7 +36,7 @@
         <form name="myform" id="myform" method="post">
             <div class="result-title">
                 <div class="result-list">
-                    <a href="{{URL('insert')}}"><i class="icon-font"></i>新增信息</a>
+                    <!-- <a href="{{URL('insert')}}"><i class="icon-font"></i>新增信息</a> -->
                     <a id="batchDel" href="javascript:void(0)"><i class="icon-font"></i>批量删除</a>
                     <a id="updateOrd" href="javascript:void(0)"><i class="icon-font"></i>批量更新</a>
                 </div>
@@ -97,7 +98,7 @@
                            <li><a href='<?=url("corporate/$next")?>'>下页</a></li>
                            <li><a href="<?=url("corporate/$pages")?>">尾页</a></li>
                            <li class="pageinfo">第{{$page}}页</li>
-                           <li class="pageinfo">共{{$page6}}页</li>
+                           <li class="pageinfo">共{{$pages}}页</li>
                        </ul>
                </div>
 

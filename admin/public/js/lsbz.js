@@ -29,8 +29,7 @@ $(function(){
 					        str+='<tr>';
 			                str+=    '<td class="tc"><input name="id[]" value="'+v['c_id']+'" type="checkbox"></td>'
 			                str+=    '<td>'+v['c_id']+'</td>'
-			                str+=    '<td title="'+v['u_name']+'"><a target="_blank" href="#" title="'+v['u_name']+'">'+v['u_name']+'</a>'
-			                str+=    '</td>'
+			                str+=    '<td title="'+v['u_name']+'">'+v['u_name']+'</td>'
 			                str+=    '<td>'+v['n_name']+'</td>'
 			                str+=    '<td>'
 			                if(v['c_status']==0){
@@ -95,8 +94,7 @@ $(function(){
 					        str+='<tr>';
 			                str+=    '<td class="tc"><input name="id[]" value="'+v['c_id']+'" type="checkbox"></td>'
 			                str+=    '<td>'+v['c_id']+'</td>'
-			                str+=    '<td title="'+v['u_name']+'"><a target="_blank" href="#" title="'+v['u_name']+'">'+v['u_name']+'</a>'
-			                str+=    '</td>'
+			                str+=    '<td title="'+v['u_name']+'">'+v['u_name']+'</td>'
 			                str+=    '<td>'+v['n_name']+'</td>'
 			                str+=    '<td>'
 			                if(v['c_status']==0){
