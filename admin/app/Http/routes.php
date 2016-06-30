@@ -110,6 +110,9 @@ Route::any('one','OneController@one');
 /*添加个人信息*/
 Route::any('tianjia','OneController@tianjia');
 
+/*删除*/
+Route::any('delperson','OneController@delperson');
+
 /*系统设置*/
 
 /*管理员列表*/
