@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -84,8 +83,8 @@ class ResumeController extends Controller
         $u_id = Yii::$app->session['u_id'];
         //修改个人信息
         $res = $connection->createCommand()->update('jx_person', ['e_id'=>"$e_name",'ex_id'=>"$y_year",'email'=>"$email",'pe_sex'=>"$pe_sex",'pe_phone'=>"$pe_phone",'status_id'=>"$status_id"], "u_id='$u_id'")->execute();
-        $result = $connection->createCommand()->update('jx_user',['u_name'=>"$u_name",'u_id'=>$u_id])->execute();
-        if($result&$res){
+        $result = $connection->createCommand()->update('jx_user',['u_name'=>"$u_name",'u_id'=>"$u_id"], "u_id='$u_id'")->execute();
+        if($res && $result){
            echo '1';
         }
     }
@@ -216,7 +215,7 @@ class ResumeController extends Controller
         $pe_id = \Yii::$app->db->createCommand("select pe_id from jx_person where u_id='$u_id'")->queryOne();
         $pe_id = implode('',$pe_id);
         //教育背景添加
-        $result = $db->insert('jx_edu_history',['e_school'=>"$e_school",'edu_id'=>"$edu_id",'e_major'=>"$e_major",'e_start_time'=>"$e_start_time",'e_end_time'=>"$e_end_time",'e_time'=>"$e_time",'pe_id'=>"$pe_id"])->execute();
+        $result = $db->insert('jx_edu_history',['eh_school'=>"$e_school",'edu_id'=>"$edu_id",'eh_major'=>"$e_major",'eh_start_time'=>"$e_start_time",'eh_end_time'=>"$e_end_time",'eh_time'=>"$e_time",'pe_id'=>"$pe_id"])->execute();
         if($result){
             echo '1';
         }
@@ -356,6 +355,7 @@ class ResumeController extends Controller
         $result['rows'] = (new \yii\db\Query())
             ->select([
                 '(jx_position.p_name)',
+                '(jx_position.p_id)',
                 '(jx_salary.sa_salary)',
                 '(jx_user.u_name)',
                 '(jx_company.c_logo)',
@@ -380,6 +380,36 @@ class ResumeController extends Controller
             $result['rows'][$k]['p_time'] = date('Y-m-d H:i:s',$v['p_time']);
         }
         return $this->render('collections',$result);
+    }
+
+    //取消收藏
+    public  function actionCancel()
+    {
+        $p_id = \Yii::$app->request->post('p_id');
+        $connection = \Yii::$app->db;
+        $sql = $connection->createCommand()->delete('jx_po_per', "p_id = '$p_id'")->execute();
+        if($sql){
+            echo '1';
+        }
+    }
+
+    //投个简历
+    public function actionThrow()
+    {
+        $p_id = \Yii::$app->request->post('p_id');
+        $pe_id = \Yii::$app->db->createCommand("select pe_id from jx_po_per where p_id='$p_id'")->queryOne();
+        $pe_id = implode('',$pe_id);
+        $result = \Yii::$app->db->createCommand("select * from jx_po_pe where pe_id='$pe_id' and p_id='$p_id'")->queryOne();
+        if($result){
+            echo '0';
+        }else{
+            $td_time = time();
+            $sql = \Yii::$app->db->createCommand()->insert('jx_po_pe',['p_id'=>"$p_id",'pe_id'=>"$pe_id",'td_stasus'=>"0",'td_time'=>"$td_time",'type'=>"0"])->execute();
+            if($sql){
+                echo '2';
+            }
+        }
+
     }
 
     //我投递的职位
@@ -450,5 +480,42 @@ class ResumeController extends Controller
             }
             $arr = $rows->all();
        return $this->render('ajaxdly',['arr'=>$arr]);
+    }
+
+    //查看简历的详情页面
+    public function actionViewresume(){
+        $pe_id = \Yii::$app->request->get('pe_id');
+        //$pe_id = 1;
+
+        $u_id = Yii::$app->session['u_id'];
+        $connection = \Yii::$app->db;
+        //简历姓名
+        $result['resume_name'] = $connection->createCommand("select u_name from jx_user where u_id='$u_id'")->queryOne();
+        $result['resume_name'] = implode('',$result['resume_name']);
+        //查询基本信息
+        $result['basic'] = $connection->createCommand("select * from jx_person INNER JOIN jx_user on jx_person.u_id=jx_user.u_id
+                       INNER JOIN jx_edu on jx_person.e_id=jx_edu.e_id
+                       INNER JOIN jx_experience on jx_person.ex_id=jx_experience.ex_id
+                       LEFT JOIN jx_status on jx_person.status_id=jx_status.status_id  where jx_person.pe_id='$pe_id'")->queryAll();
+        //查询期望工作
+        $result['expect'] = $connection->createCommand("select * from jx_person INNER JOIN jx_city on jx_person.future_city_id=jx_city.city_id
+                                              INNER JOIN jx_salary on jx_person.pe_salary=jx_salary.sa_id where pe_id='$pe_id'")->queryAll();
+        //查询工作经历
+        $result['exper'] = $connection->createCommand("select * from jx_work_history INNER JOIN jx_person on jx_work_history.pe_id=jx_person.pe_id where jx_person.pe_id='$pe_id'")->queryAll();
+        //查询项目经验
+        $result['project'] = $connection->createCommand("select * from jx_project where pe_id='$pe_id'")->queryAll();
+        //查询教育背景
+        $result['education'] = $connection->createCommand("select * from jx_edu_history INNER JOIN jx_edu on jx_edu_history.eh_id=jx_edu.e_id
+                                                                                       INNER JOIN jx_person on jx_edu_history.pe_id=jx_person.pe_id where jx_person.pe_id='$pe_id'")->queryAll();
+        //查询自我描述
+        $result['desc'] = $connection->createCommand("select pe_intro from jx_person where pe_id='$pe_id'")->queryAll();
+        //作品展示查询
+        $result['works'] = $connection->createCommand("select * from jx_works where u_id='$u_id'")->queryAll();
+        //头像查询
+        $portrait= $connection->createCommand("select pe_img from jx_person where pe_id='$pe_id'")->queryOne();
+        $portrait = implode('',$portrait);
+        $result['portrait'] = $portrait;
+
+        return $this->render('viewresume',$result);
     }
 }
