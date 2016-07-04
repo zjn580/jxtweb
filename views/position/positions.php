@@ -10,15 +10,18 @@
       <input type="hidden" value="Publish" name="type" /> 
       <ul class="reset my_jobs"> 
       <?php foreach ($arr as $k => $v) { ?>
-       <li data-id="<?=$v['p_id']?>"> <h3> <a target="_blank" title="<?=$v['p_name']?>" href="http://www.lagou.com/jobs/149594.html"><?=$v['p_name']?></a> <span>[<?=$v['city_name']?>]</span> 
-       </h3> <span class="receivedResumeNo"><a href="unHandleResumes.html?positionId=149594">应聘简历（<?=$v['p_resumes']?>）</a></span> 
+       <li data-id="<?=$v['p_id']?>">
+           <h3>
+               <a target="_blank" title="<?=$v['p_name']?>" href="?r=position/xiang&id=<?php echo $v['p_id']?>"><?=$v['p_name']?></a> <span>[<?=$v['city_name']?>]</span>
+           </h3>
+           <span class="receivedResumeNo"><a href="unHandleResumes.html?positionId=149594">应聘简历（<?=$v['p_resumes']?>）</a></span>
         <div>
           兼职/<?=$v['sa_salary']?>/<?=$v['ex_experience']?>/ <?=$v['e_name']?>及以上
         </div> 
         <div class="c9">
          发布时间:<?=date("Y-m-d H:i:s",$v['p_time'])?>
         </div> 
-        <div class="links"> 
+        <div class="links">
          <a class="job_refresh" href="javascript:void(0)">刷新<span>每个职位7天内只能刷新一次</span></a> 
          <a target="_blank" class="job_edit" href="create.html?positionId=149594">编辑</a> 
          <a class="job_offline" href="javascript:void(0)"><?= 0==$is_up?'上线':'下线' ?></a> 

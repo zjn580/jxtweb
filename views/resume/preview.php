@@ -98,11 +98,11 @@
                 <?php
                 foreach($education as $key=>$value){
                     ?>
-                    <strong id="background4">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $value['e_start_time']?></strong>--
-                    <strong id="background5"><?php echo $value['e_end_time']?></strong><br/>
-                    <strong id="background1">&nbsp;&nbsp;&nbsp;&nbsp;学校名称：<?php echo $value['e_school']?></strong>
+                    <strong id="background4">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $value['eh_start_time']?></strong>--
+                    <strong id="background5"><?php echo $value['eh_end_time']?></strong><br/>
+                    <strong id="background1">&nbsp;&nbsp;&nbsp;&nbsp;学校名称：<?php echo $value['eh_school']?></strong>
                     <strong id="background2">学历名称：<?php echo $value['e_name']?></strong><br/>
-                    <strong id="background3">&nbsp;&nbsp;&nbsp;&nbsp;专业名称：<?php echo $value['e_major']?></strong><br/>
+                    <strong id="background3">&nbsp;&nbsp;&nbsp;&nbsp;专业名称：<?php echo $value['eh_major']?></strong><br/>
 
                 <?php }?>
             </div>

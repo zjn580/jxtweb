@@ -29,50 +29,39 @@ use yii\widgets\ActiveForm;
             	</div><!--end #resumeScore-->
 
                 <div class="profile_box" id="basicInfo">
-            		<h2>基本信息</h2>
-            		<span class="c_edit"></span>
-            		<div class="basicShow">
-                        <?php   if(!empty($basic)){  ?>
-            			<div id="basic">
+                    <div id="qwe">
+                        <h2>基本信息</h2>
+                        <span class='c_edit'></span>
+                        <div class='basicShow'>
                             <?php  foreach($basic as $key=>$value){ ?>
-                                姓名：<span id="u_name"><?php echo $value['u_name']?></span>|
-                                性别：<span id="pe_sex"><?php echo $value['pe_sex']?></span>|
-                                学历：<span id="e_name"><?php echo $value['e_name']?></span>|<br/>
-                                经验：<span id="jingyan"><?php echo $value['ex_experience']?></span>|
-                                电话：<span id="pe_phone"><?php echo $value['pe_phone']?></span>|<br/>
-                                邮箱：<span id="youxiang"><?php echo $value['email']?></span>|<br/>
-                                状态：<span id="status_name"><?php echo $value['status_name']?></span>|
-                            <?php } ?>
-            			</div>
-                        <?php }else{ ?>
-                            <div id="basic">
-                                    姓名：<span id="u_name"></span>|
-                                    性别：<span id="pe_sex"></span>|
-                                    学历：<span id="e_name"></span>|<br/>
-                                    经验：<span id="jingyan"></span>|
-                                    电话：<span id="pe_phone"></span>|<br/>
-                                    邮箱：<span id="youxiang"></span>|<br/>
-                                    状态：<span id="status_name"></span>|
+                            <div class='basic'>
+                                    姓名：<span id='u_name'><?php echo $value['u_name']?></span>|
+                                    性别：<span id='pe_sex'><?php echo $value['pe_sex']?></span>|
+                                    学历：<span id='e_name'><?php echo $value['e_name']?></span>|<br/>
+                                    经验：<span id='jingyan'><?php echo $value['ex_experience']?></span>|
+                                    电话：<span id='pe_phone'><?php echo $value['pe_phone']?></span>|<br/>
+                                    邮箱：<span id='youxiang'><?php echo $value['email']?></span>|<br/>
+                                    状态：<span id='status_name'><?php echo $value['status_name']?></span>|
                             </div>
-                            <span>想要赶快找到工作</span><br/>
-                            <span>快来完善基本信息吧</span>
-                        <?php } ?>
-            			<div class="m_portrait">
-	                    	<div></div>
-	                    	<img width="120" height="120" alt="jason" src="<?php echo $portrait; ?>">
-	                    </div>
-            		</div>
-                    <!--end .basicShow-->
+                            <?php } ?>
+
+                            <div class="m_portrait">
+                                <div></div>
+                                <img width="120" height="120" alt="jason" src="<?php echo $portrait; ?>">
+                            </div>
+                        </div>
+                    </div>
 
             		<div class="basicEdit dn" id="profileForm" >
-						  <table>
+                        <?php  foreach($basic as $key=>$value){ ?>
+						   <table>
 						    <tbody>
                             <tr>
 						      <td valign="top">
 						        <span class="redstar">*</span>
 						      </td> 
 						      <td>
-						        <input type="text" placeholder="姓名" value="jason" name="u_name" id="name">
+						        <input type="text" placeholder="姓名" value="" name="u_name" id="name" >
 						      </td>
 						      <td valign="top"></td>
 						      <td>
@@ -169,7 +158,7 @@ use yii\widgets\ActiveForm;
 						    </tr>
 						  </tbody>
                           </table>
-
+                        <?php }?>
 						<!--end #profileForm-->
 						<div class="new_portrait">
 						  <div class="portrait_upload" id="portraitNo">
@@ -188,14 +177,16 @@ use yii\widgets\ActiveForm;
 						  	<span style="display:none;" id="headPic_error" class="error"></span>
 						</div><!--end .new_portrait-->
             		</div><!--end .basicEdit-->
-            		<input type="hidden" id="nameVal" value="">
-            		<input type="hidden" id="genderVal" value="男">
-            		<input type="hidden" id="topDegreeVal" value="学历">
-            		<input type="hidden" id="workyearVal" value="工作经验">
-            		<input type="hidden" id="currentStateVal" value="">
-            		<input type="hidden" id="emailVal" value="">
-            		<input type="hidden" id="telVal" value="">
+                    <?php  foreach($basic as $key=>$value){ ?>
+            		<input type="hidden" id="nameVal" value="<?php echo $value['u_name']?>">
+            		<input type="hidden" id="genderVal" value="<?php echo $value['pe_sex']?>">
+            		<input type="hidden" id="topDegreeVal" value="<?php echo $value['e_name']?>">
+            		<input type="hidden" id="workyearVal" value="<?php echo $value['ex_experience']?>">
+            		<input type="hidden" id="currentStateVal" value="<?php echo $value['status_name']?>">
+            		<input type="hidden" id="emailVal" value="<?php echo $value['email']?>">
+            		<input type="hidden" id="telVal" value="<?php echo $value['pe_phone']?>">
             		<input type="hidden" id="pageType" value="1">
+                    <?php } ?>
 </div><!--end #basicInfo-->
 
             	<div class="profile_box" id="expectJob">
@@ -303,12 +294,13 @@ use yii\widgets\ActiveForm;
 
 
                     <?php }?>
-            		<input type="hidden" id="expectJobVal" value="">
-            		<input type="hidden" id="expectCityVal" value="">
-            		<input type="hidden" id="typeVal" value="">
-            		<input type="hidden" id="expectPositionVal" value="">
-            		<input type="hidden" id="expectSalaryVal" value="">
-
+                    <?php foreach($expect as $key=>$value){ ?>
+                        <input type="hidden" id="expectJobVal" value="">
+                        <input type="hidden" id="expectCityVal" value="<?php echo $value['city_name']?>">
+                        <input type="hidden" id="typeVal" value="<?php echo $value['pe_work_nature']?>">
+                        <input type="hidden" id="expectPositionVal" value="<?php echo $value['pe_position']?>">
+                        <input type="hidden" id="expectSalaryVal" value="<?php echo $value['sa_salary']?>">
+                    <?php }?>
                 </div><!--end #expectJob-->
             	<div class="profile_box" id="workExperience">
             		<h2>工作经历  <span> （投递简历时必填）</span></h2>
@@ -482,7 +474,7 @@ use yii\widgets\ActiveForm;
 	            					</td>
 	            				</tr>
 	            			</tbody></table>
-	            			<input type="hidden" class="expId" value="">
+	            			<input type="hidden" class="expId" value="111">
                             <!--end .experienceForm-->
                         </div>
             		</div><!--end .experienceEdit-->
@@ -909,11 +901,11 @@ use yii\widgets\ActiveForm;
                         <?php
                             foreach($education as $key=>$value){
                         ?>
-                                <strong id="background1">学校名称：<?php echo $value['e_school']?></strong>
+                                <strong id="background1">学校名称：<?php echo $value['eh_school']?></strong>
                                 <strong id="background2">学历名称：<?php echo $value['e_name']?></strong><br/>
-                                <strong id="background3">专业名称：<?php echo $value['e_major']?></strong><br/>
-                                <strong id="background4">开始时间：<?php echo $value['e_start_time']?></strong>
-                                <strong id="background5">结束时间：<?php echo $value['e_end_time']?></strong><br/>
+                                <strong id="background3">专业名称：<?php echo $value['eh_major']?></strong><br/>
+                                <strong id="background4">开始时间：<?php echo $value['eh_start_time']?></strong>
+                                <strong id="background5">结束时间：<?php echo $value['eh_end_time']?></strong><br/>
                         <?php }?>
                     </div>
 
@@ -1287,21 +1279,13 @@ CallCenter.init(url);
             success:function(msg){
                 if(msg=='1'){
                     $('#profileForm').hide();
-                    $('#basic').show();
-                    $('.c_edit').show();
+                    $('#basicInfo').show();
 
-                    $('#u_name').html(u_name);
-                    $('#pe_sex').html(pe_sex);
-                    $('#e_name').html(e_id);
-                    $('#jingyan').html(ex_id);
-                    $('#pe_phone').html(pe_phone);
-                    $('#youxiang').html(email);
-                    $('#status_name').html(status_id);
+                    var str="<div id='qwe'>"+"<h2>"+"基本信息"+"</h2>"+"<span class='c_edit'>"+"</span>"+"<div class='basicShow'>"+"<div class='basic' id='qwe'>"+"姓名："+"<span id='u_name'>"+u_name+"</span>"+"|"+"性别："+"<span id='pe_sex'>"+pe_sex+"</span>"+"|"+"学历："+"<span id='e_name'>"+e_id+"</span>"+"|"+"<br>"+"经验："+"<span id='jingyan'>"+ex_id+"</span>"+"|"+"电话："+"<span id='pe_phone'>"+pe_phone+"</span>"+"|"+"邮箱："+"<span id='youxiang'>"+email+"</span>"+"|"+"<br>"+" 状态："+"<span id='status_name'>"+status_id+"</span>"+"|"+"</div>" +"</div>"+"</div>";
+                   $('#qwe').html(str);
                 }
             }
         })
-
-
     })
 
     //期望工作

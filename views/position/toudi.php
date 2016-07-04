@@ -59,16 +59,7 @@
                         
                     </dd>
                       	<!-- 用户是否激活 0-否；1-是 -->
-	                    <dd class="resume resume_web">
-                        <div>
-								          <span> 你已有可投递的在线简历：<a title="jason的简历" target="_blank" href="jianli.html"><strong>jason的简历</strong></a></span><br>
-								          <span>简历更新于2014-07-01 15:53</span>
-                        </div>
-                        <span class="setBtns">
-                        	<a target="_blank" title="预览" href="h/resume/preview.html">预览</a> |
-                        	<a title="修改" target="_blank" href="jianli.html">修改</a>
-                        </span>
-	                    </dd>
+
                   <div class="saoma saoma_btm">
           	<div class="dropdown_menu">
 							<div class="drop_l">

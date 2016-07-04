@@ -15,17 +15,17 @@ Route::any('/', 'LoginController@index');
 
 
 
-// Route::any('home', 'HomeController@index');
+Route::any('home', 'HomeController@index');
 
-// Route::controllers([
-// 	'auth' => 'Auth\AuthController',
-// 	'password' => 'Auth\PasswordController',
-// ]);
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
 
-// Route::any('users', function()
-// {
-//     return 'Users!';
-// });
+Route::any('users', function()
+{
+    return 'Users!';
+});
 
 /*登录*/
 Route::any('login','LoginController@login');
@@ -38,26 +38,60 @@ Route::any('quit','LoginController@quit');
 
 /*企业*/
 
+
+
 /*招聘信息*/
 Route::any('advertises','CompanyController@advertises');
+Route::any('advertises/{id}','CompanyController@advertises');
 
+
+//删除职位
+Route::any('delads','CompanyController@delads');
+//更新职位
+Route::any('updads','CompanyController@updads');
+//审核企业
+Route::any('auditads','CompanyController@auditads');
 /*新增信息*/
 Route::any('add','CompanyController@add');
+
+
+
 
 /*企业信息*/
 Route::any('corporate','CompanyController@corporate');
 Route::any('corporate/{id}','CompanyController@corporate');
+
+
+
+
 //删除企业
 Route::any('delcompany','CompanyController@delcompany');
+//更新企业
+Route::any('updcompany','CompanyController@updcompany');
+//审核企业
+Route::any('auditcompany','CompanyController@auditcompany');
 
 /*添加企业信息*/
 Route::any('insert','CompanyController@insert');
+
+
+
+
+
 
 
 /*学校*/
 
 /*学校信息*/
 Route::any('school','SchoolController@school');
+
+//删除学校
+Route::any('delschool','SchoolController@delschool');
+//更新学校
+Route::any('updschool','SchoolController@updschool');
+//审核学校
+Route::any('auditschool','SchoolController@auditschool');
+
 
 /*添加学校信息*/
 Route::any('schadd','SchoolController@tian');
@@ -75,6 +109,9 @@ Route::any('one','OneController@one');
 
 /*添加个人信息*/
 Route::any('tianjia','OneController@tianjia');
+
+/*删除*/
+Route::any('delperson','OneController@delperson');
 
 /*系统设置*/
 

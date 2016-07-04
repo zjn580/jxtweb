@@ -90,9 +90,22 @@ class PositionController extends Controller
         }
         $arr['data']['c_id'] = $session->get('company');
         $arr['data']['u_name'] = $session->get('u_name');
-        print_R($arr);
+        //print_R($arr);
         return $this->render('toudi',$arr);
     }
+
+   //职位详情
+   public function actionXiang()
+   {
+       $request = \Yii::$app->request;
+       $id = $request->get('id');
+       //print_r($id);die;
+       $connection = \Yii::$app->db;
+       $command=$connection->createCommand("SELECT * FROM jx_position INNER JOIN jx_salary ON jx_position.salary_id=jx_salary.sa_id INNER JOIN jx_experience ON jx_position.experience_id=jx_experience.ex_id INNER JOIN jx_edu ON jx_position.e_id=jx_edu.e_id where p_id = '$id' ");
+       $data['data']=$command->queryOne();
+       //print_r($data['data']);die;
+       return $this->render('xiangqing',$data);
+   }
     //待处理简历
     public function actionWait()
     {   
@@ -290,8 +303,7 @@ class PositionController extends Controller
     
      //招聘职位的介绍
     public function actionIntroduce()
-    {   
-      
+    {
         return $this->render('toudi');
     }
     //招聘内容运营的介绍

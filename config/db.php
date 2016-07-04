@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=jxweb',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=jxweb',
     'username' => 'root',
     'password' => 'root',
     'charset' => 'utf8',
